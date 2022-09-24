@@ -10,7 +10,7 @@ Just push on master branch: Connected with github
 
 ## Connect to database
 
-heroku pg:psql postgresql-cubed-05974 --app srf-group-be
+heroku pg:psql postgresql-cylindrical-43676 --app srf-group-back
 
 
 
@@ -30,7 +30,7 @@ run: heroku open --app srf-group-be
 
 heroku buildpacks:clear --app srf-group-be
 
-log Heroku: heroku logs --app srf-group-be -t
+log Heroku: heroku logs --app srf-group-back -t
 
 ## Custom command
 
