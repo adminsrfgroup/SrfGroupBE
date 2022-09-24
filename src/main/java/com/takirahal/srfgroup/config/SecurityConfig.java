@@ -105,8 +105,6 @@ public class SecurityConfig {
                         "/swagger-resources/**",
                         "/configuration/security",
                         "/swagger-ui.html",
-                        "/swagger-ui/**",
-                        "/swagger-resources/**",
                         "/webjars/**",
                         "/actuator/**",
                         "/api/zipkin-server/**").permitAll()

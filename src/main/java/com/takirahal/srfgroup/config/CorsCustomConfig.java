@@ -29,8 +29,7 @@ public class CorsCustomConfig {
 
         UrlBasedCorsConfigurationSource corsConfigurationSource =
                 new UrlBasedCorsConfigurationSource();
-        corsConfigurationSource.registerCorsConfiguration("/**", config);
-        corsConfigurationSource.registerCorsConfiguration("/swagger-ui/**", config);
+        corsConfigurationSource.registerCorsConfiguration("/api/**", config);
         return new CorsFilter(corsConfigurationSource);
     }
 }

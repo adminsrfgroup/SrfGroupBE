@@ -38,7 +38,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
         List<String> strings = new ArrayList<>();
-//        strings.add("*");
+        // strings.add("*");
         strings.add("http://localhost:3000");
         String[] allowedOrigins = Optional
                 .ofNullable(strings)
@@ -47,8 +47,8 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
         registry
                 .addEndpoint("/websocket/tracker")
                 .setHandshakeHandler(defaultHandshakeHandler())
-                // .setAllowedOrigins(allowedOrigins)
-                .setAllowedOriginPatterns("*")
+                .setAllowedOrigins(allowedOrigins)
+                // .setAllowedOriginPatterns("*")
                 .withSockJS()
                 .setInterceptors(httpSessionHandshakeInterceptor());
     }
