@@ -16,9 +16,6 @@ import com.takirahal.srfgroup.modules.offer.repositories.OfferImagesRepository;
 import com.takirahal.srfgroup.modules.offer.repositories.SellOfferRepository;
 import com.takirahal.srfgroup.modules.offer.services.OfferImagesService;
 import com.takirahal.srfgroup.modules.offer.services.SellOfferService;
-import com.takirahal.srfgroup.modules.suggestion.entities.Post;
-import com.takirahal.srfgroup.modules.suggestion.enums.ModulePost;
-import com.takirahal.srfgroup.modules.suggestion.services.PostService;
 import com.takirahal.srfgroup.modules.user.entities.UserOneSignal;
 import com.takirahal.srfgroup.modules.user.exceptioins.AccountResourceException;
 import com.takirahal.srfgroup.modules.user.mapper.UserMapper;
@@ -85,9 +82,6 @@ public class SellOfferServiceImpl implements SellOfferService {
 
     @Autowired
     MessageSource messageSource;
-
-    @Autowired
-    PostService postService;
 
     @Override
     public SellOfferDTO save(SellOfferDTO sellOfferDTO) {

@@ -33,6 +33,12 @@ services:
       - 'discovery.type=single-node'
       - 'bootstrap.memory_lock=true'
       - 'ES_JAVA_OPTS=-Xms512m -Xmx512m'
+      - 'http.cors.allow-origin=*'
+      - 'http.cors.enabled=true'
+      - 'http.cors.allow-methods=OPTIONS, HEAD, GET, POST, PUT, DELETE'
+      - 'http.cors.allow-headers=X-Requested-With,X-Auth-Token,Content-Type,Content-Length,Authorization,langKey,sourceConnectedDevice'
+      - 'http.cors.allow-credentials=true'
+      - 'http.host=0.0.0.0'
     ulimits:
       memlock:
         soft: -1
@@ -85,6 +91,7 @@ services:
       retries: 12
       test: curl --write-out 'HTTP %{http_code}' --fail --silent --output /dev/null http://localhost:8200/
 
+
   # Redis
   Redis:
     image: redis:7.0.4
@@ -93,17 +100,6 @@ services:
     volumes:
       - /srv/docker/redis:/var/lib/redis
     restart: always
-
-
-  # Zipkin
-  zipkin:
-    image: openzipkin/zipkin
-    container_name: zipkin
-    # volumes:
-    # If you want to expose these ports outside your dev PC,
-    # remove the "127.0.0.1:" prefix
-    ports:
-      - "9411:9411"
 
 
 # Network for app

@@ -9,18 +9,13 @@ import com.takirahal.srfgroup.modules.notification.enums.ModuleNotification;
 import com.takirahal.srfgroup.modules.notification.services.NotificationService;
 import com.takirahal.srfgroup.modules.offer.dto.FindOfferDTO;
 import com.takirahal.srfgroup.modules.offer.dto.OfferImagesDTO;
-import com.takirahal.srfgroup.modules.offer.dto.RentOfferDTO;
 import com.takirahal.srfgroup.modules.offer.entities.FindOffer;
 import com.takirahal.srfgroup.modules.offer.dto.filter.FindOfferFilter;
-import com.takirahal.srfgroup.modules.offer.entities.RentOffer;
 import com.takirahal.srfgroup.modules.offer.mapper.FindOfferMapper;
 import com.takirahal.srfgroup.modules.offer.repositories.FindOfferRepository;
 import com.takirahal.srfgroup.modules.offer.repositories.OfferImagesRepository;
 import com.takirahal.srfgroup.modules.offer.services.FindOfferService;
 import com.takirahal.srfgroup.modules.offer.services.OfferImagesService;
-import com.takirahal.srfgroup.modules.suggestion.entities.Post;
-import com.takirahal.srfgroup.modules.suggestion.enums.ModulePost;
-import com.takirahal.srfgroup.modules.suggestion.services.PostService;
 import com.takirahal.srfgroup.modules.user.entities.UserOneSignal;
 import com.takirahal.srfgroup.modules.user.exceptioins.AccountResourceException;
 import com.takirahal.srfgroup.modules.user.mapper.UserMapper;
@@ -87,9 +82,6 @@ public class FindOfferServiceImpl implements FindOfferService {
 
     @Autowired
     MessageSource messageSource;
-
-    @Autowired
-    PostService postService;
 
     @Override
     public FindOfferDTO save(FindOfferDTO findOfferDTO) {

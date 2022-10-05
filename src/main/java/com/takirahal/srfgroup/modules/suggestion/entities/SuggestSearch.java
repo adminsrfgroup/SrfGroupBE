@@ -13,18 +13,18 @@ import org.springframework.data.elasticsearch.annotations.FieldType;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Document(indexName = "postindex")
-public class Post {
+@Document(indexName = "suggest_search")
+public class SuggestSearch {
 
     @Id
     private String id;
 
-    @Field(type = FieldType.Keyword, name = "name")
+    @Field(type = FieldType.Text, name = "name")
     private String name;
 
-    @Field(type = FieldType.Keyword, name = "description")
+    @Field(type = FieldType.Text, name = "description")
     private String description;
 
-    @Field(type = FieldType.Keyword, name = "module")
+    @Field(type = FieldType.Text, name = "module")
     private String module;
 }

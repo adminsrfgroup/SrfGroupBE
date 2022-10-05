@@ -99,7 +99,7 @@ public class CategoryController {
     @GetMapping("admin/import")
     public ResponseEntity<BatchStatus> importCategories() {
         try{
-            log.debug("REST request to import Categories by data.sql");
+            log.info("REST request to import Categories by data.sql");
             Map<String, JobParameter> parms = new HashMap<>();
             parms.put("time", new JobParameter(System.currentTimeMillis()));
             JobParameters jobParameter = new JobParameters(parms);
@@ -109,6 +109,7 @@ public class CategoryController {
             }
             return new ResponseEntity<>(jobExecution.getStatus(), HttpStatus.OK);
         }catch (Exception e){
+            log.error("Error to import Categories by data.sql : {}", e.getStackTrace());
             return new ResponseEntity<>(BatchStatus.FAILED, HttpStatus.OK);
         }
     }
