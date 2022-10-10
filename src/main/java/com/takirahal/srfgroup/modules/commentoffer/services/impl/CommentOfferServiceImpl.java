@@ -138,8 +138,7 @@ public class CommentOfferServiceImpl implements CommentOfferService {
 
 
         Long useId = SecurityUtils
-                .getIdByCurrentUser()
-                .orElseThrow(() -> new AccountResourceException("Current user not found"));
+                .getIdByCurrentUser();
         if (!Objects.equals(useId, commentOffer.getUser().getId())) {
             throw new UnauthorizedException("Unauthorized action");
         }
@@ -157,8 +156,7 @@ public class CommentOfferServiceImpl implements CommentOfferService {
                 .orElseThrow(() -> new ResouorceNotFoundException("Entity not found with id"));
 
         Long useId = SecurityUtils
-                .getIdByCurrentUser()
-                .orElseThrow(() -> new AccountResourceException("Current user not found"));
+                .getIdByCurrentUser();
         if (!Objects.equals(useId, commentOffer.getUser().getId())) {
             throw new UnauthorizedException("Unauthorized action");
         }

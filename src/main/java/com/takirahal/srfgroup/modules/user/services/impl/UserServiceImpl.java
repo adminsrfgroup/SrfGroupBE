@@ -296,8 +296,7 @@ public class UserServiceImpl implements UserService {
     public UserDTO updateAvatar(MultipartFile file) {
         log.debug("Request to update avatar: {}");
         Long currentUserId = SecurityUtils
-                .getIdByCurrentUser()
-                .orElseThrow(() -> new AccountResourceException("Current user login not found"));
+                .getIdByCurrentUser();
 
 
         Optional<User> existingUser = userRepository.findById(currentUserId);
@@ -333,8 +332,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDTO updateCurrentUser(UserDTO user) {
         log.debug("Request to update infos: {}", user);
-        Long userId = SecurityUtils.getIdByCurrentUser()
-                .orElseThrow(() -> new AccountResourceException("Current user login not found"));
+        Long userId = SecurityUtils.getIdByCurrentUser();
 
         User currentUser = userRepository.findById(userId)
                 .orElseThrow(() -> new AccountResourceException("Current user login not found"));

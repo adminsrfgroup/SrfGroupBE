@@ -14,13 +14,13 @@ import java.util.Optional;
 @Repository
 public interface CartRepository extends JpaRepository<Cart, Long>, JpaSpecificationExecutor<Cart> {
 
-    @Query("SELECT COUNT(ct) from Cart ct where ct.user.id = ?#{principal.id} AND ct.sellOffer.id=:sellOfferId")
+    @Query("SELECT COUNT(ct) from Cart ct where ct.user.id = ?#{principal.id} AND ct.sellOffer.id=:sellOfferId AND ct.status='StandBy'")
     long getCountCartBySellOfferAndUser(@Param("sellOfferId") Long sellOfferId);
 
     Optional<Cart> findBySellOfferAndUser(SellOffer sellOffer, User currentUserToEntity);
 
     @Query(
-            "SELECT COUNT(ct) FROM Cart ct WHERE ct.user.id = :userId"
+            "SELECT COUNT(ct) FROM Cart ct WHERE ct.user.id = :userId AND ct.status='StandBy'"
     )
     long getNumberOfCarts(@Param("userId") Long userId);
 }

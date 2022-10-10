@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class CartFilter {
+public class OrderFilter {
     private Long id;
     private String status;
     UserOfferFilter user;

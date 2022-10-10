@@ -6,11 +6,11 @@ import com.takirahal.srfgroup.exceptions.UnauthorizedException;
 import com.takirahal.srfgroup.modules.cart.dto.CartDTO;
 import com.takirahal.srfgroup.modules.cart.dto.filter.CartFilter;
 import com.takirahal.srfgroup.modules.cart.entities.Cart;
+import com.takirahal.srfgroup.modules.cart.enums.StatusCart;
 import com.takirahal.srfgroup.modules.cart.mapper.CartMapper;
 import com.takirahal.srfgroup.modules.cart.models.DetailsCarts;
 import com.takirahal.srfgroup.modules.cart.repositories.CartRepository;
 import com.takirahal.srfgroup.modules.cart.services.CartService;
-import com.takirahal.srfgroup.modules.commentoffer.entities.CommentOffer;
 import com.takirahal.srfgroup.modules.offer.entities.SellOffer;
 import com.takirahal.srfgroup.modules.offer.repositories.SellOfferRepository;
 import com.takirahal.srfgroup.modules.user.dto.filter.UserOfferFilter;
@@ -74,8 +74,13 @@ public class CartServiceImpl implements CartService {
         cartDTO.setUser(userMapper.toCurrentUserPrincipal(currentUser));
 
         Cart cart = cartMapper.toEntity(cartDTO);
+        cart.setStatus(StatusCart.STANDBY.toString());
 
         Optional<SellOffer> sellOfferOption = sellOfferRepository.findById(cartDTO.getSellOffer().getId());
+
+        if( sellOfferOption.get().getAmount()==null ){
+            throw new BadRequestAlertException("details_offer.missing_amount");
+        }
 
         // Update
         if( nbeCart > 0 ){
@@ -86,7 +91,7 @@ public class CartServiceImpl implements CartService {
                 cart.setQuantity(quantity);
 
                 // Set new total
-                if( sellOfferOption.isPresent() && !Objects.isNull(sellOfferOption.get().getAmount())){
+                if( sellOfferOption.isPresent() ){
                     Double newTotal = cartExist.get().getTotal() + (sellOfferOption.get().getAmount()*cartDTO.getQuantity());
                     cart.setTotal(newTotal);
                 }
@@ -94,8 +99,9 @@ public class CartServiceImpl implements CartService {
                 cart = cartRepository.save(cart);
             }
         }
+        // First time: Cart
         else{
-            if( sellOfferOption.isPresent() && !Objects.isNull(sellOfferOption.get().getAmount())){
+            if( sellOfferOption.isPresent() ){
                 cart.setTotal(sellOfferOption.get().getAmount());
             }
             cart = cartRepository.save(cart);
@@ -105,14 +111,13 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
-    public Page<CartDTO> getOffersByCurrentUser(CartFilter cartFilter, Pageable pageable) {
+    public Page<CartDTO> getCartsByCurrentUser(CartFilter cartFilter, Pageable pageable) {
         log.debug("Request to get all Carts for current user : {}", cartFilter);
-        Long useId = SecurityUtils
-                .getIdByCurrentUser()
-                .orElseThrow(() -> new AccountResourceException("Current user not found"));
+        Long useId = SecurityUtils.getIdByCurrentUser();
 
         UserOfferFilter userOfferFilter = new UserOfferFilter();
         userOfferFilter.setId(useId);
+        cartFilter.setStatus(StatusCart.STANDBY.toString());
         cartFilter.setUser(userOfferFilter);
         return findByCriteria(cartFilter, pageable);
     }
@@ -124,9 +129,7 @@ public class CartServiceImpl implements CartService {
         Cart cart = cartRepository.findById(id)
                 .orElseThrow(() -> new ResouorceNotFoundException("Entity not found with id"));
 
-        Long useId = SecurityUtils
-                .getIdByCurrentUser()
-                .orElseThrow(() -> new AccountResourceException("Current user not found"));
+        Long useId = SecurityUtils.getIdByCurrentUser();
         if (!Objects.equals(useId, cart.getUser().getId())) {
             throw new UnauthorizedException("Unauthorized action");
         }
@@ -142,9 +145,7 @@ public class CartServiceImpl implements CartService {
         Cart cart = cartRepository.findById(cartDTO.getId())
                 .orElseThrow(() -> new ResouorceNotFoundException("Entity not found with id"));
 
-        Long useId = SecurityUtils
-                .getIdByCurrentUser()
-                .orElseThrow(() -> new AccountResourceException("Current user not found"));
+        Long useId = SecurityUtils.getIdByCurrentUser();
         if (!Objects.equals(useId, cart.getUser().getId())) {
             throw new UnauthorizedException("Unauthorized action");
         }
@@ -165,7 +166,7 @@ public class CartServiceImpl implements CartService {
         detailsCarts.setTotalCarts(0D);
         Pageable pageable = PageRequest.of(0, 100);
         CartFilter cartFilter = new CartFilter();
-        Page<CartDTO> page = getOffersByCurrentUser(cartFilter, pageable);
+        Page<CartDTO> page = getCartsByCurrentUser(cartFilter, pageable);
         List<CartDTO> cartDTOList = page.getContent();
         cartDTOList.stream().forEach(item -> {
             if( !Objects.isNull(item.getTotal()) ){
@@ -178,6 +179,41 @@ public class CartServiceImpl implements CartService {
         return detailsCarts;
     }
 
+    @Override
+    public DetailsCarts getDetailsCartsByPage(Page<CartDTO> page) {
+        log.debug("Request to get details Cart by page ");
+
+        DetailsCarts detailsCarts = new DetailsCarts();
+        detailsCarts.setTaxDelivery(taxDelivery);
+        detailsCarts.setTotalCarts(0D);
+        List<CartDTO> cartDTOList = page.getContent();
+        cartDTOList.stream().forEach(item -> {
+            if( !Objects.isNull(item.getTotal()) ){
+                detailsCarts.setTotalCarts(detailsCarts.getTotalCarts()+item.getTotal()*item.getQuantity());
+            }
+        });
+        detailsCarts.setNumberCarts(cartDTOList.size());
+        detailsCarts.setTotalGlobalCarts(detailsCarts.getTotalCarts()+detailsCarts.getTaxDelivery());
+        return detailsCarts;
+    }
+
+    @Override
+    public void updateListCartByStatus(List<CartDTO> content) {
+        content.stream().forEach(cartDTO -> {
+            cartRepository.findById(cartDTO.getId())
+                    .map(
+                            cart -> {
+                                // Update Status
+                                cart.setStatus(StatusCart.PASSED.toString());
+                                cartRepository.save(cart);
+                                log.debug("Cart update: {}", cart);
+                                return cart;
+                            }
+                    );
+
+        });
+    }
+
     private Page<CartDTO> findByCriteria(CartFilter cartFilter, Pageable page) {
         log.debug("find carts by criteria : {}, page: {}", page);
         return cartRepository.findAll(createSpecification(cartFilter), page).map(cartMapper::toDto);
@@ -186,6 +222,10 @@ public class CartServiceImpl implements CartService {
     protected Specification<Cart> createSpecification(CartFilter cartFilter) {
         return (root, query, criteriaBuilder) -> {
             List<Predicate> predicates = new ArrayList<>();
+
+            if( cartFilter.getStatus() != null){
+                predicates.add(criteriaBuilder.equal(root.get("status"), cartFilter.getStatus()));
+            }
 
             if ( cartFilter.getUser() != null && cartFilter.getUser().getId() != null ) {
                 predicates.add(criteriaBuilder.equal(root.get("user").get("id"), cartFilter.getUser().getId()));

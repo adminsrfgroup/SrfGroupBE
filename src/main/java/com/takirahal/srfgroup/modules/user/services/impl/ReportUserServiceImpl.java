@@ -43,8 +43,7 @@ public class ReportUserServiceImpl implements ReportUserService {
         Optional<ReportUser> reportedUser = reportUserRepository.findByReportedUser(userReported);
 
         Long currentUserId = SecurityUtils
-            .getIdByCurrentUser()
-            .orElseThrow(() -> new AccountResourceException("Current user login not found"));
+            .getIdByCurrentUser();
 
         if( !reportedUser.isPresent() ){
             ReportUser reportUser = new ReportUser();

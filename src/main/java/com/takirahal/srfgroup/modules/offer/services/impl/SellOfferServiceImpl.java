@@ -140,8 +140,7 @@ public class SellOfferServiceImpl implements SellOfferService {
                 .orElseThrow(() -> new BadRequestAlertException("Entity not found with id"));
 
         Long useId = SecurityUtils
-                .getIdByCurrentUser()
-                .orElseThrow(() -> new AccountResourceException("Current user not found"));
+                .getIdByCurrentUser();
         if (!Objects.equals(useId, sellOffer.getUser().getId())) {
             throw new UnauthorizedException("Unauthorized action");
         }

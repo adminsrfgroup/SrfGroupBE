@@ -3,6 +3,7 @@ package com.takirahal.srfgroup.utils;
 import com.takirahal.srfgroup.constants.AuthoritiesConstants;
 import com.takirahal.srfgroup.exceptions.UnauthorizedException;
 import com.takirahal.srfgroup.modules.user.entities.User;
+import com.takirahal.srfgroup.modules.user.exceptioins.AccountResourceException;
 import com.takirahal.srfgroup.security.UserPrincipal;
 import com.takirahal.srfgroup.modules.user.entities.Authority;
 import org.springframework.security.core.Authentication;
@@ -44,9 +45,10 @@ public final class SecurityUtils {
         return null;
     }
 
-    public static Optional<Long> getIdByCurrentUser() {
+    public static Long getIdByCurrentUser() {
         SecurityContext securityContext = SecurityContextHolder.getContext();
-        return Optional.ofNullable(extractPrincipalId(securityContext.getAuthentication()));
+        return Optional.ofNullable(extractPrincipalId(securityContext.getAuthentication()))
+                .orElseThrow(() -> new AccountResourceException("Current user not found"));
     }
 
     private static Long extractPrincipalId(Authentication authentication) {

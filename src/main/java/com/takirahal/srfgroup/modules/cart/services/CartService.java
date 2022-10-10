@@ -6,6 +6,8 @@ import com.takirahal.srfgroup.modules.cart.models.DetailsCarts;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.util.List;
+
 public interface CartService {
 
     /**
@@ -21,7 +23,7 @@ public interface CartService {
      * @param pageable
      * @return
      */
-    Page<CartDTO> getOffersByCurrentUser(CartFilter cartFilter, Pageable pageable);
+    Page<CartDTO> getCartsByCurrentUser(CartFilter cartFilter, Pageable pageable);
 
     /**
      *
@@ -41,4 +43,17 @@ public interface CartService {
      * @return
      */
     DetailsCarts getDetailsCarts();
+
+    /**
+     *
+     * @param page
+     * @return
+     */
+    DetailsCarts getDetailsCartsByPage(Page<CartDTO> page);
+
+    /**
+     *
+     * @param content
+     */
+    void updateListCartByStatus(List<CartDTO> content);
 }

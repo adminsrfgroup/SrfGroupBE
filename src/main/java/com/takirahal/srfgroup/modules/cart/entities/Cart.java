@@ -20,7 +20,7 @@ public class Cart implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
-    @SequenceGenerator(name = "sequenceGenerator")
+    @SequenceGenerator(name = "sequenceGenerator", sequenceName = "sequence_name_cart", allocationSize = 1, initialValue = 1)
     private Long id;
 
     @Column(name = "quantity")
@@ -28,6 +28,9 @@ public class Cart implements Serializable {
 
     @Column(name = "total")
     private Double total;
+
+    @Column(name = "status")
+    private String status;
 
     @ManyToOne
     private SellOffer sellOffer;

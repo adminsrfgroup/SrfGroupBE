@@ -130,7 +130,7 @@ public class UserController {
      * @return
      */
     @PostMapping("public/signin-google-plus-one-tap")
-    public ResponseEntity<JWTToken> signinGooglePlusOneTap(@Valid @RequestBody GooglePlusOneTapVM googlePlusOneTapVM, HttpServletRequest httpServletRequest) {
+    public ResponseEntity<JWTToken> signinGooglePlusOneTap(@Valid @RequestBody GooglePlusOneTapVM googlePlusOneTapVM) {
         try {
             log.info("REST request to signin Google Plus OneTap: {} ", googlePlusOneTapVM);
             String jwt = userService.signinGooglePlusOneTap(googlePlusOneTapVM);
@@ -289,13 +289,9 @@ public class UserController {
      * @return
      */
     @GetMapping("count-not-see-notifications")
-    public ResponseEntity<Long> getNumberNotSeeNotificationsForUserId() {
+    public ResponseEntity<Long> getNumberNotSeeNotificationsForUserId(@ConnectedProfile UserPrincipal userPrincipal) {
         log.info("REST request to get number of notification by user");
-
-        Long userId = SecurityUtils.getIdByCurrentUser()
-                .orElseThrow(() -> new AccountResourceException("Current user login not found"));
-
-        Long nbeNotSee = notificationRepository.getNotReadNotifications(userId);
+        Long nbeNotSee = notificationRepository.getNotReadNotifications(userPrincipal.getId());
         return new ResponseEntity<>(nbeNotSee, HttpStatus.OK);
     }
 

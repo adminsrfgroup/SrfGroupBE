@@ -11,11 +11,12 @@ import java.io.Serializable;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class CartDTO  implements Serializable {
+public class CartDTO implements Serializable {
 
     private Long id;
     private int quantity;
     private Double total;
+    private String status;
     private SellOfferDTO sellOffer;
     private UserDTO user;
 }

@@ -8,5 +8,5 @@ import com.takirahal.srfgroup.modules.user.mapper.UserMapper;
 import org.mapstruct.Mapper;
 
 @Mapper(componentModel = "spring", uses = {UserMapper.class, SellOfferMapper.class})
-public interface CartMapper  extends EntityMapper<CartDTO, Cart> {
+public interface CartMapper extends EntityMapper<CartDTO, Cart> {
 }

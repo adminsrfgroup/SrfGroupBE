@@ -127,8 +127,7 @@ public class ConversationServiceImpl implements ConversationService {
         log.debug("find conversations by criteria : {}, page: {}", pageable);
 
         Long useId = SecurityUtils
-                .getIdByCurrentUser()
-                .orElseThrow(() -> new AccountResourceException("Current user not found"));
+                .getIdByCurrentUser();
 
         Page<ConversationDTO> conversationDTOPage = conversationRepository.findAll(createSpecification(useId, conversationFilter), pageable).map(conversationMapper::toDto);
 
@@ -161,8 +160,7 @@ public class ConversationServiceImpl implements ConversationService {
                 .orElseThrow(() -> new ResouorceNotFoundException("Entity not found with id"));
 
         Long useId = SecurityUtils
-                .getIdByCurrentUser()
-                .orElseThrow(() -> new AccountResourceException("Current user not found"));
+                .getIdByCurrentUser();
 
         if (!Objects.equals(useId, conversation.getReceiverUser().getId()) && !Objects.equals(useId, conversation.getSenderUser().getId()) ) {
             throw new UnauthorizedException("Unauthorized action");

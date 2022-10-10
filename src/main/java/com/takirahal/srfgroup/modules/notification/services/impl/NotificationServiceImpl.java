@@ -99,8 +99,7 @@ public class NotificationServiceImpl implements NotificationService {
     @Override
     public void setIsReadNotifications(List<NotificationDTO> notificationDTOS) {
 
-        Long userId = SecurityUtils.getIdByCurrentUser()
-                .orElseThrow(() -> new AccountResourceException("Current user login not found"));
+        Long userId = SecurityUtils.getIdByCurrentUser();
 
         for (NotificationDTO notif: notificationDTOS) {
             notificationRepository.updateSeeToNotification(notif.getId(), userId);

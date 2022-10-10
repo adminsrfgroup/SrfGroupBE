@@ -132,8 +132,7 @@ public class RentOfferServiceImpl implements RentOfferService {
                 .orElseThrow(() -> new BadRequestAlertException("Entity not found with id"));
 
         Long useId = SecurityUtils
-                .getIdByCurrentUser()
-                .orElseThrow(() -> new AccountResourceException("Current user not found"));
+                .getIdByCurrentUser();
         if (!Objects.equals(useId, rentOfferDTO.getUser().getId())) {
             throw new UnauthorizedException("Unauthorized action");
         }

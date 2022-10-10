@@ -97,8 +97,7 @@ public class OfferServiceImpl implements OfferService {
     public Page<OfferDTO> getOffersByCurrentUser(OfferFilter offerFilter, Pageable pageable) {
         log.debug("Request to get Offers for current user : {}", offerFilter);
         Long useId = SecurityUtils
-                .getIdByCurrentUser()
-                .orElseThrow(() -> new AccountResourceException("Current user not found"));
+                .getIdByCurrentUser();
 
         UserOfferFilter userOfferFilter = new UserOfferFilter();
         userOfferFilter.setId(useId);
@@ -117,8 +116,7 @@ public class OfferServiceImpl implements OfferService {
                 .orElseThrow(() -> new ResouorceNotFoundException("Entity not found with id"));
 
         Long useId = SecurityUtils
-                .getIdByCurrentUser()
-                .orElseThrow(() -> new AccountResourceException("Current user not found"));
+                .getIdByCurrentUser();
         if (!Objects.equals(useId, offer.getUser().getId())) {
             throw new UnauthorizedException("Unauthorized action");
         }

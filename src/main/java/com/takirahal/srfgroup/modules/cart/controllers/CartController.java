@@ -34,7 +34,7 @@ public class CartController {
     @GetMapping("current-user")
     public ResponseEntity<Page<CartDTO>> getCartsByCurrentUser(CartFilter cartFilter, Pageable pageable) {
         log.info("REST request to get Carts by criteria: {}", cartFilter);
-        Page<CartDTO> page = cartService.getOffersByCurrentUser(cartFilter, pageable);
+        Page<CartDTO> page = cartService.getCartsByCurrentUser(cartFilter, pageable);
         return new ResponseEntity<>(page, HttpStatus.OK);
     }
 
