@@ -165,6 +165,10 @@ public class OfferServiceImpl implements OfferService {
         Path rootLocation = Paths.get(pathAddProduct);
         for(MultipartFile file : multipartFiles) {
             storageService.store(file, rootLocation);
+
+            // Rotate Exif
+            resizeImage.rotateImages(pathAddProduct + "/" + file.getOriginalFilename());
+
             resizeImage.resizeImageOffer(pathAddProduct + "/" + file.getOriginalFilename());
         }
     }

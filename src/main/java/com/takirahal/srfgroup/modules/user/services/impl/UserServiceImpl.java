@@ -317,6 +317,9 @@ public class UserServiceImpl implements UserService {
             storageService.store(file, rootLocation);
         }
 
+        // Rotate Exif
+        resizeImage.rotateImages(storageService.getBaseStorageUserImages() + currentUserId + "/" + file.getOriginalFilename());
+
         // Resize
         resizeImage.resizeAvatar(storageService.getBaseStorageUserImages() + currentUserId + "/" + file.getOriginalFilename());
 
