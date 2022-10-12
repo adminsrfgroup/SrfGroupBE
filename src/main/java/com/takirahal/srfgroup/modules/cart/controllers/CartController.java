@@ -45,7 +45,7 @@ public class CartController {
      * @return
      */
     @DeleteMapping("{id}")
-    public ResponseEntity<Boolean> deleteCommentOffer(@PathVariable Long id) {
+    public ResponseEntity<Boolean> deleteCart(@PathVariable Long id) {
         log.info("REST request to delete Cart : {}", id);
         cartService.delete(id);
         return new ResponseEntity<>(true, HeaderUtil.createAlert("cart.cart_delete_succefully", id.toString()), HttpStatus.OK);

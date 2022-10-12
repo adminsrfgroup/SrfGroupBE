@@ -17,7 +17,8 @@ public interface CartRepository extends JpaRepository<Cart, Long>, JpaSpecificat
     @Query("SELECT COUNT(ct) from Cart ct where ct.user.id = ?#{principal.id} AND ct.sellOffer.id=:sellOfferId AND ct.status='StandBy'")
     long getCountCartBySellOfferAndUser(@Param("sellOfferId") Long sellOfferId);
 
-    Optional<Cart> findBySellOfferAndUser(SellOffer sellOffer, User currentUserToEntity);
+    @Query("SELECT ct from Cart ct where ct.user.id =:userId AND ct.sellOffer.id=:sellOfferId AND ct.status='StandBy'")
+    Optional<Cart> findBySellOfferAndUser(@Param("sellOfferId") Long sellOfferId, @Param("userId") Long userId);
 
     @Query(
             "SELECT COUNT(ct) FROM Cart ct WHERE ct.user.id = :userId AND ct.status='StandBy'"

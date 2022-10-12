@@ -32,9 +32,9 @@ public class Cart implements Serializable {
     @Column(name = "status")
     private String status;
 
-    @ManyToOne
+    @OneToOne
     private SellOffer sellOffer;
 
-    @ManyToOne
+    @OneToOne
     private User user;
 }

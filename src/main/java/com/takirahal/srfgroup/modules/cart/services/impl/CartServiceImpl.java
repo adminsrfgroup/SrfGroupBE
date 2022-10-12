@@ -84,7 +84,7 @@ public class CartServiceImpl implements CartService {
 
         // Update
         if( nbeCart > 0 ){
-            Optional<Cart> cartExist = cartRepository.findBySellOfferAndUser(cart.getSellOffer(), userMapper.currentUserToEntity(currentUser));
+            Optional<Cart> cartExist = cartRepository.findBySellOfferAndUser(cart.getSellOffer().getId(), currentUser.getId());
             if(cartExist.isPresent()){
                 int quantity = cartExist.get().getQuantity() + cartDTO.getQuantity();
                 cart.setId(cartExist.get().getId());
@@ -114,7 +114,6 @@ public class CartServiceImpl implements CartService {
     public Page<CartDTO> getCartsByCurrentUser(CartFilter cartFilter, Pageable pageable) {
         log.debug("Request to get all Carts for current user : {}", cartFilter);
         Long useId = SecurityUtils.getIdByCurrentUser();
-
         UserOfferFilter userOfferFilter = new UserOfferFilter();
         userOfferFilter.setId(useId);
         cartFilter.setStatus(StatusCart.STANDBY.toString());
