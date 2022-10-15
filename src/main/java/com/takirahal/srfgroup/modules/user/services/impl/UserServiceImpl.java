@@ -730,6 +730,7 @@ public class UserServiceImpl implements UserService {
         Optional<User> userExist = userRepository.findOneByEmailIgnoreCase(email);
         if (userExist.isPresent()) {
             // Update user
+            userDTO.setAuthorities(userExist.get().getAuthorities());
             userDTO.setId(userExist.get().getId());
             userDTO.setBlocked(userExist.get().getBlocked());
             userDTO.setAddress(addressMapper.toDto(userExist.get().getAddress()));
