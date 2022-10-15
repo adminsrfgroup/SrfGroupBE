@@ -100,14 +100,13 @@ public class SecurityConfig {
                         "/**/*.html",
                         "/**/*.css",
                         "/**/*.js",
-                        "/v2/api-docs",
                         "/configuration/ui",
                         "/swagger-resources/**",
                         "/configuration/security",
-                        "/swagger-ui.html",
+                        "/swagger-ui/**",
+                        "/v3/**",
                         "/webjars/**",
-                        "/actuator/**",
-                        "/api/zipkin-server/**").permitAll()
+                        "/actuator/**").permitAll()
                 .antMatchers("/api/auth/**").permitAll()
                 .antMatchers("/api/customer/**").permitAll()
                 .antMatchers("/api/user/public/**").permitAll()
@@ -137,7 +136,6 @@ public class SecurityConfig {
                 .antMatchers("/api/news-letter/admin/**").hasAnyAuthority(AuthoritiesConstants.SUPER_ADMIN, AuthoritiesConstants.ADMIN)
                 .antMatchers("/api/top-home-slides-images/admin/**").hasAnyAuthority(AuthoritiesConstants.SUPER_ADMIN, AuthoritiesConstants.ADMIN)
                 .antMatchers("/api/offer-images/public/**").permitAll()
-                // .antMatchers("/websocket/**").permitAll()
                 .antMatchers("/api/user/checkUsernameAvailability", "/api/user/checkEmailAvailability")
                 .permitAll()
                 .antMatchers(HttpMethod.GET, "/api/polls/**", "/api/users/**")

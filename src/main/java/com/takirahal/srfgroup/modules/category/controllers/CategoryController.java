@@ -19,6 +19,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -72,8 +73,8 @@ public class CategoryController {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the offerDTO, or with status {@code 404 (Not Found)}.
      */
     @GetMapping("admin/{id}")
-    public ResponseEntity<CategoryDTO> getOffer(@PathVariable Long id) {
-        log.debug("REST request to get Category : {}", id);
+    public ResponseEntity<CategoryDTO> getCategory(@PathVariable Long id) {
+        log.info("REST request to get Category : {}", id);
         Optional<CategoryDTO> categoryDTO = categoryService.findOne(id);
         return new ResponseEntity<>(categoryDTO.get(), HttpStatus.OK);
     }
@@ -84,11 +85,25 @@ public class CategoryController {
      * @param categoryDTO
      * @return
      */
-    @PutMapping("admin/update")
-    public ResponseEntity<CategoryDTO> updateCategory(@RequestBody CategoryDTO categoryDTO){
+    @PutMapping("admin/update/{id}")
+    public ResponseEntity<CategoryDTO> updateCategory(
+            @PathVariable(value = "id", required = false) final Long id,
+            @RequestBody CategoryDTO categoryDTO){
         log.debug("REST request to uodate Category : {}", categoryDTO);
         CategoryDTO result = categoryService.save(categoryDTO);
         return new ResponseEntity<>(result, HeaderUtil.createAlert("Category update succefully", result.getId().toString()), HttpStatus.OK);
+    }
+
+    /**
+     *
+     * @param categoryDTOList
+     * @return
+     */
+    @PutMapping("admin/update-index")
+    public ResponseEntity<Boolean> updateIndexCategories(@RequestBody List<CategoryDTO> categoryDTOList){
+        log.debug("REST request to uodate index Categories : {}", categoryDTOList);
+        Boolean result = categoryService.updateIndexCategories(categoryDTOList);
+        return new ResponseEntity<>(result, HeaderUtil.createAlert("Category update succefully", "true"), HttpStatus.OK);
     }
 
 

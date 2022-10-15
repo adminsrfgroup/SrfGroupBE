@@ -5,6 +5,7 @@ import com.takirahal.srfgroup.modules.category.dto.filter.CategoryFilter;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface CategoryService {
@@ -30,4 +31,11 @@ public interface CategoryService {
      * @return
      */
     Optional<CategoryDTO> findOne(Long id);
+
+    /**
+     *
+     * @param categoryDTOList
+     * @return
+     */
+    Boolean updateIndexCategories(List<CategoryDTO> categoryDTOList);
 }

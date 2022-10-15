@@ -1,6 +1,6 @@
-package com.takirahal.srfgroup.config;
+package com.takirahal.srfgroup.config.Batch;
 
-import com.takirahal.srfgroup.modules.user.entities.User;
+import com.takirahal.srfgroup.modules.user.entities.Authority;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.EnableBatchProcessing;
@@ -19,11 +19,12 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 import org.springframework.core.io.Resource;
 
-@Configuration
-@EnableBatchProcessing
-public class SpringBatchConfigUser {
+//@Configuration
+//@EnableBatchProcessing
+public class SpringBatchConfigAuthority {
 
     @Autowired
     private JobBuilderFactory jobBuilderFactory;
@@ -32,57 +33,58 @@ public class SpringBatchConfigUser {
     private StepBuilderFactory stepBuilderFactory;
 
     @Autowired
-    private ItemReader<User> userItemReader;
+    private ItemReader<Authority> authorityItemReader;
 
     @Autowired
-    private ItemWriter<User> userItemWriter;
+    private ItemWriter<Authority> authorityItemWriter;
 
     @Autowired
-    private ItemProcessor<User, User> userItemProcess;
+    private ItemProcessor<Authority, Authority> authorityItemProcess;
 
     @Bean
-    @Qualifier("userBeanJob")
-    public Job userJob(){
-        Step step0 = stepBuilderFactory.get("user-step-load-data")
-                .<User, User>chunk(100)
-                .reader(userItemReader)
-                .processor(userItemProcess)
-                .writer(userItemWriter)
+    @Qualifier("authorityBeanJob")
+    public Job authorityJob(){
+        Step step0 = stepBuilderFactory.get("authority-step-load-data")
+                .<Authority, Authority>chunk(100)
+                .reader(authorityItemReader)
+                .processor(authorityItemProcess)
+                .writer(authorityItemWriter)
                 .build();
-        return jobBuilderFactory.get("user-data-loader-job")
+        return jobBuilderFactory.get("authority-data-loader-job")
                 .start(step0)
                 .build();
     }
 
     @Bean
-    public FlatFileItemReader<User> userBeanFlatFileItemReader(@Value("${inputFileUser}") Resource inputFile){
-        FlatFileItemReader<User> fileItemReader = new FlatFileItemReader<>();
+    public FlatFileItemReader<Authority> authorityBeanFlatFileItemReader(@Value("${inputFileAuthority}") Resource inputFile){
+        FlatFileItemReader<Authority> fileItemReader = new FlatFileItemReader<>();
         fileItemReader.setName("FFIR1");
         fileItemReader.setLinesToSkip(1);
         fileItemReader.setResource(inputFile);
-        fileItemReader.setLineMapper(userBeanLineMapper());
+        fileItemReader.setLineMapper(authorityBeanLineMapper());
         return fileItemReader;
     }
 
     @Bean
-    public LineMapper<User> userBeanLineMapper() {
-        DefaultLineMapper<User> bankTransactionLineMapper = new DefaultLineMapper<>();
+    public LineMapper<Authority> authorityBeanLineMapper() {
+        DefaultLineMapper<Authority> bankTransactionLineMapper = new DefaultLineMapper<>();
         DelimitedLineTokenizer delimitedLineTokenizer = new DelimitedLineTokenizer();
         delimitedLineTokenizer.setDelimiter(";");
         delimitedLineTokenizer.setStrict(false);
-        delimitedLineTokenizer.setNames("id", "firstName", "lastName", "username", "email", "activated", "imageUrl", "activationKey", "resetKey", "phone", "sourceConnectedDevice", "password", "langKey", "linkProfileFacebook");
+        delimitedLineTokenizer.setNames("name");
         bankTransactionLineMapper.setLineTokenizer(delimitedLineTokenizer);
         BeanWrapperFieldSetMapper fieldSetMapper = new BeanWrapperFieldSetMapper();
-        fieldSetMapper.setTargetType(User.class);
+        fieldSetMapper.setTargetType(Authority.class);
         bankTransactionLineMapper.setFieldSetMapper(fieldSetMapper);
         return bankTransactionLineMapper;
     }
 
     @Bean
-    public ItemProcessor<User, User> userBeanItemProcessor(){
-        return new ItemProcessor<User, User>() {
+    public ItemProcessor<Authority, Authority> authorityBeanItemProcessor(){
+        return new ItemProcessor<Authority, Authority>() {
             @Override
-            public User process(User address) throws Exception {
+            public Authority process(Authority address) throws Exception {
+
                 return null;
             }
         };

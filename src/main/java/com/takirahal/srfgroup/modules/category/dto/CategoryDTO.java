@@ -13,12 +13,9 @@ import java.util.Set;
 @AllArgsConstructor
 public class CategoryDTO implements Serializable {
     private Long id;
-
     private String titleAr;
-
     private String titleFr;
-
     private String titleEn;
-
-    // private Set<SubCategoryDTO> subCategories = new HashSet<>();
+    private String imageContent;
+    private Integer index;
 }

@@ -8,6 +8,7 @@ import com.takirahal.srfgroup.modules.category.mapper.CategoryMapper;
 import com.takirahal.srfgroup.modules.category.repositories.CategoryRepository;
 import com.takirahal.srfgroup.modules.category.services.CategoryService;
 import com.takirahal.srfgroup.modules.notification.services.impl.NotificationServiceImpl;
+import com.takirahal.srfgroup.modules.user.exceptioins.AccountResourceException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,10 +53,23 @@ public class CategoryServiceImpl implements CategoryService {
         return category.map(categoryMapper::toDto);
     }
 
+    @Override
+    public Boolean updateIndexCategories(List<CategoryDTO> categoryDTOList) {
+        log.debug("Request to update index Categories : {}", categoryDTOList);
+        categoryDTOList.stream().forEach(categoryDTO -> {
+            Category category = categoryRepository.findById(categoryDTO.getId())
+                    .orElseThrow(() -> new ResouorceNotFoundException("Category not found"));
+            category.setIndex(categoryDTO.getIndex());
+            categoryRepository.save(category);
+
+        });
+        return true;
+    }
+
     private Specification<Category> createSpecification(CategoryFilter criteria) {
         return (root, query, criteriaBuilder) -> {
             List<Predicate> predicates = new ArrayList<>();
-            query.orderBy(criteriaBuilder.asc(root.get("id")));
+            query.orderBy(criteriaBuilder.desc(root.get("index")));
             return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
         };
     }

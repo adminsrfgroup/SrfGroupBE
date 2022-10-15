@@ -1,4 +1,4 @@
-package com.takirahal.srfgroup.config;
+package com.takirahal.srfgroup.config.Batch;
 
 
 import com.takirahal.srfgroup.modules.category.entities.Category;
@@ -72,7 +72,7 @@ public class SpringBatchConfigCategory {
         DelimitedLineTokenizer delimitedLineTokenizer = new DelimitedLineTokenizer();
         delimitedLineTokenizer.setDelimiter(";");
         delimitedLineTokenizer.setStrict(false);
-        delimitedLineTokenizer.setNames("id", "titleAr", "titleFr", "titleEn");
+        delimitedLineTokenizer.setNames("id", "titleAr", "titleFr", "titleEn","index");
         bankTransactionLineMapper.setLineTokenizer(delimitedLineTokenizer);
         BeanWrapperFieldSetMapper fieldSetMapper = new BeanWrapperFieldSetMapper();
         fieldSetMapper.setTargetType(Category.class);

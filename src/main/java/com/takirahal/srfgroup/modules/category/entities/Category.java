@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -31,4 +32,12 @@ public class Category implements Serializable {
 
     @Column(name = "title_en")
     private String titleEn;
+
+    @Lob
+    @Type(type = "org.hibernate.type.TextType")
+    @Column(name = "image_content")
+    private String imageContent;
+
+    @Column(name = "index")
+    private Integer index;
 }
