@@ -102,12 +102,14 @@ public class CommentOfferServiceImpl implements CommentOfferService {
             notificationService.save(notificationDTO);
 
             // Send Push Notif
-            List<UserOneSignal> listUserOneSignals = userOneSignalService.findByUser(userDestination.get());
-            if(listUserOneSignals.size()>0){
-                String result = listUserOneSignals.stream().map(UserOneSignal::getIdOneSignal)
-                        .collect(Collectors.joining("\",\""));
-                oneSignalService.sendPushNotifToUser(result, messageCommentOffer);
-            }
+            userOneSignalService.sendPushNotifForUser(userDestination.get(), messageCommentOffer);
+
+//            List<UserOneSignal> listUserOneSignals = userOneSignalService.findByUser(userDestination.get());
+//            if(listUserOneSignals.size()>0){
+//                String result = listUserOneSignals.stream().map(UserOneSignal::getIdOneSignal)
+//                        .collect(Collectors.joining("\",\""));
+//                oneSignalService.sendPushNotifToUser(result, messageCommentOffer);
+//            }
         }
 
         return commentOfferMapper.toDto(commentOffer);

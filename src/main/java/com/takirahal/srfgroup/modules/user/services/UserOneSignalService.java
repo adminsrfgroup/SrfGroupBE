@@ -30,4 +30,11 @@ public interface UserOneSignalService {
      * @return
      */
     List<UserOneSignal> findByUser(User user);
+
+
+    /**
+     * Sent push noti for user for all devices
+     * @param user
+     */
+    void sendPushNotifForUser(User user, String messageCommentOffer);
 }

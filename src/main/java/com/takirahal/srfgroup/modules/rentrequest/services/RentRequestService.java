@@ -30,4 +30,10 @@ public interface RentRequestService {
      * @return
      */
     Page<RentRequestDTO> getCartsByCurrentUserReceived(RentRequestFilter rentRequestFilter, Pageable pageable);
+
+    /**
+     *
+     * @param id
+     */
+    void delete(Long id);
 }

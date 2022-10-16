@@ -1,6 +1,11 @@
 package com.takirahal.srfgroup.modules.rentrequest.services.impl;
 
 import com.takirahal.srfgroup.exceptions.BadRequestAlertException;
+import com.takirahal.srfgroup.exceptions.ResouorceNotFoundException;
+import com.takirahal.srfgroup.exceptions.UnauthorizedException;
+import com.takirahal.srfgroup.modules.notification.entities.Notification;
+import com.takirahal.srfgroup.modules.notification.enums.ModuleNotification;
+import com.takirahal.srfgroup.modules.notification.repositories.NotificationRepository;
 import com.takirahal.srfgroup.modules.offer.entities.RentOffer;
 import com.takirahal.srfgroup.modules.offer.mapper.RentOfferMapper;
 import com.takirahal.srfgroup.modules.rentrequest.dto.RentRequestDTO;
@@ -13,10 +18,17 @@ import com.takirahal.srfgroup.modules.rentrequest.services.RentRequestService;
 import com.takirahal.srfgroup.modules.user.dto.UserDTO;
 import com.takirahal.srfgroup.modules.user.dto.filter.UserFilter;
 import com.takirahal.srfgroup.modules.user.entities.User;
+import com.takirahal.srfgroup.modules.user.exceptioins.AccountResourceException;
+import com.takirahal.srfgroup.modules.user.mapper.UserMapper;
+import com.takirahal.srfgroup.modules.user.repositories.UserRepository;
+import com.takirahal.srfgroup.modules.user.services.UserOneSignalService;
+import com.takirahal.srfgroup.security.UserPrincipal;
+import com.takirahal.srfgroup.utils.CommonUtil;
 import com.takirahal.srfgroup.utils.SecurityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
@@ -24,9 +36,7 @@ import org.springframework.stereotype.Service;
 
 import javax.persistence.criteria.Predicate;
 import java.time.Instant;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class RentRequestServicesImpl implements RentRequestService {
@@ -42,20 +52,36 @@ public class RentRequestServicesImpl implements RentRequestService {
     @Autowired
     RentOfferMapper rentOfferMapper;
 
+    @Autowired
+    UserRepository userRepository;
+
+    @Autowired
+    MessageSource messageSource;
+
+    @Autowired
+    NotificationRepository notificationRepository;
+
+    @Autowired
+    UserOneSignalService userOneSignalService;
+
+    @Autowired
+    UserMapper userMapper;
+
     @Override
     public RentRequestDTO save(RentRequestDTO rentRequestDTO) {
         log.debug("Request to save RentRequest : {}", rentRequestDTO);
 
-        Long curentUserId = SecurityUtils.getIdByCurrentUser();
+        // Long curentUserId = SecurityUtils.getIdByCurrentUser();
+        UserPrincipal currentUser = SecurityUtils.getCurrentUser().orElseThrow(() -> new AccountResourceException("Current user login not found"));
 
-        if( rentRequestDTO.getReceiverUser().getId().equals(curentUserId)){
+        if( rentRequestDTO.getReceiverUser().getId().equals(currentUser.getId())){
             throw new BadRequestAlertException("Not allowed");
         }
 
         UserDTO userDTO = new UserDTO();
         User user = new User();
-        user.setId(curentUserId);
-        userDTO.setId(curentUserId);
+        user.setId(currentUser.getId());
+        userDTO.setId(currentUser.getId());
 
         RentOffer rentOffer = rentOfferMapper.toEntity(rentRequestDTO.getRentOffer());
         Optional<RentRequest> rentRequest = rentRequestRepository.findByRentOfferAndSenderUser(rentOffer, user);
@@ -65,6 +91,19 @@ public class RentRequestServicesImpl implements RentRequestService {
             rentRequestDTO.setStatus(StatusRentRequest.STANDBY.toString());
             RentRequest rentRequestNew = rentRequestMapper.toEntity(rentRequestDTO);
             rentRequestNew = rentRequestRepository.save(rentRequestNew);
+
+
+            User userReceiver = userRepository.findById(rentRequestDTO.getReceiverUser().getId())
+                    .orElseThrow(() -> new ResouorceNotFoundException("Entity not found with id"));
+            Locale locale = Locale.forLanguageTag(!userReceiver.getLangKey().equals("") ? userReceiver.getLangKey() : "fr");
+            String messageForUserReceiver = CommonUtil.getFullNameUser(userMapper.toCurrentUserPrincipal(currentUser))+" "+messageSource.getMessage("rentrequest.message_for_user_receiver", null, locale);
+
+            // Save notification
+            sendNotificationForUserReceiver(userReceiver, messageForUserReceiver);
+
+            // Send Push notif
+            userOneSignalService.sendPushNotifForUser(userReceiver, messageForUserReceiver);
+
             return rentRequestMapper.toDto(rentRequestNew);
         }
 
@@ -91,6 +130,26 @@ public class RentRequestServicesImpl implements RentRequestService {
         return findByCriteria(rentRequestFilter, page);
     }
 
+    @Override
+    public void delete(Long id) {
+        log.debug("Request to delete RentRequest : {}", id);
+
+        RentRequest rentRequest = rentRequestRepository.findById(id)
+                .orElseThrow(() -> new ResouorceNotFoundException("Entity not found with id"));
+
+        Long useId = SecurityUtils.getIdByCurrentUser();
+        if (!Objects.equals(useId, rentRequest.getSenderUser().getId())) {
+            throw new UnauthorizedException("Unauthorized action");
+        }
+
+        if ( !rentRequest.getStatus().equals(StatusRentRequest.STANDBY.toString()) ) {
+            throw new UnauthorizedException("Unauthorized action");
+        }
+
+        rentRequestRepository.deleteById(id);
+
+    }
+
     private Page<RentRequestDTO> findByCriteria(RentRequestFilter rentRequestFilter, Pageable page) {
         return rentRequestRepository.findAll(createSpecification(rentRequestFilter), page).map(rentRequestMapper::toDto);
     }
@@ -114,5 +173,14 @@ public class RentRequestServicesImpl implements RentRequestService {
             query.orderBy(criteriaBuilder.desc(root.get("id")));
             return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
         };
+    }
+
+    private void sendNotificationForUserReceiver(User user, String messageForUserReceiver){
+        Notification notification = new Notification();
+        notification.setDateCreated(Instant.now());
+        notification.setContent(messageForUserReceiver);
+        notification.setModule(ModuleNotification.RentRequestNotification.name());
+        notification.setUser(user);
+        notificationRepository.save(notification);
     }
 }

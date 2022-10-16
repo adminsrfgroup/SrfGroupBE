@@ -48,4 +48,17 @@ public class RentRequestController {
         Page<RentRequestDTO> page = rentRequestService.getCartsByCurrentUserReceived(rentRequestFilter, pageable);
         return new ResponseEntity<>(page, HttpStatus.OK);
     }
+
+
+    /**
+     *
+     * @param id
+     * @return
+     */
+    @DeleteMapping("{id}")
+    public ResponseEntity<Boolean> deleteRentRequestSent(@PathVariable Long id) {
+        log.info("REST request to delete Rent Request Sent : {}", id);
+        rentRequestService.delete(id);
+        return new ResponseEntity<>(true, HeaderUtil.createAlert("rentrequest.rentrequest_delete_succefully", id.toString()), HttpStatus.OK);
+    }
 }

@@ -245,15 +245,15 @@ public class UserServiceImpl implements UserService {
                 // Register one signal id if not exist already
                 saveOneSignal(loginDTO.getIdOneSignal(), RequestUtil.getHeaderAttribute(SrfGroupConstants.SOURCE_CONNECTED_DEVICE));
             }
-            else{
-
-                // Create notif for subscribe in PushNotif
-                UserPrincipal currentUser = SecurityUtils.getCurrentUser().orElseThrow(() -> new AccountResourceException("Current user login not found"));
-                Locale locale = Locale.forLanguageTag(!currentUser.getLangKey().equals("") ? currentUser.getLangKey() : "fr");
-                String messageSubscPush = messageSource.getMessage("signin.message.subscribe_push_notif", null, locale);
-
-                creatNotificationByAdmin(userMapper.currentUserToEntity(currentUser), messageSubscPush);
-            }
+//            else{
+//
+//                // Create notif for subscribe in PushNotif
+//                UserPrincipal currentUser = SecurityUtils.getCurrentUser().orElseThrow(() -> new AccountResourceException("Current user login not found"));
+//                Locale locale = Locale.forLanguageTag(!currentUser.getLangKey().equals("") ? currentUser.getLangKey() : "fr");
+//                String messageSubscPush = messageSource.getMessage("signin.message.subscribe_push_notif", null, locale);
+//
+//                creatNotificationByAdmin(userMapper.currentUserToEntity(currentUser), messageSubscPush);
+//            }
             return jwt;
         }
         catch(BadCredentialsException e){
@@ -446,15 +446,15 @@ public class UserServiceImpl implements UserService {
             // Register one signal id if not exist already
             saveOneSignal(googlePlusVM.getIdOneSignal(), RequestUtil.getHeaderAttribute(SrfGroupConstants.SOURCE_CONNECTED_DEVICE));
         }
-        else{
-
-            // Create notif for subscribe in PushNotif
-            UserPrincipal currentUser = SecurityUtils.getCurrentUser().orElseThrow(() -> new AccountResourceException("Current user login not found"));
-            Locale locale = Locale.forLanguageTag(!currentUser.getLangKey().equals("") ? currentUser.getLangKey() : "fr");
-            String messageSubscPush = messageSource.getMessage("signin.message.subscribe_push_notif", null, locale);
-
-            creatNotificationByAdmin(userMapper.currentUserToEntity(currentUser), messageSubscPush);
-        }
+//        else{
+//
+//            // Create notif for subscribe in PushNotif
+//            UserPrincipal currentUser = SecurityUtils.getCurrentUser().orElseThrow(() -> new AccountResourceException("Current user login not found"));
+//            Locale locale = Locale.forLanguageTag(!currentUser.getLangKey().equals("") ? currentUser.getLangKey() : "fr");
+//            String messageSubscPush = messageSource.getMessage("signin.message.subscribe_push_notif", null, locale);
+//
+//            creatNotificationByAdmin(userMapper.currentUserToEntity(currentUser), messageSubscPush);
+//        }
 
         // Add Welcome notification first time
         if (!userExist.isPresent()) {
@@ -517,15 +517,15 @@ public class UserServiceImpl implements UserService {
             // Register one signal id if not exist already
             saveOneSignal(facebookVM.getIdOneSignal(), RequestUtil.getHeaderAttribute(SrfGroupConstants.SOURCE_CONNECTED_DEVICE));
         }
-        else{
-
-            // Create notif for subscribe in PushNotif
-            UserPrincipal currentUser = SecurityUtils.getCurrentUser().orElseThrow(() -> new AccountResourceException("Current user login not found"));
-            Locale locale = Locale.forLanguageTag(!currentUser.getLangKey().equals("") ? currentUser.getLangKey() : "fr");
-            String messageSubscPush = messageSource.getMessage("signin.message.subscribe_push_notif", null, locale);
-
-            creatNotificationByAdmin(userMapper.currentUserToEntity(currentUser), messageSubscPush);
-        }
+//        else{
+//
+//            // Create notif for subscribe in PushNotif
+//            UserPrincipal currentUser = SecurityUtils.getCurrentUser().orElseThrow(() -> new AccountResourceException("Current user login not found"));
+//            Locale locale = Locale.forLanguageTag(!currentUser.getLangKey().equals("") ? currentUser.getLangKey() : "fr");
+//            String messageSubscPush = messageSource.getMessage("signin.message.subscribe_push_notif", null, locale);
+//
+//            creatNotificationByAdmin(userMapper.currentUserToEntity(currentUser), messageSubscPush);
+//        }
 
         // Add Welcome notification first time register
         if (!userExist.isPresent()) {
