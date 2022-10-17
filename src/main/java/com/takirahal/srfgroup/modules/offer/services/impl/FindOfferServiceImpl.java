@@ -185,7 +185,7 @@ public class FindOfferServiceImpl implements FindOfferService {
             notificationService.save(notificationDTO);
 
             // Send Push Notif
-            List<UserOneSignal> listUserOneSignals = userOneSignalService.findByUser(favoriteUser.getCurrentUser());
+            List<UserOneSignal> listUserOneSignals = userOneSignalService.findOneSignalByUser(favoriteUser.getCurrentUser());
             if(listUserOneSignals.size()>0){
                 String result = listUserOneSignals.stream().map(UserOneSignal::getIdOneSignal)
                         .collect(Collectors.joining(","));
