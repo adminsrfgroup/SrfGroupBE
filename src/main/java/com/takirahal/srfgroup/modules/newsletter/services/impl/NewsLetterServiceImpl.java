@@ -12,6 +12,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class NewsLetterServiceImpl implements NewsLetterService {
 
@@ -26,6 +28,11 @@ public class NewsLetterServiceImpl implements NewsLetterService {
         log.debug("Request to save NewsLetter : {}", newsLetter);
         if (newsLetter.getId() != null) {
             throw new BadRequestAlertException("A new NewsLetter cannot already have an ID idexists");
+        }
+
+        Optional<NewsLetter> newsLetterExist = newsLetterRepository.findByEmail(newsLetter.getEmail());
+        if( newsLetterExist.isPresent() ){
+            return newsLetterExist.get();
         }
         return newsLetterRepository.save(newsLetter);
     }
