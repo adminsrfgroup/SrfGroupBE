@@ -5,6 +5,7 @@ import com.takirahal.srfgroup.modules.user.entities.User;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -26,6 +27,11 @@ public class RentRequest implements Serializable {
 
     @Column(name = "status")
     private String status;
+
+    @Lob
+    @Type(type = "org.hibernate.type.TextType")
+    @Column(name = "imageSignatureReceived")
+    private String imageSignatureReceived;
 
     @OneToOne
     private RentOffer rentOffer;

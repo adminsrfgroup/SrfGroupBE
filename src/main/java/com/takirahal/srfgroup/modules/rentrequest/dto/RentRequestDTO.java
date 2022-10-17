@@ -18,6 +18,7 @@ public class RentRequestDTO implements Serializable {
     private Long id;
     private Instant sendDate;
     private String status;
+    private String imageSignatureReceived;
     private RentOfferDTO rentOffer;
     private UserDTO senderUser;
     private UserDTO receiverUser;

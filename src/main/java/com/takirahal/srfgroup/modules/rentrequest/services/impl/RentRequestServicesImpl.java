@@ -8,6 +8,7 @@ import com.takirahal.srfgroup.modules.notification.enums.ModuleNotification;
 import com.takirahal.srfgroup.modules.notification.repositories.NotificationRepository;
 import com.takirahal.srfgroup.modules.offer.entities.RentOffer;
 import com.takirahal.srfgroup.modules.offer.mapper.RentOfferMapper;
+import com.takirahal.srfgroup.modules.offer.repositories.RentOfferRepository;
 import com.takirahal.srfgroup.modules.rentrequest.dto.RentRequestDTO;
 import com.takirahal.srfgroup.modules.rentrequest.dto.filter.RentRequestFilter;
 import com.takirahal.srfgroup.modules.rentrequest.entities.RentRequest;
@@ -66,6 +67,9 @@ public class RentRequestServicesImpl implements RentRequestService {
 
     @Autowired
     UserMapper userMapper;
+
+    @Autowired
+    RentOfferRepository rentOfferRepository;
 
     @Override
     public RentRequestDTO save(RentRequestDTO rentRequestDTO) {
@@ -148,6 +152,59 @@ public class RentRequestServicesImpl implements RentRequestService {
 
         rentRequestRepository.deleteById(id);
 
+    }
+
+    @Override
+    public void refusedRentRequestReceived(Long id) {
+        RentRequest rentRequest = rentRequestRepository.findById(id)
+                .orElseThrow(() -> new ResouorceNotFoundException("Entity not found with id"));
+
+        Long useId = SecurityUtils.getIdByCurrentUser();
+        if (!Objects.equals(useId, rentRequest.getReceiverUser().getId())) {
+            throw new UnauthorizedException("Unauthorized action");
+        }
+
+        rentRequest.setStatus(StatusRentRequest.REFUSED.toString());
+        rentRequestRepository.save(rentRequest);
+    }
+
+    @Override
+    public void acceptRentRequestReceived(Long id, RentRequestDTO rentRequestDTO) {
+        RentRequest rentRequest = rentRequestRepository.findById(id)
+                .orElseThrow(() -> new ResouorceNotFoundException("Entity not found with id"));
+
+        UserPrincipal currentUser = SecurityUtils.getCurrentUser().orElseThrow(() -> new AccountResourceException("Current user login not found"));
+
+        if (!Objects.equals(currentUser.getId(), rentRequest.getReceiverUser().getId())) {
+            throw new UnauthorizedException("Unauthorized action");
+        }
+
+        if( !Objects.equals(rentRequestDTO.getRentOffer().getAmount(), null) ||
+            !Objects.equals(rentRequestDTO.getRentOffer().getStartDate(), null) ||
+            !Objects.equals(rentRequestDTO.getRentOffer().getEndDate(), null) ||
+            !Objects.equals(rentRequestDTO.getRentOffer().getTypePeriodRent(), null) ){
+            RentOffer rentOffer = rentRequest.getRentOffer();
+            rentOffer.setAmount(rentRequestDTO.getRentOffer().getAmount());
+            rentOffer.setStartDate(rentRequestDTO.getRentOffer().getStartDate());
+            rentOffer.setEndDate(rentRequestDTO.getRentOffer().getEndDate());
+            rentOffer.setTypePeriodRent(rentRequestDTO.getRentOffer().getTypePeriodRent());
+            rentOfferRepository.save(rentOffer);
+        }
+
+        rentRequest.setStatus(StatusRentRequest.ACCEPTED.toString());
+        rentRequest.setImageSignatureReceived(rentRequestDTO.getImageSignatureReceived());
+        rentRequestRepository.save(rentRequest);
+
+        User userSent = userRepository.findById(rentRequestDTO.getSenderUser().getId())
+                .orElseThrow(() -> new ResouorceNotFoundException("Entity not found with id"));
+        Locale locale = Locale.forLanguageTag(!userSent.getLangKey().equals("") ? userSent.getLangKey() : "fr");
+        String messageForAcceptUserReceiver = CommonUtil.getFullNameUser(userMapper.toCurrentUserPrincipal(currentUser))+" "+messageSource.getMessage("rentrequest.message_accept_for_user_receiver", null, locale);
+
+        // Save notification
+        sendNotificationForUserReceiver(userSent, messageForAcceptUserReceiver);
+
+        // Send Push notif
+        userOneSignalService.sendPushNotifForUser(userSent, messageForAcceptUserReceiver);
     }
 
     private Page<RentRequestDTO> findByCriteria(RentRequestFilter rentRequestFilter, Pageable page) {

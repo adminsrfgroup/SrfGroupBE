@@ -36,4 +36,17 @@ public interface RentRequestService {
      * @param id
      */
     void delete(Long id);
+
+    /**
+     *
+     * @param id
+     */
+    void refusedRentRequestReceived(Long id);
+
+    /**
+     * Accept RentRequest
+     * @param id
+     * @param rentRequestDTO
+     */
+    void acceptRentRequestReceived(Long id, RentRequestDTO rentRequestDTO);
 }
