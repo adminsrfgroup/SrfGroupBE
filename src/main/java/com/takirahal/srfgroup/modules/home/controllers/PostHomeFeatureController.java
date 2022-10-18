@@ -67,13 +67,26 @@ public class PostHomeFeatureController {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the offerDTO, or with status {@code 404 (Not Found)}.
      */
     @GetMapping("admin/{id}")
-    public ResponseEntity<PostHomeFeatureDTO> getTopHomeSlidesImage(@PathVariable Long id) {
+    public ResponseEntity<PostHomeFeatureDTO> getPostHomeFeature(@PathVariable Long id) {
         log.debug("REST request to get TopHomeSlidesImage : {}", id);
         Optional<PostHomeFeatureDTO> postHomeFeatureDTO = postHomeFeatureService.findOne(id);
         if(!postHomeFeatureDTO.isPresent()){
             throw new ResouorceNotFoundException("Not found PostHomeFeature with id");
         }
         return new ResponseEntity<>(postHomeFeatureDTO.get(), HttpStatus.OK);
+    }
+
+
+    /**
+     *
+     * @param postHomeFeatureDTO
+     * @return
+     */
+    @PutMapping("admin/{id}")
+    public ResponseEntity<PostHomeFeatureDTO> updatePostHomeFeature(@PathVariable Long id, @RequestBody PostHomeFeatureDTO postHomeFeatureDTO) {
+        log.info("REST request to update PostHomeFeature : {}", postHomeFeatureDTO);
+        PostHomeFeatureDTO result = postHomeFeatureService.update(id, postHomeFeatureDTO);
+        return new ResponseEntity<>(result, HttpStatus.CREATED);
     }
 
 

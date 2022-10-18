@@ -16,8 +16,8 @@ import java.io.Serializable;
 public class PostHomeFeature  implements Serializable {
 
     @Id
+    @SequenceGenerator(name = "sequenceGenerator", sequenceName = "sequence_name_post_home_feature", allocationSize = 1, initialValue = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
-    @SequenceGenerator(name = "sequenceGenerator")
     private Long id;
 
     @Lob

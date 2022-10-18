@@ -33,8 +33,20 @@ public class TopHomeSlidesImageController {
      */
     @PostMapping("admin/create")
     public ResponseEntity<TopHomeSlidesImageDTO> createTopHomeSlidesImages(@RequestBody TopHomeSlidesImageDTO topHomeSlidesImage) {
-        log.debug("REST request to save TopHomeSlidesImage : {}", topHomeSlidesImage);
+        log.info("REST request to save TopHomeSlidesImage : {}", topHomeSlidesImage);
         TopHomeSlidesImageDTO result = topHomeSlidesImageService.save(topHomeSlidesImage);
+        return new ResponseEntity<>(result, HttpStatus.CREATED);
+    }
+
+    /**
+     *
+     * @param topHomeSlidesImage
+     * @return
+     */
+    @PutMapping("admin/update/{id}")
+    public ResponseEntity<TopHomeSlidesImageDTO> updateTopHomeSlidesImages(@PathVariable Long id, @RequestBody TopHomeSlidesImageDTO topHomeSlidesImage) {
+        log.info("REST request to update TopHomeSlidesImage : {}", topHomeSlidesImage);
+        TopHomeSlidesImageDTO result = topHomeSlidesImageService.update(id, topHomeSlidesImage);
         return new ResponseEntity<>(result, HttpStatus.CREATED);
     }
 
@@ -46,7 +58,7 @@ public class TopHomeSlidesImageController {
      */
     @GetMapping("public/slides")
     public ResponseEntity<Page<TopHomeSlidesImageDTO>> getTopHomeSlides(Pageable pageable) {
-        log.debug("REST request to get TopHomeSlidesImage : {}", pageable);
+        log.info("REST request to get TopHomeSlidesImage : {}", pageable);
         Page<TopHomeSlidesImageDTO> topHomeSlidesFullDTO = topHomeSlidesImageService.findByCriteria(pageable);
         return new ResponseEntity<>(topHomeSlidesFullDTO, HttpStatus.OK);
     }
@@ -60,7 +72,7 @@ public class TopHomeSlidesImageController {
      */
     @GetMapping("admin/{id}")
     public ResponseEntity<TopHomeSlidesImageDTO> getTopHomeSlidesImage(@PathVariable Long id) {
-        log.debug("REST request to get TopHomeSlidesImage : {}", id);
+        log.info("REST request to get TopHomeSlidesImage : {}", id);
         Optional<TopHomeSlidesImageDTO> topHomeSlidesImageDTO = topHomeSlidesImageService.findOne(id);
         if(!topHomeSlidesImageDTO.isPresent()){
             throw new ResouorceNotFoundException("Not found TopHomeSlidesImage with id");

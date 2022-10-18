@@ -18,5 +18,18 @@ public interface TopHomeSlidesImageService {
 
     Page<TopHomeSlidesImageDTO> findByCriteria(Pageable pageable);
 
+    /**
+     *
+     * @param id
+     * @return
+     */
     Optional<TopHomeSlidesImageDTO> findOne(Long id);
+
+    /**
+     *
+     * @param id
+     * @param topHomeSlidesImage
+     * @return
+     */
+    TopHomeSlidesImageDTO update(Long id, TopHomeSlidesImageDTO topHomeSlidesImage);
 }

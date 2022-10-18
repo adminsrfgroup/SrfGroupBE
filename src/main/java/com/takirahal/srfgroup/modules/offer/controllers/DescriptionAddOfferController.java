@@ -58,7 +58,7 @@ public class DescriptionAddOfferController {
      * or with status {@code 500 (Internal Server Error)} if the descriptionAddOfferDTO couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PutMapping("/description-add-offers/{id}")
+    @PutMapping("admin/{id}")
     public ResponseEntity<DescriptionAddOfferDTO> updateDescriptionAddOffer(
             @PathVariable(value = "id", required = false) final Long id,
             @RequestBody DescriptionAddOfferDTO descriptionAddOfferDTO ) {

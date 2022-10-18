@@ -26,4 +26,6 @@ public interface PostHomeFeatureService {
     Page<PostHomeFeatureDTO> findByCriteria(Pageable pageable);
 
     Optional<PostHomeFeatureDTO> findLastOne();
+
+    PostHomeFeatureDTO update(Long id, PostHomeFeatureDTO postHomeFeatureDTO);
 }
