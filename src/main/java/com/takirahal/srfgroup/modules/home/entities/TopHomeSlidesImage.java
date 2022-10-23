@@ -37,7 +37,12 @@ public class TopHomeSlidesImage implements Serializable {
 
     @Lob
     @Type(type = "org.hibernate.type.TextType")
-    @Column(name = "image")
-    private String image;
+    @Column(name = "image_desktop")
+    private String imageDesktop;
+
+    @Lob
+    @Type(type = "org.hibernate.type.TextType")
+    @Column(name = "image_mobile")
+    private String imageMobile;
 
 }

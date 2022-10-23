@@ -14,15 +14,12 @@ import java.util.Set;
 @AllArgsConstructor
 public class TopHomeSlidesImageDTO  implements Serializable {
     private Long id;
-
     @Lob
     private String descriptionAr;
-
     @Lob
     private String descriptionFr;
-
     @Lob
     private String descriptionEn;
-
-    private String image;
+    private String imageDesktop;
+    private String imageMobile;
 }

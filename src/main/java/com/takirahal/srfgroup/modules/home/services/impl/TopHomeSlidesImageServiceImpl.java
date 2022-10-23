@@ -1,5 +1,7 @@
 package com.takirahal.srfgroup.modules.home.services.impl;
 
+import com.takirahal.srfgroup.constants.SrfGroupConstants;
+import com.takirahal.srfgroup.enums.SourceConnectedDevice;
 import com.takirahal.srfgroup.exceptions.BadRequestAlertException;
 import com.takirahal.srfgroup.exceptions.ResouorceNotFoundException;
 import com.takirahal.srfgroup.exceptions.UnauthorizedException;
@@ -8,6 +10,7 @@ import com.takirahal.srfgroup.modules.home.entities.TopHomeSlidesImage;
 import com.takirahal.srfgroup.modules.home.mapper.TopHomeSlidesImageMapper;
 import com.takirahal.srfgroup.modules.home.repositories.TopHomeSlidesImageRepository;
 import com.takirahal.srfgroup.modules.home.services.TopHomeSlidesImageService;
+import com.takirahal.srfgroup.utils.RequestUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -40,7 +43,15 @@ public class TopHomeSlidesImageServiceImpl implements TopHomeSlidesImageService 
 
     @Override
     public Page<TopHomeSlidesImageDTO> findByCriteria(Pageable pageable) {
-        return topHomeSlidesImageRepository.findAll(pageable).map(topHomeSlidesImageMapper::toDto);
+        return topHomeSlidesImageRepository.findAll(pageable).map(item -> {
+            if( RequestUtil.getHeaderAttribute(SrfGroupConstants.SOURCE_CONNECTED_DEVICE).equals(SourceConnectedDevice.WEB_BROWSER.toString()) ){
+                item.setImageMobile("");
+            }
+            else if( RequestUtil.getHeaderAttribute(SrfGroupConstants.SOURCE_CONNECTED_DEVICE).equals(SourceConnectedDevice.MOBILE_BROWSER.toString()) ){
+                item.setImageDesktop("");
+            }
+            return topHomeSlidesImageMapper.toDto(item);
+        });
     }
 
     @Override
@@ -60,7 +71,8 @@ public class TopHomeSlidesImageServiceImpl implements TopHomeSlidesImageService 
         topHomeSlidesImage.setDescriptionAr(topHomeSlidesImageDTO.getDescriptionAr());
         topHomeSlidesImage.setDescriptionFr(topHomeSlidesImageDTO.getDescriptionFr());
         topHomeSlidesImage.setDescriptionEn(topHomeSlidesImageDTO.getDescriptionEn());
-        topHomeSlidesImage.setImage(topHomeSlidesImageDTO.getImage());
+        topHomeSlidesImage.setImageDesktop(topHomeSlidesImageDTO.getImageDesktop());
+        topHomeSlidesImage.setImageMobile(topHomeSlidesImageDTO.getImageMobile());
 
         topHomeSlidesImage = topHomeSlidesImageRepository.save(topHomeSlidesImage);
         return topHomeSlidesImageMapper.toDto(topHomeSlidesImage);
