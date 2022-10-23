@@ -44,4 +44,10 @@ public interface TopHomeSlidesImageService {
      * @return
      */
     Page<TopHomeSlidesImageDTO> getTopHomeSlidesByAdmin(Pageable pageable);
+
+    /**
+     *
+     * @param id
+     */
+    void delete(Long id);
 }

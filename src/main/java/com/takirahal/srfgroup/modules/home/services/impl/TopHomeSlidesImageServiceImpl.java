@@ -5,12 +5,15 @@ import com.takirahal.srfgroup.enums.SourceConnectedDevice;
 import com.takirahal.srfgroup.exceptions.BadRequestAlertException;
 import com.takirahal.srfgroup.exceptions.ResouorceNotFoundException;
 import com.takirahal.srfgroup.exceptions.UnauthorizedException;
+import com.takirahal.srfgroup.modules.cart.services.impl.CartServiceImpl;
 import com.takirahal.srfgroup.modules.home.dto.TopHomeSlidesImageDTO;
 import com.takirahal.srfgroup.modules.home.entities.TopHomeSlidesImage;
 import com.takirahal.srfgroup.modules.home.mapper.TopHomeSlidesImageMapper;
 import com.takirahal.srfgroup.modules.home.repositories.TopHomeSlidesImageRepository;
 import com.takirahal.srfgroup.modules.home.services.TopHomeSlidesImageService;
 import com.takirahal.srfgroup.utils.RequestUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -22,6 +25,8 @@ import java.util.Optional;
 
 @Service
 public class TopHomeSlidesImageServiceImpl implements TopHomeSlidesImageService {
+
+    private final Logger log = LoggerFactory.getLogger(TopHomeSlidesImageServiceImpl.class);
 
     @Autowired
     TopHomeSlidesImageRepository topHomeSlidesImageRepository;
@@ -81,6 +86,14 @@ public class TopHomeSlidesImageServiceImpl implements TopHomeSlidesImageService 
     @Override
     public Page<TopHomeSlidesImageDTO> getTopHomeSlidesByAdmin(Pageable pageable) {
         return topHomeSlidesImageRepository.findAll(pageable).map(topHomeSlidesImageMapper::toDto);
+    }
+
+    @Override
+    public void delete(Long id) {
+        log.debug("Request to delete TopHomeSlidesImage : {}", id);
+        TopHomeSlidesImage topHomeSlidesImage = topHomeSlidesImageRepository.findById(id)
+                .orElseThrow(() -> new ResouorceNotFoundException("Entity not found with id"));
+        topHomeSlidesImageRepository.deleteById(id);
     }
 
 }

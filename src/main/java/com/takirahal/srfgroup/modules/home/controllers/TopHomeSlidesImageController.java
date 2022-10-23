@@ -3,6 +3,7 @@ package com.takirahal.srfgroup.modules.home.controllers;
 import com.takirahal.srfgroup.exceptions.ResouorceNotFoundException;
 import com.takirahal.srfgroup.modules.home.dto.TopHomeSlidesImageDTO;
 import com.takirahal.srfgroup.modules.home.services.TopHomeSlidesImageService;
+import com.takirahal.srfgroup.utils.HeaderUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -89,5 +90,18 @@ public class TopHomeSlidesImageController {
             throw new ResouorceNotFoundException("Not found TopHomeSlidesImage with id");
         }
         return new ResponseEntity<>(topHomeSlidesImageDTO.get(), HttpStatus.OK);
+    }
+
+
+    /**
+     *
+     * @param id
+     * @return
+     */
+    @DeleteMapping("admin/{id}")
+    public ResponseEntity<Boolean> deleteTopHomeSlidesImage(@PathVariable Long id) {
+        log.info("REST request to delete TopHomeSlidesImage : {}", id);
+        topHomeSlidesImageService.delete(id);
+        return new ResponseEntity<>(true, HeaderUtil.createAlert("TopHomeSlidesImage.TopHomeSlidesImage_delete_succefully", id.toString()), HttpStatus.OK);
     }
 }
