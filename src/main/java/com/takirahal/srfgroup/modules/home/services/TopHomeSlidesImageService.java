@@ -16,6 +16,11 @@ public interface TopHomeSlidesImageService {
      */
     TopHomeSlidesImageDTO save(TopHomeSlidesImageDTO topHomeSlidesImage);
 
+    /**
+     *
+     * @param pageable
+     * @return
+     */
     Page<TopHomeSlidesImageDTO> findByCriteria(Pageable pageable);
 
     /**
@@ -32,4 +37,11 @@ public interface TopHomeSlidesImageService {
      * @return
      */
     TopHomeSlidesImageDTO update(Long id, TopHomeSlidesImageDTO topHomeSlidesImage);
+
+    /**
+     *
+     * @param pageable
+     * @return
+     */
+    Page<TopHomeSlidesImageDTO> getTopHomeSlidesByAdmin(Pageable pageable);
 }

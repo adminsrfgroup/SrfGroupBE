@@ -78,4 +78,9 @@ public class TopHomeSlidesImageServiceImpl implements TopHomeSlidesImageService 
         return topHomeSlidesImageMapper.toDto(topHomeSlidesImage);
     }
 
+    @Override
+    public Page<TopHomeSlidesImageDTO> getTopHomeSlidesByAdmin(Pageable pageable) {
+        return topHomeSlidesImageRepository.findAll(pageable).map(topHomeSlidesImageMapper::toDto);
+    }
+
 }

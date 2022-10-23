@@ -50,6 +50,17 @@ public class TopHomeSlidesImageController {
         return new ResponseEntity<>(result, HttpStatus.CREATED);
     }
 
+    /**
+     * {@code GET  /faqs} : get all the faqs.
+     *
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of faqs in body.
+     */
+    @GetMapping("admin/slides")
+    public ResponseEntity<Page<TopHomeSlidesImageDTO>> getTopHomeSlidesByAdmin(Pageable pageable) {
+        log.info("REST request to get TopHomeSlidesImage : {}", pageable);
+        Page<TopHomeSlidesImageDTO> topHomeSlidesFullDTO = topHomeSlidesImageService.getTopHomeSlidesByAdmin(pageable);
+        return new ResponseEntity<>(topHomeSlidesFullDTO, HttpStatus.OK);
+    }
 
     /**
      * {@code GET  /faqs} : get all the faqs.
