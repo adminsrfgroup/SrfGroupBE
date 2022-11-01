@@ -94,6 +94,7 @@ public class RentOfferServiceImpl implements RentOfferService {
         UserPrincipal currentUser = SecurityUtils.getCurrentUser().orElseThrow(() -> new AccountResourceException("Current user login not found"));
         rentOfferDTO.setUser(userMapper.toCurrentUserPrincipal(currentUser));
         rentOfferDTO.setBlockedByReported(Boolean.FALSE);
+        rentOfferDTO.setDateCreated(Instant.now());
         RentOffer rentOffer = rentOfferMapper.toEntity(rentOfferDTO);
         rentOffer = rentOfferRepository.save(rentOffer);
         RentOfferDTO result = rentOfferMapper.toDto(rentOffer);

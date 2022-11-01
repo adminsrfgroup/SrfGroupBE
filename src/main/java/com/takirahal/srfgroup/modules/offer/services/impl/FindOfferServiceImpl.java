@@ -94,6 +94,7 @@ public class FindOfferServiceImpl implements FindOfferService {
         UserPrincipal currentUser = SecurityUtils.getCurrentUser().orElseThrow(() -> new AccountResourceException("Current user login not found"));
         findOfferDTO.setUser(userMapper.toCurrentUserPrincipal(currentUser));
         findOfferDTO.setBlockedByReported(Boolean.FALSE);
+        findOfferDTO.setDateCreated(Instant.now());
         FindOffer findOffer = findOfferMapper.toEntity(findOfferDTO);
         findOffer = findOfferRepository.save(findOffer);
 

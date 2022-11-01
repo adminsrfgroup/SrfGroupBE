@@ -8,9 +8,27 @@ import org.springframework.data.domain.Pageable;
 import java.util.Optional;
 
 public interface AboutUsService {
+
+    /**
+     *
+     * @param aboutUsDTO
+     * @return
+     */
     AboutUsDTO save(AboutUsDTO aboutUsDTO);
 
+
+    /**
+     *
+     * @param aboutUsFilter
+     * @param pageable
+     * @return
+     */
     Page<AboutUsDTO> findByCriteria(AboutUsFilter aboutUsFilter, Pageable pageable);
 
+
+    /**
+     *
+     * @return
+     */
     Optional<AboutUsDTO> findLastOne();
 }

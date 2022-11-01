@@ -100,6 +100,7 @@ public class SellOfferServiceImpl implements SellOfferService {
         UserPrincipal currentUser = SecurityUtils.getCurrentUser().orElseThrow(() -> new AccountResourceException("Current user login not found"));
         sellOfferDTO.setUser(userMapper.toCurrentUserPrincipal(currentUser));
         sellOfferDTO.setBlockedByReported(Boolean.FALSE);
+        sellOfferDTO.setDateCreated(Instant.now());
         SellOffer sellOffer = sellOfferMapper.toEntity(sellOfferDTO);
         sellOffer = sellOfferRepository.save(sellOffer);
 
@@ -108,6 +109,7 @@ public class SellOfferServiceImpl implements SellOfferService {
         // Save all images
         for (OfferImagesDTO offerImagesDTO : sellOfferDTO.getOfferImages()) {
             offerImagesDTO.setOffer(result);
+            offerImagesDTO.setDateCreated(Instant.now());
             offerImagesService.save(offerImagesDTO);
         }
 

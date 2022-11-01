@@ -44,9 +44,6 @@ public class AboutUsController {
     @PostMapping("/admin")
     public ResponseEntity<AboutUsDTO> createAboutUs(@RequestBody AboutUsDTO aboutUsDTO) throws URISyntaxException {
         log.info("REST request to save AboutUs : {}", aboutUsDTO);
-        if (aboutUsDTO.getId() != null) {
-            throw new BadRequestAlertException("A new aboutUs cannot already have an ID idexists");
-        }
         AboutUsDTO result = aboutUsService.save(aboutUsDTO);
         return new ResponseEntity<>(result, HttpStatus.CREATED);
     }

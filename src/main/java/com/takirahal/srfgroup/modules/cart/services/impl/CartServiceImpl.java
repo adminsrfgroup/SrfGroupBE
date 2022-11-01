@@ -17,6 +17,7 @@ import com.takirahal.srfgroup.modules.user.dto.filter.UserOfferFilter;
 import com.takirahal.srfgroup.modules.user.exceptioins.AccountResourceException;
 import com.takirahal.srfgroup.modules.user.mapper.UserMapper;
 import com.takirahal.srfgroup.security.UserPrincipal;
+import com.takirahal.srfgroup.utils.RequestUtil;
 import com.takirahal.srfgroup.utils.SecurityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -65,12 +66,13 @@ public class CartServiceImpl implements CartService {
         log.debug("Request to save SellOffer : {}", cartDTO);
 
         if (cartDTO.getId() != null) {
-            throw new BadRequestAlertException("A new Cart cannot already have an ID idexists");
+            throw new BadRequestAlertException(RequestUtil.messageTranslate("common.entity_already_exist"));
         }
 
         long nbeCart = cartRepository.getCountCartBySellOfferAndUser(cartDTO.getSellOffer().getId());
 
-        UserPrincipal currentUser = SecurityUtils.getCurrentUser().orElseThrow(() -> new AccountResourceException("Current user login not found"));
+        UserPrincipal currentUser = SecurityUtils.getCurrentUser()
+                .orElseThrow(() -> new AccountResourceException(RequestUtil.messageTranslate("common.account_resource_not_found")));
         cartDTO.setUser(userMapper.toCurrentUserPrincipal(currentUser));
 
         Cart cart = cartMapper.toEntity(cartDTO);
@@ -79,7 +81,7 @@ public class CartServiceImpl implements CartService {
         Optional<SellOffer> sellOfferOption = sellOfferRepository.findById(cartDTO.getSellOffer().getId());
 
         if( sellOfferOption.get().getAmount()==null ){
-            throw new BadRequestAlertException("details_offer.missing_amount");
+            throw new BadRequestAlertException(RequestUtil.messageTranslate("details_offer.missing_amount"));
         }
 
         // Update
@@ -126,11 +128,11 @@ public class CartServiceImpl implements CartService {
         log.debug("Request to delete Cart : {}", id);
 
         Cart cart = cartRepository.findById(id)
-                .orElseThrow(() -> new ResouorceNotFoundException("Entity not found with id"));
+                .orElseThrow(() -> new ResouorceNotFoundException(RequestUtil.messageTranslate("common.resource_not_found")));
 
         Long useId = SecurityUtils.getIdByCurrentUser();
         if (!Objects.equals(useId, cart.getUser().getId())) {
-            throw new UnauthorizedException("Unauthorized action");
+            throw new UnauthorizedException(RequestUtil.messageTranslate("common.unautorize_action"));
         }
 
         cartRepository.deleteById(id);
@@ -142,11 +144,11 @@ public class CartServiceImpl implements CartService {
         log.debug("Request to update quantity to Cart : {}", cartDTO.getId());
 
         Cart cart = cartRepository.findById(cartDTO.getId())
-                .orElseThrow(() -> new ResouorceNotFoundException("Entity not found with id"));
+                .orElseThrow(() -> new ResouorceNotFoundException(RequestUtil.messageTranslate("common.resource_not_found")));
 
         Long useId = SecurityUtils.getIdByCurrentUser();
         if (!Objects.equals(useId, cart.getUser().getId())) {
-            throw new UnauthorizedException("Unauthorized action");
+            throw new UnauthorizedException(RequestUtil.messageTranslate("common.unautorize_action"));
         }
 
         Cart cartUpdate = cartMapper.toEntity(cartDTO);

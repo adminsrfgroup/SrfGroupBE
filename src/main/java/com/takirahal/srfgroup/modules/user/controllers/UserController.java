@@ -21,6 +21,7 @@ import com.takirahal.srfgroup.security.JwtTokenProvider;
 import com.takirahal.srfgroup.modules.user.services.UserService;
 import com.takirahal.srfgroup.security.UserPrincipal;
 import com.takirahal.srfgroup.utils.HeaderUtil;
+import com.takirahal.srfgroup.utils.RequestUtil;
 import com.takirahal.srfgroup.utils.SecurityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -92,7 +93,7 @@ public class UserController {
         String jwt = userService.signinClient(loginDTO);
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add(JwtAuthenticationFilter.AUTHORIZATION_HEADER, "Bearer " + jwt);
-        httpHeaders.add("X-app-alert", "signin.message_welcome");
+        httpHeaders.add("X-app-alert", RequestUtil.messageTranslate("signin.message_welcome"));
         return new ResponseEntity<>(new JWTToken(jwt), httpHeaders, HttpStatus.OK);
     }
 
@@ -109,7 +110,7 @@ public class UserController {
             String jwt = userService.signinGooglePlus(googlePlusVM);
             HttpHeaders httpHeaders = new HttpHeaders();
             httpHeaders.add(JwtAuthenticationFilter.AUTHORIZATION_HEADER, "Bearer " + jwt);
-            httpHeaders.add("X-app-alert", "signin.message_welcome");
+            httpHeaders.add("X-app-alert", RequestUtil.messageTranslate("signin.message_welcome"));
             return new ResponseEntity<>(new JWTToken(jwt), httpHeaders, HttpStatus.OK);
         }
         catch(Exception e){
@@ -136,7 +137,7 @@ public class UserController {
             String jwt = userService.signinGooglePlusOneTap(googlePlusOneTapVM);
             HttpHeaders httpHeaders = new HttpHeaders();
             httpHeaders.add(JwtAuthenticationFilter.AUTHORIZATION_HEADER, "Bearer " + jwt);
-            httpHeaders.add("X-app-alert", "signin.message_welcome");
+            httpHeaders.add("X-app-alert", RequestUtil.messageTranslate("signin.message_welcome"));
             return new ResponseEntity<>(new JWTToken(jwt), httpHeaders, HttpStatus.OK);
         }
         catch(Exception e){
@@ -162,7 +163,7 @@ public class UserController {
             String jwt = userService.signinFacebook(facebookVM);
             HttpHeaders httpHeaders = new HttpHeaders();
             httpHeaders.add(JwtAuthenticationFilter.AUTHORIZATION_HEADER, "Bearer " + jwt);
-            httpHeaders.add("X-app-alert", "signin.message_welcome");
+            httpHeaders.add("X-app-alert", RequestUtil.messageTranslate("signin.message_welcome"));
             return new ResponseEntity<>(new JWTToken(jwt), httpHeaders, HttpStatus.OK);
         }
         catch(Exception e){

@@ -23,5 +23,12 @@ public interface SellOfferService {
      */
     Page<SellOfferDTO> findByCriteria(SellOfferFilter sellOfferFilter, Pageable pageable);
 
+
+    /**
+     *
+     * @param sellOfferDTO
+     * @param id
+     * @return
+     */
     SellOfferDTO updateSellOffer(SellOfferDTO sellOfferDTO,  Long id);
 }

@@ -63,7 +63,7 @@ public class CategoryController {
     public ResponseEntity<CategoryDTO> createCategory(@RequestBody CategoryDTO categoryDTO){
         log.debug("REST request to save Category : {}", categoryDTO);
         CategoryDTO result = categoryService.save(categoryDTO);
-        return new ResponseEntity<>(result, HeaderUtil.createAlert("Category create succefully", result.getId().toString()), HttpStatus.CREATED);
+        return new ResponseEntity<>(result, HeaderUtil.createAlert("category.added_successfully", result.getId().toString()), HttpStatus.CREATED);
     }
 
     /**
@@ -91,7 +91,7 @@ public class CategoryController {
             @RequestBody CategoryDTO categoryDTO){
         log.debug("REST request to uodate Category : {}", categoryDTO);
         CategoryDTO result = categoryService.save(categoryDTO);
-        return new ResponseEntity<>(result, HeaderUtil.createAlert("Category update succefully", result.getId().toString()), HttpStatus.OK);
+        return new ResponseEntity<>(result, HeaderUtil.createAlert("category.update_successfully", result.getId().toString()), HttpStatus.OK);
     }
 
     /**
@@ -103,7 +103,7 @@ public class CategoryController {
     public ResponseEntity<Boolean> updateIndexCategories(@RequestBody List<CategoryDTO> categoryDTOList){
         log.debug("REST request to uodate index Categories : {}", categoryDTOList);
         Boolean result = categoryService.updateIndexCategories(categoryDTOList);
-        return new ResponseEntity<>(result, HeaderUtil.createAlert("Category update succefully", "true"), HttpStatus.OK);
+        return new ResponseEntity<>(result, HeaderUtil.createAlert("category.index_update_successfully", "true"), HttpStatus.OK);
     }
 
 

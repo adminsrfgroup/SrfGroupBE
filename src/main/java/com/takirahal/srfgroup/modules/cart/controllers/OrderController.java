@@ -34,9 +34,7 @@ public class OrderController {
     @PostMapping("create")
     public ResponseEntity<OrderDTO> createOrder(@RequestBody OrderDTO orderDTO, @ConnectedProfile UserPrincipal userPrincipal) {
         log.info("REST request to save Order : {}");
-
         OrderDTO result = orderService.save(userPrincipal, orderDTO);
-
         return new ResponseEntity<>(result, HttpStatus.CREATED);
     }
 }

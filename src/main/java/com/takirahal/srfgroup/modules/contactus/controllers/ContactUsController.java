@@ -1,11 +1,8 @@
 package com.takirahal.srfgroup.modules.contactus.controllers;
 
 
-import com.takirahal.srfgroup.exceptions.UnauthorizedException;
 import com.takirahal.srfgroup.modules.contactus.dto.ContactUsDTO;
 import com.takirahal.srfgroup.modules.contactus.services.ContactUsService;
-import com.takirahal.srfgroup.exceptions.BadRequestAlertException;
-import com.takirahal.srfgroup.services.impl.ValidateCaptchaService;
 import com.takirahal.srfgroup.utils.HeaderUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,9 +27,6 @@ public class ContactUsController {
     @Autowired
     ContactUsService contactUsService;
 
-    @Autowired
-    ValidateCaptchaService validateCaptchaService;
-
     /**
      * {@code POST  /contactuses} : Create a new contactUs.
      *
@@ -42,18 +36,7 @@ public class ContactUsController {
      */
     @PostMapping("/public")
     public ResponseEntity<ContactUsDTO> createContactUs(@RequestBody ContactUsDTO contactUsDTO) throws URISyntaxException {
-        log.debug("REST request to save ContactUs : {}", contactUsDTO);
-
-        final boolean isValidCaptcha = validateCaptchaService.validateCaptcha(contactUsDTO.getCaptchaResponse());
-        log.debug("Response recaptcha : {}", isValidCaptcha);
-
-        if(!isValidCaptcha){
-            throw new UnauthorizedException("Invalid recaptcha");
-        }
-
-        if (contactUsDTO.getId() != null) {
-            throw new BadRequestAlertException("A new contactUs cannot already have an ID idexists");
-        }
+        log.info("REST request to save ContactUs : {}", contactUsDTO);
         ContactUsDTO result = contactUsService.save(contactUsDTO);
         return new ResponseEntity<>(result, HeaderUtil.createAlert("contact_us.message_add_successfully", ""), HttpStatus.CREATED);
     }
