@@ -1,6 +1,7 @@
 package com.takirahal.srfgroup.modules.user.controllers;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.takirahal.srfgroup.SrfgroupApplication;
 import com.takirahal.srfgroup.constants.AuthoritiesConstants;
 import com.takirahal.srfgroup.exceptions.UnauthorizedException;
 import com.takirahal.srfgroup.modules.cart.repositories.CartRepository;
@@ -20,12 +21,14 @@ import com.takirahal.srfgroup.security.JwtAuthenticationFilter;
 import com.takirahal.srfgroup.security.JwtTokenProvider;
 import com.takirahal.srfgroup.modules.user.services.UserService;
 import com.takirahal.srfgroup.security.UserPrincipal;
+import com.takirahal.srfgroup.utils.CommonUtil;
 import com.takirahal.srfgroup.utils.HeaderUtil;
 import com.takirahal.srfgroup.utils.RequestUtil;
 import com.takirahal.srfgroup.utils.SecurityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.SpringApplication;
 import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -319,12 +322,12 @@ public class UserController {
     /**
      * {@code POST   /account/reset-password/init} : Send an email to reset the password of the user.
      *
-     * @param email the mail of the user.
+     * @param resetPwdInitVM the mail of the user.
      */
     @PostMapping(path = "public/forgot-password/init")
-    public ResponseEntity<Boolean> requestPasswordReset(@RequestBody String email) {
-        log.info("REST request to init reset password : {}", email);
-        Boolean result = userService.requestPasswordReset(email);
+    public ResponseEntity<Boolean> requestPasswordReset(@RequestBody ResetPwdInitVM resetPwdInitVM) {
+        log.info("REST request to init reset password : {}", resetPwdInitVM);
+        Boolean result = userService.requestPasswordReset(resetPwdInitVM.getEmail());
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
@@ -340,7 +343,7 @@ public class UserController {
     public ResponseEntity<Boolean> finishPasswordReset(@RequestBody KeyAndPasswordVM keyAndPassword) {
         log.info("REST request to finish reset password : {}", keyAndPassword);
         userService.completePasswordReset(keyAndPassword.getPassword(), keyAndPassword.getKey());
-        return new ResponseEntity<>(true, HeaderUtil.createAlert("forgot_password_init.reset_finish_messages_success", ""), HttpStatus.OK);
+        return new ResponseEntity<>(true, HeaderUtil.createAlert(RequestUtil.messageTranslate("forgot_password_init.reset_finish_messages_success"), ""), HttpStatus.OK);
     }
 
 
@@ -430,5 +433,4 @@ public class UserController {
             this.idToken = idToken;
         }
     }
-
 }

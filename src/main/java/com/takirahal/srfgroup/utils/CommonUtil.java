@@ -7,6 +7,7 @@ import org.springframework.core.io.UrlResource;
 import java.net.MalformedURLException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Base64;
 
 public class CommonUtil {
 
@@ -34,5 +35,24 @@ public class CommonUtil {
      */
     public static String getFullNameUser(UserDTO user){
         return (!user.getFirstName().equals("") || !user.getLastName().equals("")) ? user.getFirstName()+" "+user.getLastName() : user.getEmail();
+    }
+
+    /**
+     *
+     * @param originalInput
+     * @return
+     */
+    public static String encodeToString(String originalInput){
+        return Base64.getEncoder().encodeToString(originalInput.getBytes())+"SrfGroup";
+    }
+
+    /**
+     *
+     * @param encodedString
+     * @return
+     */
+    public static String decodeToString(String encodedString){
+        byte[] decodedBytes = Base64.getDecoder().decode(encodedString.substring(0, encodedString.length()-8));
+        return new String(decodedBytes);
     }
 }

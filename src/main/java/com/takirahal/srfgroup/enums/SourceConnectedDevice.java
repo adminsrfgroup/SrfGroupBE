@@ -30,5 +30,17 @@ public enum SourceConnectedDevice {
         public String toString() {
             return "Facebook";
         }
+    },
+    ANDROID{
+        @Override
+        public String toString() {
+            return "Android";
+        }
+    },
+    IOS{
+        @Override
+        public String toString() {
+            return "iOS";
+        }
     }
 }

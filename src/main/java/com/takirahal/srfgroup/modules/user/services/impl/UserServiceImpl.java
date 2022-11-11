@@ -6,6 +6,7 @@ import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.jackson2.JacksonFactory;
 import com.takirahal.srfgroup.constants.AuthoritiesConstants;
 import com.takirahal.srfgroup.constants.SrfGroupConstants;
+import com.takirahal.srfgroup.enums.SourceConnectedDevice;
 import com.takirahal.srfgroup.exceptions.UnauthorizedException;
 import com.takirahal.srfgroup.modules.address.mapper.AddressMapper;
 import com.takirahal.srfgroup.modules.favoriteuser.services.FavoriteUserService;
@@ -178,8 +179,17 @@ public class UserServiceImpl implements UserService {
         // Add all notifications
         addAllNotification(user);
 
-        // Send Activation Email
-        mailService.sendActivationEmail(user);
+
+        if( RequestUtil.getHeaderAttribute(SrfGroupConstants.SOURCE_CONNECTED_DEVICE).equals(SourceConnectedDevice.WEB_BROWSER.toString()) ||
+            RequestUtil.getHeaderAttribute(SrfGroupConstants.SOURCE_CONNECTED_DEVICE).equals(SourceConnectedDevice.MOBILE_BROWSER.toString())){
+
+            // Send Activation Email with link activation
+            mailService.sendActivationEmail(user, false);
+        }
+        else{
+            // Send Activation Email with only code activation
+            mailService.sendActivationEmail(user, false);
+        }
 
         return newUser;
     }
@@ -258,7 +268,7 @@ public class UserServiceImpl implements UserService {
         }
         catch(BadCredentialsException e){
             log.error("Exception for request to signin client: {}", e.getMessage());
-            throw new InvalidPasswordException("signin.bad_credentials");
+            throw new InvalidPasswordException(RequestUtil.messageTranslate("signin.bad_credentials"));
         }
     }
 
@@ -541,16 +551,25 @@ public class UserServiceImpl implements UserService {
     public Boolean requestPasswordReset(String mail) {
         log.debug("Request to init reset password: {}", mail);
         User user = userRepository.findOneByEmailIgnoreCase(mail)
-                .orElseThrow(() -> new ResouorceNotFoundException("forgot_password_init.user_not_found_by_email"));
+                .orElseThrow(() -> new ResouorceNotFoundException(RequestUtil.messageTranslate("forgot_password_init.user_not_found_by_email")));
 
         if(!user.isActivatedAccount()){
-            throw new UserNotActivatedException("User not active yet");
+            throw new UserNotActivatedException(RequestUtil.messageTranslate("signin.account_not_activated"));
         }
 
         user.setResetKey(RandomUtil.generateActivationKey(20));
         User newUser = userRepository.save(user);
 
-        mailService.sendPasswordResetMail(newUser);
+        if( RequestUtil.getHeaderAttribute(SrfGroupConstants.SOURCE_CONNECTED_DEVICE).equals(SourceConnectedDevice.WEB_BROWSER.toString()) ||
+                RequestUtil.getHeaderAttribute(SrfGroupConstants.SOURCE_CONNECTED_DEVICE).equals(SourceConnectedDevice.MOBILE_BROWSER.toString())){
+
+            // Send Activation Email with link activation
+            mailService.sendPasswordResetMail(newUser, false);
+        }
+        else{
+            // Send Activation Email with only code activation
+            mailService.sendPasswordResetMail(newUser, false);
+        }
 
         return true;
     }
@@ -572,7 +591,7 @@ public class UserServiceImpl implements UserService {
                 });
 
         if (!newUser.isPresent()) {
-            throw new AccountResourceException("forgot_password_init.message_invalid_key");
+            throw new AccountResourceException(RequestUtil.messageTranslate("forgot_password_init.message_invalid_key"));
         }
     }
 

@@ -63,7 +63,7 @@ public class MailService {
     }
 
     @Async
-    public void sendEmailFromTemplate(User user, String templateName, String titleKey) {
+    public void sendEmailFromTemplate(User user, String templateName, String titleKey, boolean withLink) {
         if (user.getEmail() == null) {
             log.error("Email doesn't exist for user '{}'", user.getEmail());
             return;
@@ -72,6 +72,8 @@ public class MailService {
         Context context = new Context(locale);
         context.setVariable("user", user);
         context.setVariable("baseUrl", BASE_URL);
+        context.setVariable("titleKey", titleKey);
+        context.setVariable("withLink", withLink);
         String content = templateEngine.process(templateName, context);
         String subject = messageSource.getMessage(titleKey, null, locale);
         log.debug("subject = '{}'", subject);
@@ -79,14 +81,14 @@ public class MailService {
     }
 
     @Async
-    public void sendActivationEmail(User user) {
+    public void sendActivationEmail(User user, boolean withLink) {
         log.debug("Sending activation email to '{}'", user.getEmail());
-        sendEmailFromTemplate(user, "mail/activationEmail", "email.activation.title");
+        sendEmailFromTemplate(user, "mail/activationEmail", "email.activation.title", withLink);
     }
 
     @Async
-    public void sendPasswordResetMail(User user) {
-        log.debug("Sending password reset email to '{}'", user.getEmail());
-        sendEmailFromTemplate(user, "mail/passwordResetEmail", "email.reset.title");
+    public void sendPasswordResetMail(User user, boolean withLink) {
+        log.info("Sending password reset email to '{}' {}", user.getEmail(), withLink);
+        sendEmailFromTemplate(user, "mail/passwordResetEmail", "email.reset.title", withLink);
     }
 }

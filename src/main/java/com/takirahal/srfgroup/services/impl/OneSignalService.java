@@ -1,5 +1,6 @@
 package com.takirahal.srfgroup.services.impl;
 
+import com.takirahal.srfgroup.utils.CommonUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -17,8 +18,11 @@ public class OneSignalService {
 
     private final Logger log = LoggerFactory.getLogger(OneSignalService.class);
 
-    public static final String REST_API_KEY = "N2YyNDQ4MzUtM2JiYS00YjdhLWFmYjctYjM1MjFlMzc5MjU5";
-    public static final String ONESIGNAL_APP_ID = "52e18c28-761d-409f-a363-f58a9bd41cfe";
+    @Value("${onesignal.rest-api-key}")
+    private String REST_API_KEY;
+
+    @Value("${onesignal.app-id}")
+    private String ONESIGNAL_APP_ID;
 
 
     /**
@@ -43,11 +47,11 @@ public class OneSignalService {
             con.setDoInput(true);
 
             con.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
-            con.setRequestProperty("Authorization", REST_API_KEY);
+            con.setRequestProperty("Authorization", CommonUtil.decodeToString(REST_API_KEY));
             con.setRequestMethod("POST");
 
             String strJsonBody = "{"
-                    +   "\"app_id\": \""+ ONESIGNAL_APP_ID +"\","
+                    +   "\"app_id\": \""+ CommonUtil.decodeToString(ONESIGNAL_APP_ID) +"\","
                     +   "\"include_player_ids\": [\""+ playerIds +"\"],"
                     +   "\"data\": {\"foo\": \"bar\"},"
                     +   "\"contents\": {\"en\": \""+ message +"\"}"
