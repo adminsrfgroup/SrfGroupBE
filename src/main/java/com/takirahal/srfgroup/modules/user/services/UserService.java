@@ -42,7 +42,7 @@ public interface UserService {
 
     String signinFacebook(FacebookVM facebookVM);
 
-    String signinGooglePlusOneTap(GooglePlusOneTapVM googlePlusOneTapVM);
+    String signinGooglePlusOneTap(GooglePlusVM googlePlusVM) throws IOException;
 
     Boolean requestPasswordReset(String mail);
 

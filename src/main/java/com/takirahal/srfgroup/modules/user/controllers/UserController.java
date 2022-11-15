@@ -130,14 +130,14 @@ public class UserController {
 
     /**
      *
-     * @param googlePlusOneTapVM
+     * @param googlePlusVM
      * @return
      */
     @PostMapping("public/signin-google-plus-one-tap")
-    public ResponseEntity<JWTToken> signinGooglePlusOneTap(@Valid @RequestBody GooglePlusOneTapVM googlePlusOneTapVM) {
+    public ResponseEntity<JWTToken> signinGooglePlusOneTap(@Valid @RequestBody GooglePlusVM googlePlusVM) {
         try {
-            log.info("REST request to signin Google Plus OneTap: {} ", googlePlusOneTapVM);
-            String jwt = userService.signinGooglePlusOneTap(googlePlusOneTapVM);
+            log.info("REST request to signin Google Plus OneTap: {} ", googlePlusVM);
+            String jwt = userService.signinGooglePlusOneTap(googlePlusVM);
             HttpHeaders httpHeaders = new HttpHeaders();
             httpHeaders.add(JwtAuthenticationFilter.AUTHORIZATION_HEADER, "Bearer " + jwt);
             httpHeaders.add("X-app-alert", RequestUtil.messageTranslate("signin.message_welcome"));

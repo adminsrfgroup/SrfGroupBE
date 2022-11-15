@@ -14,6 +14,6 @@ public class GooglePlusVM {
     private String googleId;
     private ProfileObj profileObj;
     private String tokenId;
-    private String sourceProvider;
+    private String sourceConnectedDevice;
     private String idOneSignal;
 }

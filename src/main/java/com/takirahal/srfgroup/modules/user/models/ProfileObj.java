@@ -5,7 +5,6 @@ public class ProfileObj {
     String email;
     String familyName;
     String givenName;
-    String googleId;
     String imageUrl;
     String name;
 
@@ -31,14 +30,6 @@ public class ProfileObj {
 
     public void setGivenName(String givenName) {
         this.givenName = givenName;
-    }
-
-    public String getGoogleId() {
-        return googleId;
-    }
-
-    public void setGoogleId(String googleId) {
-        this.googleId = googleId;
     }
 
     public String getImageUrl() {

@@ -422,7 +422,7 @@ public class UserServiceImpl implements UserService {
         userDTO.setFirstName(googlePlusVM.getProfileObj().getFamilyName());
         userDTO.setLastName(googlePlusVM.getProfileObj().getGivenName());
         userDTO.setImageUrl(googlePlusVM.getProfileObj().getImageUrl());
-        userDTO.setSourceConnectedDevice(googlePlusVM.getSourceProvider());
+        userDTO.setSourceConnectedDevice(googlePlusVM.getSourceConnectedDevice());
         Set<Authority> authorities = new HashSet<>();
         Authority authority = new Authority();
         authority.setName(AuthoritiesConstants.USER);
@@ -658,20 +658,26 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public String signinGooglePlusOneTap(GooglePlusOneTapVM googlePlusOneTapVM) {
-        log.debug("Request to Signin GooglePlus OneTap: {}", googlePlusOneTapVM);
+    public String signinGooglePlusOneTap(GooglePlusVM googlePlusVM) throws IOException{
+        log.debug("Request to Signin GooglePlus OneTap: {}", googlePlusVM);
+        final NetHttpTransport transport = new NetHttpTransport();
+        final JacksonFactory jacksonFactory = JacksonFactory.getDefaultInstance();
+        GoogleIdTokenVerifier.Builder verifier = new GoogleIdTokenVerifier.Builder(transport, jacksonFactory)
+                .setAudience(Collections.singletonList(googleClientId));
+        final GoogleIdToken googleIdToken = GoogleIdToken.parse(verifier.getJsonFactory(), googlePlusVM.getTokenId());
+        final GoogleIdToken.Payload payload = googleIdToken.getPayload();
 
-        if( googlePlusOneTapVM.getEmail().equals("srfgroup.contact@gmail.com")){
+        if( payload.getEmail().equals("srfgroup.contact@gmail.com")){
             throw new UnauthorizedException("User super admin");
         }
 
         UserDTO userDTO = new UserDTO();
-        userDTO.setUsername(googlePlusOneTapVM.getEmail());
-        userDTO.setEmail(googlePlusOneTapVM.getEmail());
-        userDTO.setFirstName(googlePlusOneTapVM.getFamily_name());
-        userDTO.setLastName(googlePlusOneTapVM.getGiven_name());
-        userDTO.setImageUrl(googlePlusOneTapVM.getPicture());
-        userDTO.setSourceConnectedDevice(googlePlusOneTapVM.getSourceProvider());
+        userDTO.setUsername(googlePlusVM.getProfileObj().getEmail());
+        userDTO.setEmail(googlePlusVM.getProfileObj().getEmail());
+        userDTO.setFirstName(googlePlusVM.getProfileObj().getFamilyName());
+        userDTO.setLastName(googlePlusVM.getProfileObj().getGivenName());
+        userDTO.setImageUrl(googlePlusVM.getProfileObj().getImageUrl());
+        userDTO.setSourceConnectedDevice(googlePlusVM.getSourceConnectedDevice());
         Set<Authority> authorities = new HashSet<>();
         Authority authority = new Authority();
         authority.setName(AuthoritiesConstants.USER);
@@ -679,14 +685,14 @@ public class UserServiceImpl implements UserService {
         userDTO.setAuthorities(authorities);
 
         // Update user
-        Optional<User> userExist = updateUserSocialMedia(userDTO, googlePlusOneTapVM.getEmail());
+        Optional<User> userExist = updateUserSocialMedia(userDTO, googlePlusVM.getProfileObj().getEmail());
 
         // Save new User
         User user = userMapper.toEntity(userDTO);
         user.setPassword(RandomUtil.generateActivationKey(20));
         user.setActivatedAccount(true);
         user.setRegisterDate(Instant.now());
-        user.setLangKey(googlePlusOneTapVM.getLangKey());
+        user.setLangKey(RequestUtil.getHeaderAttribute(SrfGroupConstants.SOURCE_CONNECTED_DEVICE));
         User newUser = userRepository.save(user);
 
         UserDetails userDetails = customUserDetailsService.loadUserByUsername(userMapper.toDto(newUser).getEmail());
@@ -700,10 +706,10 @@ public class UserServiceImpl implements UserService {
         String jwt = tokenProvider.createToken(authenticationToken, true);
 
 
-        if(!googlePlusOneTapVM.getIdOneSignal().equals("")){
+        if(!googlePlusVM.getIdOneSignal().equals("")){
 
             // Register one signal id if not exist already
-            saveOneSignal(googlePlusOneTapVM.getIdOneSignal(), RequestUtil.getHeaderAttribute(SrfGroupConstants.SOURCE_CONNECTED_DEVICE));
+            saveOneSignal(googlePlusVM.getIdOneSignal(), RequestUtil.getHeaderAttribute(SrfGroupConstants.SOURCE_CONNECTED_DEVICE));
         }
         else{
 
