@@ -21,7 +21,7 @@ public class FacebookVM {
     private PictureFacebook picture;
     private String signedRequest;
     private String userID;
-    private String sourceProvider;
+    private String sourceConnectedDevice;
     private String idOneSignal;
     private String langKey;
 }

@@ -491,9 +491,9 @@ public class UserServiceImpl implements UserService {
         userDTO.setUsername(userFacebook.getEmail());
         userDTO.setEmail(facebookVM.getEmail());
         userDTO.setFirstName(facebookVM.getName());
-        userDTO.setLastName(facebookVM.getName());
+        userDTO.setLastName("");
         userDTO.setImageUrl(facebookVM.getPicture().getData().getUrl());
-        userDTO.setSourceConnectedDevice(facebookVM.getSourceProvider());
+        userDTO.setSourceConnectedDevice(facebookVM.getSourceConnectedDevice());
         Set<Authority> authorities = new HashSet<>();
         Authority authority = new Authority();
         authority.setName(AuthoritiesConstants.USER);
