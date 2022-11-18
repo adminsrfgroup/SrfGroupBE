@@ -117,6 +117,7 @@ public class UserController {
             return new ResponseEntity<>(new JWTToken(jwt), httpHeaders, HttpStatus.OK);
         }
         catch(Exception e){
+            log.error("Exception REST request to signin Google Plus: {} ", e.getStackTrace());
             if(e instanceof UserBlockedException){
                 throw new UserBlockedException("signin.blocked_by_admin");
             }
@@ -144,6 +145,7 @@ public class UserController {
             return new ResponseEntity<>(new JWTToken(jwt), httpHeaders, HttpStatus.OK);
         }
         catch(Exception e){
+            log.error("Exception REST request to signin Google Plus OneTap: {} ", e.getStackTrace());
             if(e instanceof UserBlockedException){
                 throw new UserBlockedException("signin.blocked_by_admin");
             }
@@ -170,6 +172,7 @@ public class UserController {
             return new ResponseEntity<>(new JWTToken(jwt), httpHeaders, HttpStatus.OK);
         }
         catch(Exception e){
+            log.error("Exception REST request to signin Facebook: {} ", e.getStackTrace());
             if(e instanceof UserBlockedException){
                 throw new UserBlockedException("signin.blocked_by_admin");
             }

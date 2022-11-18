@@ -60,17 +60,17 @@ public class User implements Serializable {
     @Column(name = "image_url")
     private String imageUrl;
 
-    @Size(max = 20)
+    @Size(max = 50)
     @Column(name = "activation_key", length = 20)
     @JsonIgnore
     private String activationKey;
 
-    @Size(max = 20)
+    @Size(max = 50)
     @Column(name = "reset_key", length = 20)
     @JsonIgnore
     private String resetKey;
 
-    @Size(min = 2, max = 10)
+    @Size(min = 2, max = 50)
     @Column(name = "lang_key", length = 20)
     private String langKey;
 
