@@ -3,6 +3,7 @@ package com.takirahal.srfgroup.modules.user.controllers;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.takirahal.srfgroup.SrfgroupApplication;
 import com.takirahal.srfgroup.constants.AuthoritiesConstants;
+import com.takirahal.srfgroup.exceptions.ResouorceNotFoundException;
 import com.takirahal.srfgroup.exceptions.UnauthorizedException;
 import com.takirahal.srfgroup.modules.cart.repositories.CartRepository;
 import com.takirahal.srfgroup.modules.chat.repositories.MessageRepository;
@@ -178,6 +179,9 @@ public class UserController {
             }
             else if(e instanceof UnauthorizedException){
                 throw new UnauthorizedException("User super admin");
+            }
+            else if(e instanceof ResouorceNotFoundException){
+                throw new ResouorceNotFoundException(e.getMessage());
             }
             throw new InvalidPasswordException("Bad Credentials");
         }

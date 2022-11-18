@@ -479,6 +479,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public String signinFacebook(FacebookVM facebookVM) {
         log.debug("Request to Signin Facebook: {}", facebookVM);
+
+        if(facebookVM.getEmail()==null){
+            throw new ResouorceNotFoundException(RequestUtil.messageTranslate("signin.email_facebook_undefined"));
+        }
+
         Facebook facebook = new FacebookTemplate(facebookVM.getAccessToken());
         final String[] fields = { "email", "picture" };
         FacebookVM userFacebook = facebook.fetchObject("me", FacebookVM.class, fields);
