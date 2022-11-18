@@ -172,14 +172,23 @@ public class ConversationServiceImpl implements ConversationService {
 
     private Specification<Conversation> createSpecification(Long userId, ConversationFilter conversationFilter) {
         return (root, query, criteriaBuilder) -> {
+            List<Predicate> predicates = new ArrayList<>();
 
             Predicate and1 = criteriaBuilder.equal(root.get("senderUser").get("id"), userId);
             Predicate and2 = criteriaBuilder.equal(root.get("receiverUser").get("id"), userId);
-
             Predicate or = criteriaBuilder.or(and1, and2);
+            predicates.add(or);
+
+            if (conversationFilter.getSenderUser() != null && !conversationFilter.getSenderUser().getFirstName().isEmpty()) {
+                predicates.add(criteriaBuilder.like(root.get("senderUser").get("firstName"), "%" +conversationFilter.getSenderUser().getFirstName()+ "%"));
+            }
+
+            if (conversationFilter.getReceiverUser() != null && !conversationFilter.getReceiverUser().getFirstName().isEmpty()) {
+                predicates.add(criteriaBuilder.like(root.get("receiverUser").get("firstName"), "%" +conversationFilter.getReceiverUser().getFirstName()+ "%"));
+            }
 
             query.orderBy(criteriaBuilder.desc(root.get("id")));
-            return criteriaBuilder.and(or);
+            return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
         };
 
     }
