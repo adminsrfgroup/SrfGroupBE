@@ -7,6 +7,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.BatchSize;
 import org.hibernate.annotations.NaturalId;
+import org.hibernate.annotations.Type;
+
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
@@ -53,8 +55,9 @@ public class User implements Serializable {
     @Column(name = "blocked")
     private String blocked = "";
 
-    @Size(max = 256)
-    @Column(name = "image_url", length = 256)
+    @Lob
+    @Type(type = "org.hibernate.type.TextType")
+    @Column(name = "image_url")
     private String imageUrl;
 
     @Size(max = 20)

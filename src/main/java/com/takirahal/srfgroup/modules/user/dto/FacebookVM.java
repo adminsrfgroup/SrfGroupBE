@@ -23,5 +23,4 @@ public class FacebookVM {
     private String userID;
     private String sourceConnectedDevice;
     private String idOneSignal;
-    private String langKey;
 }

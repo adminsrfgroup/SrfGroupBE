@@ -508,7 +508,7 @@ public class UserServiceImpl implements UserService {
         user.setPassword(RandomUtil.generateActivationKey(20));
         user.setActivatedAccount(true);
         user.setRegisterDate(Instant.now());
-        user.setLangKey(facebookVM.getLangKey());
+        user.setLangKey(RequestUtil.getHeaderAttribute(SrfGroupConstants.LANG_KEY));
         User newUser = userRepository.save(user);
 
         UserDetails userDetails = customUserDetailsService.loadUserByUsername(userMapper.toDto(newUser).getEmail());
