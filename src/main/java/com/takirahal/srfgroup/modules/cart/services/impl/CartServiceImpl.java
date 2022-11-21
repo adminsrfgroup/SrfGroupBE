@@ -8,6 +8,7 @@ import com.takirahal.srfgroup.modules.cart.dto.filter.CartFilter;
 import com.takirahal.srfgroup.modules.cart.entities.Cart;
 import com.takirahal.srfgroup.modules.cart.enums.StatusCart;
 import com.takirahal.srfgroup.modules.cart.mapper.CartMapper;
+import com.takirahal.srfgroup.modules.cart.models.DetailsCartGlobal;
 import com.takirahal.srfgroup.modules.cart.models.DetailsCarts;
 import com.takirahal.srfgroup.modules.cart.repositories.CartRepository;
 import com.takirahal.srfgroup.modules.cart.services.CartService;
@@ -62,7 +63,7 @@ public class CartServiceImpl implements CartService {
      * @return
      */
     @Override
-    public CartDTO save(CartDTO cartDTO) {
+    public CartDTO saveAndUpdate(CartDTO cartDTO) {
         log.debug("Request to save SellOffer : {}", cartDTO);
 
         if (cartDTO.getId() != null) {
@@ -161,23 +162,25 @@ public class CartServiceImpl implements CartService {
     @Override
     public DetailsCarts getDetailsCarts() {
         log.debug("Request to get details Cart ");
-
-        DetailsCarts detailsCarts = new DetailsCarts();
-        detailsCarts.setTaxDelivery(taxDelivery);
-        detailsCarts.setTotalCarts(0D);
+//        DetailsCarts detailsCarts = new DetailsCarts();
+//        detailsCarts.setTaxDelivery(taxDelivery);
+//        detailsCarts.setTotalCarts(0D);
         Pageable pageable = PageRequest.of(0, 100);
         CartFilter cartFilter = new CartFilter();
         Page<CartDTO> page = getCartsByCurrentUser(cartFilter, pageable);
+        return getDetailsCartsByPage(page);
+
+        /*
         List<CartDTO> cartDTOList = page.getContent();
         cartDTOList.stream().forEach(item -> {
             if( !Objects.isNull(item.getTotal()) ){
                 detailsCarts.setTotalCarts(detailsCarts.getTotalCarts()+item.getTotal()*item.getQuantity());
             }
         });
-
-        detailsCarts.setNumberCarts(cartDTOList.size());
+        detailsCarts.setNumberOfProducts(cartDTOList.size());
         detailsCarts.setTotalGlobalCarts(detailsCarts.getTotalCarts()+detailsCarts.getTaxDelivery());
         return detailsCarts;
+        */
     }
 
     @Override
@@ -185,16 +188,35 @@ public class CartServiceImpl implements CartService {
         log.debug("Request to get details Cart by page ");
 
         DetailsCarts detailsCarts = new DetailsCarts();
-        detailsCarts.setTaxDelivery(taxDelivery);
-        detailsCarts.setTotalCarts(0D);
-        List<CartDTO> cartDTOList = page.getContent();
-        cartDTOList.stream().forEach(item -> {
-            if( !Objects.isNull(item.getTotal()) ){
-                detailsCarts.setTotalCarts(detailsCarts.getTotalCarts()+item.getTotal()*item.getQuantity());
+        detailsCarts.setDetailsCartGlobal(new ArrayList<>());
+        page.getContent().stream().forEach(cart -> {
+            if( !Objects.isNull(cart.getTotal()) ){
+                DetailsCartGlobal detailsCartGlobal = new DetailsCartGlobal();
+                detailsCartGlobal.setNumberOfProducts(cart.getQuantity());
+                detailsCartGlobal.setShippingCost(cart.getSellOffer().getShippingCost());
+                detailsCartGlobal.setTotalCarts(cart.getSellOffer().getAmount()*cart.getQuantity()+cart.getSellOffer().getShippingCost());
+                detailsCarts.getDetailsCartGlobal().add(detailsCartGlobal);
             }
         });
-        detailsCarts.setNumberCarts(cartDTOList.size());
-        detailsCarts.setTotalGlobalCarts(detailsCarts.getTotalCarts()+detailsCarts.getTaxDelivery());
+
+        Double somme = 0D;
+        for (DetailsCartGlobal detailsCartGlobal : detailsCarts.getDetailsCartGlobal()) {
+            somme = somme + detailsCartGlobal.getTotalCarts();
+        }
+        detailsCarts.setTotalGlobalCarts(somme);
+
+
+
+        // detailsCarts.setTaxDelivery(taxDelivery);
+//        detailsCarts.setTotalCarts(0D);
+//        List<CartDTO> cartDTOList = page.getContent();
+//        cartDTOList.stream().forEach(item -> {
+//            if( !Objects.isNull(item.getTotal()) ){
+//                detailsCarts.setTotalCarts(detailsCarts.getTotalCarts()+item.getTotal()*item.getQuantity());
+//            }
+//        });
+//        detailsCarts.setNumberOfProducts(cartDTOList.size());
+//        detailsCarts.setTotalGlobalCarts(detailsCarts.getTotalCarts()+detailsCarts.getTaxDelivery());
         return detailsCarts;
     }
 

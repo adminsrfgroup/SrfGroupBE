@@ -9,6 +9,7 @@ import com.takirahal.srfgroup.modules.cart.entities.Order;
 import com.takirahal.srfgroup.modules.cart.enums.StatusCart;
 import com.takirahal.srfgroup.modules.cart.enums.StatusOrder;
 import com.takirahal.srfgroup.modules.cart.mapper.OrderMapper;
+import com.takirahal.srfgroup.modules.cart.models.DetailsCartGlobal;
 import com.takirahal.srfgroup.modules.cart.models.DetailsCarts;
 import com.takirahal.srfgroup.modules.cart.repositories.OrderRepository;
 import com.takirahal.srfgroup.modules.cart.services.CartService;
@@ -22,10 +23,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.criteria.Predicate;
 import java.time.Instant;
@@ -33,6 +36,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class OrderServiceImpl implements OrderService {
@@ -52,17 +56,23 @@ public class OrderServiceImpl implements OrderService {
     UserMapper userMapper;
 
     @Override
+    @Transactional
     public OrderDTO save(UserPrincipal userPrincipal, OrderDTO newOrderDTO) {
         Pageable pageable = PageRequest.of(0, 100);
         CartFilter cartFilter = new CartFilter();
         Page<CartDTO> listCarts = cartService.getCartsByCurrentUser(cartFilter, pageable);
         DetailsCarts detailsCarts = cartService.getDetailsCartsByPage(listCarts);
 
+        Double somme = 0D;
+        for (DetailsCartGlobal detailsCartGlobal : detailsCarts.getDetailsCartGlobal()) {
+            somme = somme + detailsCartGlobal.getTotalCarts();
+        }
+
         OrderDTO orderDTO = new OrderDTO();
-        orderDTO.setNumberCarts(detailsCarts.getNumberCarts());
-        orderDTO.setTaxDelivery(detailsCarts.getTaxDelivery());
-        orderDTO.setTotalCarts(detailsCarts.getTotalCarts());
-        orderDTO.setTotalGlobalCarts(detailsCarts.getTotalGlobalCarts());
+        orderDTO.setNumberOfProducts(detailsCarts.getDetailsCartGlobal().size());
+        // orderDTO.setTaxDelivery(detailsCarts.getTaxDelivery());
+        orderDTO.setTotalCarts(somme);
+        // orderDTO.setTotalGlobalCarts(detailsCarts.getTotalGlobalCarts());
         orderDTO.setPassedDate(Instant.now());
         orderDTO.setPaymentMode(newOrderDTO.getPaymentMode());
         orderDTO.setStatus(StatusOrder.PASSED.toString());
@@ -81,10 +91,9 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public Page<OrderDTO> getOrdersByCurrentUser(OrderFilter orderFilter, Pageable pageable) {
-        log.debug("Request to get all Orders for current user : {}", orderFilter);
+    public Page<OrderDTO> getOrdersPassedByCurrentUser(OrderFilter orderFilter, Pageable pageable) {
+        log.debug("Request to get all passed Orders for current user : {}", orderFilter);
         Long useId = SecurityUtils.getIdByCurrentUser();
-
         UserOfferFilter userOfferFilter = new UserOfferFilter();
         userOfferFilter.setId(useId);
         orderFilter.setStatus(StatusOrder.PASSED.toString());
@@ -92,9 +101,23 @@ public class OrderServiceImpl implements OrderService {
         return findByCriteria(orderFilter, pageable);
     }
 
+
+    @Override
+    public Page<OrderDTO> getOrdersReceivedByCurrentUser(OrderFilter orderFilter, Pageable pageable) {
+        log.debug("Request to get all received Orders for current user : {}", orderFilter);
+        List<OrderDTO> orderDTOList = orderRepository.getReceivedOrders(pageable).stream().map(orderMapper::toDtoWithoutCarts).collect(Collectors.toList());;
+        Page<OrderDTO> orderDTOS = new PageImpl<>(
+                orderDTOList,
+                pageable,
+                orderDTOList.size()
+        );
+        return orderDTOS;
+    }
+
     private Page<OrderDTO> findByCriteria(OrderFilter orderFilter, Pageable page) {
         log.debug("find carts by criteria : {}, page: {}", page);
-        return orderRepository.findAll(createSpecification(orderFilter), page).map(orderMapper::toDto);
+        Page<Order> orders = orderRepository.findAll(createSpecification(orderFilter), page);
+        return orders.map(orderMapper::toDto);
     }
 
     protected Specification<Order> createSpecification(OrderFilter orderFilter) {

@@ -24,6 +24,7 @@ import com.takirahal.srfgroup.security.UserPrincipal;
 import com.takirahal.srfgroup.services.impl.OneSignalService;
 import com.takirahal.srfgroup.services.impl.StorageService;
 import com.takirahal.srfgroup.utils.CommonUtil;
+import com.takirahal.srfgroup.utils.RequestUtil;
 import com.takirahal.srfgroup.utils.SecurityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -88,7 +89,7 @@ public class FindOfferServiceImpl implements FindOfferService {
         log.debug("Request to save FindOffer : {}", findOfferDTO);
 
         if (findOfferDTO.getId() != null) {
-            throw new BadRequestAlertException("A new findOffer cannot already have an ID idexists");
+            throw new BadRequestAlertException(RequestUtil.messageTranslate("common.entity_already_exist"));
         }
 
         UserPrincipal currentUser = SecurityUtils.getCurrentUser().orElseThrow(() -> new AccountResourceException("Current user login not found"));

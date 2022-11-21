@@ -24,10 +24,17 @@ public class OrderController {
     @Autowired
     OrderService orderService;
 
-    @GetMapping("current-user")
-    public ResponseEntity<Page<OrderDTO>> getOrdersByCurrentUser(OrderFilter orderFilter, Pageable pageable) {
-        log.info("REST request to get Order by criteria: {}", orderFilter);
-        Page<OrderDTO> page = orderService.getOrdersByCurrentUser(orderFilter, pageable);
+    @GetMapping("current-user/passed")
+    public ResponseEntity<Page<OrderDTO>> getOrdersPassedByCurrentUser(OrderFilter orderFilter, Pageable pageable) {
+        log.info("REST request to get all passed Orders by criteria: {}", orderFilter);
+        Page<OrderDTO> page = orderService.getOrdersPassedByCurrentUser(orderFilter, pageable);
+        return new ResponseEntity<>(page, HttpStatus.OK);
+    }
+
+    @GetMapping("current-user/received")
+    public ResponseEntity<Page<OrderDTO>> getOrdersReceivedByCurrentUser(OrderFilter orderFilter, Pageable pageable) {
+        log.info("REST request to get all received Orders by criteria: {}");
+        Page<OrderDTO> page = orderService.getOrdersReceivedByCurrentUser(orderFilter, pageable);
         return new ResponseEntity<>(page, HttpStatus.OK);
     }
 

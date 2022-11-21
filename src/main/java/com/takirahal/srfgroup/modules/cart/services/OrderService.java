@@ -21,5 +21,14 @@ public interface OrderService {
      * @param pageable
      * @return
      */
-    Page<OrderDTO> getOrdersByCurrentUser(OrderFilter orderFilter, Pageable pageable);
+    Page<OrderDTO> getOrdersPassedByCurrentUser(OrderFilter orderFilter, Pageable pageable);
+
+    /**
+     *
+     * @param orderFilter
+     * @param pageable
+     * @return
+     */
+    Page<OrderDTO> getOrdersReceivedByCurrentUser(OrderFilter orderFilter, Pageable pageable);
+
 }

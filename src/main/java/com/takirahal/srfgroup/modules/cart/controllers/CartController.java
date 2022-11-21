@@ -25,8 +25,8 @@ public class CartController {
 
     @PostMapping("create")
     public ResponseEntity<CartDTO> createCart(@RequestBody CartDTO cartDTO) {
-        log.info("REST request to save Cart : {}", cartDTO);
-        CartDTO result = cartService.save(cartDTO);
+        log.info("REST request to save/update Cart : {}", cartDTO);
+        CartDTO result = cartService.saveAndUpdate(cartDTO);
         return new ResponseEntity<>(result, HeaderUtil.createAlert("cart.message_cart_added_successfully", ""), HttpStatus.CREATED);
     }
 

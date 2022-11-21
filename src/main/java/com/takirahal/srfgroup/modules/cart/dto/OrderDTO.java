@@ -15,10 +15,10 @@ import java.util.Set;
 @AllArgsConstructor
 public class OrderDTO implements Serializable{
     private Long id;
-    private int numberCarts;
+    private int numberOfProducts;
     private Double totalCarts;
-    private Double taxDelivery;
-    private Double totalGlobalCarts;
+    // private Double taxDelivery;
+    // private Double totalGlobalCarts;
     private String paymentMode;
     private Instant passedDate;
     private String status;

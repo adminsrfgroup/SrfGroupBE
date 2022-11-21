@@ -26,4 +26,7 @@ public class SellOffer extends Offer implements Serializable {
 
     @Column(name = "type_contact_client")
     private String typeContactClient;
+
+    @Column(name = "shipping_cost")
+    private Double shippingCost;
 }

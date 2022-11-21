@@ -1,12 +1,10 @@
 package com.takirahal.srfgroup.modules.cart.entities;
 
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.takirahal.srfgroup.modules.cart.models.DetailsCarts;
-import com.takirahal.srfgroup.modules.offer.entities.OfferImages;
-import com.takirahal.srfgroup.modules.offer.entities.SellOffer;
 import com.takirahal.srfgroup.modules.user.entities.User;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -27,8 +25,8 @@ public class Order implements Serializable {
     @SequenceGenerator(name = "sequenceGenerator", sequenceName = "sequence_name_order", allocationSize = 1, initialValue = 1)
     private Long id;
 
-    @Column(name = "number_carts")
-    private int numberCarts; // number of carts selected
+    @Column(name = "number_of_products")
+    private int numberOfProducts; // number of products selected
 
     @Column(name = "total_carts")
     private Double totalCarts; // total all carts withou tax
@@ -51,7 +49,7 @@ public class Order implements Serializable {
     @JsonIgnore
     @ManyToMany
     @JoinTable(
-            name = "order_cart",
+            name = "sg_order_cart",
             joinColumns = { @JoinColumn(name = "order_id", referencedColumnName = "id") },
             inverseJoinColumns = { @JoinColumn(name = "cart_id", referencedColumnName = "id") }
     )
