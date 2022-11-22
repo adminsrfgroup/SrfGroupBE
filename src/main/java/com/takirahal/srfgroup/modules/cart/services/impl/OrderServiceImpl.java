@@ -1,6 +1,5 @@
 package com.takirahal.srfgroup.modules.cart.services.impl;
 
-import com.takirahal.srfgroup.constants.SrfGroupConstants;
 import com.takirahal.srfgroup.modules.cart.dto.CartDTO;
 import com.takirahal.srfgroup.modules.cart.dto.OrderDTO;
 import com.takirahal.srfgroup.modules.cart.dto.filter.CartFilter;
@@ -21,7 +20,6 @@ import com.takirahal.srfgroup.modules.user.mapper.UserMapper;
 import com.takirahal.srfgroup.modules.user.services.UserOneSignalService;
 import com.takirahal.srfgroup.security.UserPrincipal;
 import com.takirahal.srfgroup.utils.CommonUtil;
-import com.takirahal.srfgroup.utils.RequestUtil;
 import com.takirahal.srfgroup.utils.SecurityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
