@@ -30,5 +30,4 @@ public interface OrderService {
      * @return
      */
     Page<OrderDTO> getOrdersReceivedByCurrentUser(OrderFilter orderFilter, Pageable pageable, UserPrincipal userPrincipal);
-
 }
