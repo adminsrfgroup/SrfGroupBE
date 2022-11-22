@@ -93,6 +93,12 @@ run in the root project:
     - Down: docker-compose -f docker/api-without-jar.yml down -v --remove-orphans
 
 
+## Build image
+$ docker build -t build-srf-group .
+
+## Run image
+$ docker run build-srf-group
+
 ### Probleme of permission
 - run windos: services.msc
 - check service pg and click stop 

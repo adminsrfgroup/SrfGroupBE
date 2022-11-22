@@ -104,7 +104,7 @@ public class OrderServiceImpl implements OrderService {
 
             // Save notification in DB
             Locale locale = Locale.forLanguageTag(cart.getSellOffer().getUser().getLangKey()!=null && !cart.getSellOffer().getUser().getLangKey().equals("") ? cart.getSellOffer().getUser().getLangKey() : "fr");
-            String messageSellOffer = CommonUtil.getFullNameUser(userMapper.toDto(cart.getSellOffer().getUser()))+" "+messageSource.getMessage("sellrequest.message_for_received_user", null, locale);
+            String messageSellOffer = CommonUtil.getFullNameUser(userMapper.toDto(order.getUser()))+" "+messageSource.getMessage("sellrequest.message_for_received_user", null, locale);
             log.debug("messageCommentOffer : {}", messageSellOffer);
             NotificationDTO notificationDTO = new NotificationDTO();
             notificationDTO.setDateCreated(Instant.now());
