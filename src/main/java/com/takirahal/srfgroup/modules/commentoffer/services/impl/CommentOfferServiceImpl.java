@@ -87,7 +87,7 @@ public class CommentOfferServiceImpl implements CommentOfferService {
         if (!commentOfferDTO.getOffer().getUser().getId().equals(currentUser.getId())) {
 
             Optional<User> userDestination = userRepository.findById(commentOfferDTO.getOffer().getUser().getId());
-            Locale locale = Locale.forLanguageTag(!userDestination.get().getLangKey().equals("") ? userDestination.get().getLangKey() : "fr");
+            Locale locale = Locale.forLanguageTag(userDestination.get().getLangKey()!=null && !userDestination.get().getLangKey().equals("") ? userDestination.get().getLangKey() : "fr");
             String messageCommentOffer = CommonUtil.getFullNameUser(currentUserDTO)+" "+messageSource.getMessage("comment.comment_offer.new", null, locale);
             log.debug("messageCommentOffer : {}", messageCommentOffer);
 

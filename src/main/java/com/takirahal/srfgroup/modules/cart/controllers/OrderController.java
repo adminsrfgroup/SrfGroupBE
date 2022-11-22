@@ -32,9 +32,9 @@ public class OrderController {
     }
 
     @GetMapping("current-user/received")
-    public ResponseEntity<Page<OrderDTO>> getOrdersReceivedByCurrentUser(OrderFilter orderFilter, Pageable pageable) {
+    public ResponseEntity<Page<OrderDTO>> getOrdersReceivedByCurrentUser(OrderFilter orderFilter, Pageable pageable, @ConnectedProfile UserPrincipal userPrincipal) {
         log.info("REST request to get all received Orders by criteria: {}");
-        Page<OrderDTO> page = orderService.getOrdersReceivedByCurrentUser(orderFilter, pageable);
+        Page<OrderDTO> page = orderService.getOrdersReceivedByCurrentUser(orderFilter, pageable, userPrincipal);
         return new ResponseEntity<>(page, HttpStatus.OK);
     }
 

@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.time.Instant;
 import java.util.Set;
 
 @Data
@@ -33,6 +34,9 @@ public class Cart implements Serializable {
 
     @Column(name = "status")
     private String status;
+
+    @Column(name = "passed_date")
+    private Instant passedDate;
 
     @OneToOne
     private SellOffer sellOffer;

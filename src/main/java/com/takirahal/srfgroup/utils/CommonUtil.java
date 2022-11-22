@@ -34,7 +34,7 @@ public class CommonUtil {
      * @return
      */
     public static String getFullNameUser(UserDTO user){
-        return (!user.getFirstName().equals("") || !user.getLastName().equals("")) ? user.getFirstName()+" "+user.getLastName() : user.getEmail();
+        return ((user.getFirstName()!=null && !user.getFirstName().equals("")) || (user.getLastName()!=null && !user.getLastName().equals(""))) ? user.getFirstName()+" "+user.getLastName() : user.getEmail();
     }
 
     /**
@@ -43,7 +43,7 @@ public class CommonUtil {
      * @return
      */
     public static String encodeToString(String originalInput){
-        return Base64.getEncoder().encodeToString(originalInput.getBytes())+"SrfGroup";
+        return "puorgfrs"+Base64.getEncoder().encodeToString(originalInput.getBytes())+"SrfGroup";
     }
 
     /**
@@ -52,7 +52,8 @@ public class CommonUtil {
      * @return
      */
     public static String decodeToString(String encodedString){
-        byte[] decodedBytes = Base64.getDecoder().decode(encodedString.substring(0, encodedString.length()-8));
+        String newStr = encodedString.substring(8, encodedString.length());
+        byte[] decodedBytes = Base64.getDecoder().decode(newStr.substring(0, newStr.length()-8));
         return new String(decodedBytes);
     }
 }

@@ -31,6 +31,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.criteria.Predicate;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -54,8 +55,8 @@ public class CartServiceImpl implements CartService {
     SellOfferRepository sellOfferRepository;
 
 
-    @Value("${cart.tax-delivery}")
-    private Double taxDelivery;
+//    @Value("${cart.tax-delivery}")
+//    private Double taxDelivery;
 
     /**
      *
@@ -95,7 +96,7 @@ public class CartServiceImpl implements CartService {
 
                 // Set new total
                 if( sellOfferOption.isPresent() ){
-                    Double newTotal = cartExist.get().getTotal() + (sellOfferOption.get().getAmount()*cartDTO.getQuantity());
+                    Double newTotal = sellOfferOption.get().getAmount()*quantity+sellOfferOption.get().getShippingCost();
                     cart.setTotal(newTotal);
                 }
 
@@ -105,8 +106,9 @@ public class CartServiceImpl implements CartService {
         // First time: Cart
         else{
             if( sellOfferOption.isPresent() ){
-                cart.setTotal(sellOfferOption.get().getAmount());
+                cart.setTotal(sellOfferOption.get().getAmount()*cartDTO.getQuantity()+sellOfferOption.get().getShippingCost());
             }
+            cart.setPassedDate(Instant.now());
             cart = cartRepository.save(cart);
         }
 
@@ -141,52 +143,32 @@ public class CartServiceImpl implements CartService {
 
     @Override
     public CartDTO updateQuantityCart(CartDTO cartDTO) {
-
         log.debug("Request to update quantity to Cart : {}", cartDTO.getId());
-
         Cart cart = cartRepository.findById(cartDTO.getId())
                 .orElseThrow(() -> new ResouorceNotFoundException(RequestUtil.messageTranslate("common.resource_not_found")));
-
         Long useId = SecurityUtils.getIdByCurrentUser();
         if (!Objects.equals(useId, cart.getUser().getId())) {
             throw new UnauthorizedException(RequestUtil.messageTranslate("common.unautorize_action"));
         }
-
-        Cart cartUpdate = cartMapper.toEntity(cartDTO);
-        cartUpdate.setQuantity(cartDTO.getQuantity());
-        cart = cartRepository.save(cartUpdate);
-
+        Double newTotal = cart.getSellOffer().getAmount()*cartDTO.getQuantity()+cart.getSellOffer().getShippingCost();
+        cart.setTotal(newTotal);
+        cart.setQuantity(cartDTO.getQuantity());
+        cart = cartRepository.save(cart);
         return cartMapper.toDto(cart);
     }
 
     @Override
     public DetailsCarts getDetailsCarts() {
         log.debug("Request to get details Cart ");
-//        DetailsCarts detailsCarts = new DetailsCarts();
-//        detailsCarts.setTaxDelivery(taxDelivery);
-//        detailsCarts.setTotalCarts(0D);
         Pageable pageable = PageRequest.of(0, 100);
         CartFilter cartFilter = new CartFilter();
         Page<CartDTO> page = getCartsByCurrentUser(cartFilter, pageable);
         return getDetailsCartsByPage(page);
-
-        /*
-        List<CartDTO> cartDTOList = page.getContent();
-        cartDTOList.stream().forEach(item -> {
-            if( !Objects.isNull(item.getTotal()) ){
-                detailsCarts.setTotalCarts(detailsCarts.getTotalCarts()+item.getTotal()*item.getQuantity());
-            }
-        });
-        detailsCarts.setNumberOfProducts(cartDTOList.size());
-        detailsCarts.setTotalGlobalCarts(detailsCarts.getTotalCarts()+detailsCarts.getTaxDelivery());
-        return detailsCarts;
-        */
     }
 
     @Override
     public DetailsCarts getDetailsCartsByPage(Page<CartDTO> page) {
         log.debug("Request to get details Cart by page ");
-
         DetailsCarts detailsCarts = new DetailsCarts();
         detailsCarts.setDetailsCartGlobal(new ArrayList<>());
         page.getContent().stream().forEach(cart -> {
@@ -198,25 +180,11 @@ public class CartServiceImpl implements CartService {
                 detailsCarts.getDetailsCartGlobal().add(detailsCartGlobal);
             }
         });
-
         Double somme = 0D;
         for (DetailsCartGlobal detailsCartGlobal : detailsCarts.getDetailsCartGlobal()) {
             somme = somme + detailsCartGlobal.getTotalCarts();
         }
         detailsCarts.setTotalGlobalCarts(somme);
-
-
-
-        // detailsCarts.setTaxDelivery(taxDelivery);
-//        detailsCarts.setTotalCarts(0D);
-//        List<CartDTO> cartDTOList = page.getContent();
-//        cartDTOList.stream().forEach(item -> {
-//            if( !Objects.isNull(item.getTotal()) ){
-//                detailsCarts.setTotalCarts(detailsCarts.getTotalCarts()+item.getTotal()*item.getQuantity());
-//            }
-//        });
-//        detailsCarts.setNumberOfProducts(cartDTOList.size());
-//        detailsCarts.setTotalGlobalCarts(detailsCarts.getTotalCarts()+detailsCarts.getTaxDelivery());
         return detailsCarts;
     }
 
@@ -238,7 +206,6 @@ public class CartServiceImpl implements CartService {
     }
 
     private Page<CartDTO> findByCriteria(CartFilter cartFilter, Pageable page) {
-        log.debug("find carts by criteria : {}, page: {}", page);
         return cartRepository.findAll(createSpecification(cartFilter), page).map(cartMapper::toDto);
     }
 

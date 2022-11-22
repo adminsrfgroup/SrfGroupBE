@@ -13,6 +13,7 @@ import org.mapstruct.Named;
 public interface OrderMapper extends EntityMapper<OrderDTO, Order> {
 
     @Named("orderWithoutCart")
-    @Mapping(target = "carts", ignore = true)
+    // @Mapping(target = "carts", ignore = true)
+    @Mapping(target = "carts", source = "carts", qualifiedByName = "idSet")
     OrderDTO toDtoWithoutCarts(Order entity);
 }
