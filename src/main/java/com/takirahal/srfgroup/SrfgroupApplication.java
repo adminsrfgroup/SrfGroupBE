@@ -4,11 +4,12 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-@SpringBootApplication
+// @SpringBootApplication
 public class SrfgroupApplication implements CommandLineRunner {
 
     public static void main(String[] args) {
-        SpringApplication.run(SrfgroupApplication.class, args);
+        System.out.println("SrfgroupApplication runing ...");
+        // SpringApplication.run(SrfgroupApplication.class, args);
     }
 
     @Override
