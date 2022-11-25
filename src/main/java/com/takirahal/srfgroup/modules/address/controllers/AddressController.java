@@ -28,45 +28,45 @@ public class AddressController {
     @Autowired
     AddressService addressService;
 
-    @Autowired
-    private JobLauncher jobLauncher;
-
-    @Autowired
-    @Qualifier("addressBeanJob")
-    private Job jobAddress;
-
-    /**
-     *
-     * @param addressDTO
-     * @param pageable
-     * @return
-     */
-    @GetMapping("public")
-    public ResponseEntity<Page<AddressDTO>> getAllPublicAddresses(AddressDTO addressDTO, Pageable pageable) {
-        log.info("REST request to get Addresses by criteria: {}", addressDTO);
-        Page<AddressDTO> page = addressService.findByCriteria(addressDTO, pageable);
-        return new ResponseEntity<>(page, HttpStatus.OK);
-    }
-
-
-    /**
-     *
-     * @return
-     */
-    @GetMapping("admin/import")
-    public ResponseEntity<BatchStatus> importAddresses() {
-        try{
-            log.info("REST request to import Addresses by data.sql");
-            Map<String, JobParameter> parms = new HashMap<>();
-            parms.put("time", new JobParameter(System.currentTimeMillis()));
-            JobParameters jobParameter = new JobParameters(parms);
-            JobExecution jobExecution = jobLauncher.run(jobAddress, jobParameter);
-            while (jobExecution.isRunning()){
-                System.out.println("...");
-            }
-            return new ResponseEntity<>(jobExecution.getStatus(), HttpStatus.OK);
-        }catch (Exception e){
-            return new ResponseEntity<>(BatchStatus.FAILED, HttpStatus.OK);
-        }
-    }
+//    @Autowired
+//    private JobLauncher jobLauncher;
+//
+//    @Autowired
+//    @Qualifier("addressBeanJob")
+//    private Job jobAddress;
+//
+//    /**
+//     *
+//     * @param addressDTO
+//     * @param pageable
+//     * @return
+//     */
+//    @GetMapping("public")
+//    public ResponseEntity<Page<AddressDTO>> getAllPublicAddresses(AddressDTO addressDTO, Pageable pageable) {
+//        log.info("REST request to get Addresses by criteria: {}", addressDTO);
+//        Page<AddressDTO> page = addressService.findByCriteria(addressDTO, pageable);
+//        return new ResponseEntity<>(page, HttpStatus.OK);
+//    }
+//
+//
+//    /**
+//     *
+//     * @return
+//     */
+//    @GetMapping("admin/import")
+//    public ResponseEntity<BatchStatus> importAddresses() {
+//        try{
+//            log.info("REST request to import Addresses by data.sql");
+//            Map<String, JobParameter> parms = new HashMap<>();
+//            parms.put("time", new JobParameter(System.currentTimeMillis()));
+//            JobParameters jobParameter = new JobParameters(parms);
+//            JobExecution jobExecution = jobLauncher.run(jobAddress, jobParameter);
+//            while (jobExecution.isRunning()){
+//                System.out.println("...");
+//            }
+//            return new ResponseEntity<>(jobExecution.getStatus(), HttpStatus.OK);
+//        }catch (Exception e){
+//            return new ResponseEntity<>(BatchStatus.FAILED, HttpStatus.OK);
+//        }
+//    }
 }
