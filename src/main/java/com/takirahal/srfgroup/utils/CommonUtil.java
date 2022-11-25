@@ -1,6 +1,6 @@
 package com.takirahal.srfgroup.utils;
 
-//import com.takirahal.srfgroup.modules.user.dto.UserDTO;
+import com.takirahal.srfgroup.modules.user.dto.UserDTO;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 
@@ -33,9 +33,9 @@ public class CommonUtil {
      * @param user
      * @return
      */
-//    public static String getFullNameUser(UserDTO user){
-//        return ((user.getFirstName()!=null && !user.getFirstName().equals("")) || (user.getLastName()!=null && !user.getLastName().equals(""))) ? user.getFirstName()+" "+user.getLastName() : user.getEmail();
-//    }
+    public static String getFullNameUser(UserDTO user){
+        return ((user.getFirstName()!=null && !user.getFirstName().equals("")) || (user.getLastName()!=null && !user.getLastName().equals(""))) ? user.getFirstName()+" "+user.getLastName() : user.getEmail();
+    }
 
     /**
      *
