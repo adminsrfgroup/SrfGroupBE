@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.RestController;
 import java.security.Principal;
 import java.util.List;
 
-@RestController
-@RequestMapping("/api/websocket/")
+// @RestController
+// @RequestMapping("/api/websocket/")
 public class WebSocketRestController {
 
     private static final Logger log = LoggerFactory.getLogger(WebSocketRestController.class);

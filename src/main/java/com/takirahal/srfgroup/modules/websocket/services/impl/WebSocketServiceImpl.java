@@ -14,16 +14,16 @@ import java.util.Set;
 @Service
 public class WebSocketServiceImpl implements WebSocketService {
 
-    @Autowired
-    SimpUserRegistry userRegistry;
+//    @Autowired
+//    SimpUserRegistry userRegistry;
 
     @Override
     public List<Principal> getAllConnectedUsers() {
-        Set<SimpUser> simpUsers = this.userRegistry.getUsers();
+        // Set<SimpUser> simpUsers = this.userRegistry.getUsers();
         List<Principal> connectedUsers = new ArrayList<>();
-        simpUsers.stream().forEach(user -> {
-            connectedUsers.add(user.getPrincipal());
-        });
+//        simpUsers.stream().forEach(user -> {
+//            connectedUsers.add(user.getPrincipal());
+//        });
         return connectedUsers;
     }
 }

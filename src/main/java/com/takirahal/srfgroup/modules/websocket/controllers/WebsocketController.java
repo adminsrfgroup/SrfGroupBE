@@ -22,12 +22,12 @@ import java.time.Instant;
 
 import static com.takirahal.srfgroup.config.WebSocketConfig.IP_ADDRESS;
 
-@Controller
+// @Controller
 public class WebsocketController implements ApplicationListener<SessionDisconnectEvent> {
     private static final Logger log = LoggerFactory.getLogger(WebsocketController.class);
 
-    @Autowired
-    SimpMessageSendingOperations messagingTemplate;
+//    @Autowired
+//    SimpMessageSendingOperations messagingTemplate;
 
 
     /**
@@ -67,17 +67,7 @@ public class WebsocketController implements ApplicationListener<SessionDisconnec
      */
     @MessageMapping("/topic/sendChatMessages")
     public void sendChatMessages(@Payload MessageDTO messageDTO, StompHeaderAccessor stompHeaderAccessor, Principal principal) {
-//        activityDTO.setUserEmail(principal.getName());
-//        activityDTO.setSessionId(stompHeaderAccessor.getSessionId());
-//        activityDTO.setIpAddress(stompHeaderAccessor.getSessionAttributes().get(IP_ADDRESS).toString());
-//        activityDTO.setTime(Instant.now());
-//        log.info("Sending user tracking data {}", activityDTO);
-//        return activityDTO;
-        // log.info("/topic/chat-message {}", ((UserPrincipal) principal).getId());
-//        UserPrincipal userPrincipal = (UserPrincipal)(((UsernamePasswordAuthenticationToken) principal).getPrincipal());
-//        Long receiverId = messageDTO.getReceiverUser().getId().equals(userPrincipal.getId()) ? messageDTO.getSenderUser().getId() : messageDTO.getReceiverUser().getId();
-//        Long senderId = messageDTO.getSenderUser().getId().equals(userPrincipal.getId()) ? messageDTO.getReceiverUser().getId() : messageDTO.getSenderUser().getId();
-        messagingTemplate.convertAndSend("/topic/chat-message/"+messageDTO.getReceiverUser().getId()+"/"+messageDTO.getSenderUser().getId(), messageDTO);
+        // messagingTemplate.convertAndSend("/topic/chat-message/"+messageDTO.getReceiverUser().getId()+"/"+messageDTO.getSenderUser().getId(), messageDTO);
     }
 
 
@@ -105,6 +95,6 @@ public class WebsocketController implements ApplicationListener<SessionDisconnec
         activityDTO.setSessionId(event.getSessionId());
         activityDTO.setNameModule("logout");
         log.info("logout {}", event.getSessionId());
-        messagingTemplate.convertAndSend("/topic/tracker", activityDTO);
+        // messagingTemplate.convertAndSend("/topic/tracker", activityDTO);
     }
 }
