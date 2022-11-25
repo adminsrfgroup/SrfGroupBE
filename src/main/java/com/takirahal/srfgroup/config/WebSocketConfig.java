@@ -24,8 +24,8 @@ import org.springframework.web.socket.server.support.DefaultHandshakeHandler;
 import java.security.Principal;
 import java.util.*;
 
-@Configuration
-@EnableWebSocketMessageBroker
+// @Configuration
+// @EnableWebSocketMessageBroker
 public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
     public static final String IP_ADDRESS = "IP_ADDRESS";
