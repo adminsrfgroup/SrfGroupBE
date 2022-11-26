@@ -9,6 +9,7 @@ import com.takirahal.srfgroup.modules.faq.services.FaqService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
@@ -38,6 +39,7 @@ public class FaqServiceImpl implements FaqService {
     }
 
     @Override
+    // @Cacheable(value="faqs")
     public Page<FaqDTO> findByCriteria(FaqFilter criteria, Pageable pageable) {
         log.debug("Request to get Faq by : {}, : {}", criteria, pageable);
         return faqRepository.findAll(createSpecification(criteria), pageable).map(item-> faqMapper.toDto(item));

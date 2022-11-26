@@ -58,4 +58,10 @@ public interface OfferService {
     void delete(Long id);
 
     CountOffersByUser countAllOffersByUser(Long id);
+
+    /**
+     * Get most requested offers
+     * @return
+     */
+    Page<OfferDTO> getMostRequestedOffers();
 }

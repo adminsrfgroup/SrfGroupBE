@@ -147,7 +147,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public Page<OrderDTO> getOrdersReceivedByCurrentUser(OrderFilter orderFilter, Pageable pageable, UserPrincipal userPrincipal) {
         log.debug("Request to get all received Orders for current user : {}", orderFilter);
-        List<OrderDTO> orderDTOList = orderRepository.getReceivedOrders(pageable).stream().map(order -> customMapping(order, userPrincipal)).collect(Collectors.toList());;
+        List<OrderDTO> orderDTOList = orderRepository.getReceivedOrders(pageable).stream().map(order -> customMapping(order, userPrincipal)).collect(Collectors.toList());
         Page<OrderDTO> orderDTOS = new PageImpl<>(
                 orderDTOList,
                 pageable,

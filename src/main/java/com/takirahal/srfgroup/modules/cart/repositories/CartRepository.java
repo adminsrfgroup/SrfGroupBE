@@ -1,8 +1,10 @@
 package com.takirahal.srfgroup.modules.cart.repositories;
 
 import com.takirahal.srfgroup.modules.cart.entities.Cart;
+import com.takirahal.srfgroup.modules.cart.entities.Order;
 import com.takirahal.srfgroup.modules.offer.entities.SellOffer;
 import com.takirahal.srfgroup.modules.user.entities.User;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
@@ -25,4 +27,7 @@ public interface CartRepository extends JpaRepository<Cart, Long>, JpaSpecificat
             "SELECT COUNT(ct) FROM Cart ct WHERE ct.user.id = :userId AND ct.status='StandBy'"
     )
     long getNumberOfCarts(@Param("userId") Long userId);
+
+    @Query("select distinct ct from Cart ct ORDER BY ct.id DESC")
+    List<Cart> getMostCarts(Pageable pageable);
 }

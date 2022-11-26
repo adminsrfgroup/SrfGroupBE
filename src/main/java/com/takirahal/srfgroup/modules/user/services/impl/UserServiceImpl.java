@@ -46,6 +46,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.MessageSource;
 import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
@@ -738,6 +739,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    // @Cacheable(value = "profile_favorite_user", key = "#id")
     public ProfileFavoriteUserDTO findWithFavoriteUserById(Long id) {
         log.debug("Request to find user and check if favorite: {}", id);
         UserDTO userDTO = userRepository.findById(id)

@@ -83,6 +83,14 @@ public class OfferController {
     }
 
 
+    @GetMapping("public/most-requested")
+    public ResponseEntity<Page<OfferDTO>> getOffersMostRequested() {
+        log.info("REST request to get Most Requested Offers by criteria: {}");
+        Page<OfferDTO> page = offerService.getMostRequestedOffers();
+        return new ResponseEntity<>(page, HttpStatus.OK);
+    }
+
+
     /**
      * {@code DELETE  /offers/:id} : delete the "id" offer.
      *

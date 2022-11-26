@@ -3,6 +3,8 @@ package com.takirahal.srfgroup.modules.offer.services.impl;
 import com.takirahal.srfgroup.enums.TypeOffer;
 import com.takirahal.srfgroup.exceptions.ResouorceNotFoundException;
 import com.takirahal.srfgroup.exceptions.UnauthorizedException;
+import com.takirahal.srfgroup.modules.cart.dto.OrderDTO;
+import com.takirahal.srfgroup.modules.cart.repositories.CartRepository;
 import com.takirahal.srfgroup.modules.commentoffer.repositories.CommentOfferRepository;
 import com.takirahal.srfgroup.modules.offer.models.CountOffersByUser;
 import com.takirahal.srfgroup.modules.offer.repositories.OfferImagesRepository;
@@ -24,6 +26,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.scheduling.annotation.Async;
@@ -40,10 +44,9 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
+import java.util.*;
 import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class OfferServiceImpl implements OfferService {
@@ -67,6 +70,9 @@ public class OfferServiceImpl implements OfferService {
 
     @Autowired
     OfferImagesRepository offerImagesRepository;
+
+    @Autowired
+    CartRepository cartRepository;
 
     @Override
     public void uploadImages(List<MultipartFile> multipartFiles, @RequestParam("offerId") Long offerId) {
@@ -147,6 +153,24 @@ public class OfferServiceImpl implements OfferService {
         countOffersByUser.setCountRentOffers(offerRepository.countByTypeOfferAndUser(TypeOffer.RentOffer.toString(), user));
         countOffersByUser.setCountFindOffers(offerRepository.countByTypeOfferAndUser(TypeOffer.FindOffer.toString(), user));
         return countOffersByUser;
+    }
+
+    @Override
+    public Page<OfferDTO> getMostRequestedOffers() {
+        cartRepository.getMostCarts(PageRequest.of(0,18));
+        HashSet<OfferDTO> set = new HashSet();
+        cartRepository.getMostCarts(PageRequest.of(0,18))
+                .stream().forEach(cart -> {
+                    set.add(customOfferMapper.toDtoSearchOffer(cart.getSellOffer()));
+        });
+        ArrayList<OfferDTO> offer_array
+                = new ArrayList<>(set);
+        Page<OfferDTO> offerDTOPage = new PageImpl<>(
+                offer_array,
+                PageRequest.of(0,18),
+                set.size()
+        );
+        return offerDTOPage;
     }
 
     @Override

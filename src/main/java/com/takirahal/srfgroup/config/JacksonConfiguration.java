@@ -2,14 +2,22 @@ package com.takirahal.srfgroup.config;
 
 import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.zalando.problem.ProblemModule;
 import org.zalando.problem.validation.ConstraintViolationProblemModule;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
 
 @Configuration
 public class JacksonConfiguration {
+
+    public static final String DATETIME_FORMAT = "dd-MM-yyyy";
+    public static final LocalDateTime FIXED_DATE = LocalDateTime.now();
+    public static final LocalDateTimeSerializer LOCAL_DATETIME_SERIALIZER = new LocalDateTimeSerializer(DateTimeFormatter.ofPattern(DATETIME_FORMAT));
 
     /**
      * Support for Java date and time API.
@@ -17,7 +25,10 @@ public class JacksonConfiguration {
      */
     @Bean
     public JavaTimeModule javaTimeModule() {
-        return new JavaTimeModule();
+        JavaTimeModule module = new JavaTimeModule();
+        module.addSerializer(LOCAL_DATETIME_SERIALIZER);
+        return module;
+        // return new JavaTimeModule();
     }
 
     @Bean
