@@ -1,135 +1,32 @@
 package com.takirahal.srfgroup.config;
 
-
-import com.fasterxml.classmate.TypeResolver;
+import com.takirahal.srfgroup.constants.SrfGroupConstants;
+import org.springdoc.core.customizers.OperationCustomizer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import org.springframework.core.Ordered;
-import org.springframework.data.domain.Pageable;
-//import springfox.documentation.builders.*;
-//import springfox.documentation.schema.AlternateTypeRule;
-//import springfox.documentation.schema.AlternateTypeRuleConvention;
-//import springfox.documentation.schema.ModelRef;
-//import springfox.documentation.service.ApiInfo;
-//import springfox.documentation.spi.DocumentationType;
-//import springfox.documentation.spring.web.plugins.Docket;
-//import springfox.documentation.service.Parameter;
-//import springfox.documentation.service.Contact;
-//import springfox.documentation.swagger2.annotations.EnableSwagger2;
+import io.swagger.v3.oas.models.parameters.Parameter;
 
-import java.lang.reflect.Type;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.stream.Stream;
-
-import static java.util.Collections.singletonList;
-import static java.util.stream.Collectors.toList;
-//import static springfox.documentation.builders.PathSelectors.regex;
-//import static springfox.documentation.schema.AlternateTypeRules.newRule;
-
-
-// @Configuration
-// @EnableSwagger2
+@Configuration
 public class SwaggerConfig {
 
-//    @Bean
-//    public Docket api() {
-//        return new Docket(DocumentationType.SWAGGER_2)
-//                .globalOperationParameters(getParameters())
-//                .select()
-//                .apis(RequestHandlerSelectors.basePackage("com.takirahal.srfgroup"))
-//                .paths(regex("/api.*"))
-//                .build()
-//                .apiInfo(apiEndPointsInfo());
-//    }
-//
-//    private ApiInfo apiEndPointsInfo() {
-//        return new ApiInfoBuilder().title("Spring Boot REST API")
-//                .description("Employee Management REST API")
-//                .contact(new Contact("Taki Eddine Rahal", "www.takieddinerahal.tn", "takieddinerahal@gmail.com"))
-//                .license("Apache 2.0")
-//                .licenseUrl("http://www.apache.org/licenses/LICENSE-2.0.html")
-//                .version("1.0.0")
-//                .build();
-//    }
-
-    // List of variables to set on header
-//    private List<Parameter> getParameters() {
-//        List<Parameter> parameters = new ArrayList<>();
-//        parameters.add(new ParameterBuilder()
-//                .name("Platform")
-//                .description("Web/Mobile")
-//                .modelRef(new ModelRef("string"))
-//                .parameterType("header")
-//                .required(true)
-//                .build());
-//        parameters.add(new ParameterBuilder()
-//                .name("Authorization")
-//                .description("Bearer access_token")
-//                .modelRef(new ModelRef("string"))
-//                .parameterType("header")
-//                .required(false)
-//                .build());
-//        /*
-//        parameters.add(new ParameterBuilder()
-//                .name("currentLatitude")
-//                .description("Latitude from current position")
-//                .modelRef(new ModelRef("double"))
-//                .parameterType("header")
-//                .required(false)
-//                .build());
-//        parameters.add(new ParameterBuilder()
-//                .name("currentLongitude")
-//                .description("Longitude from current position")
-//                .modelRef(new ModelRef("double"))
-//                .parameterType("header")
-//                .required(false)
-//                .build());
-//        */
-//        return parameters;
-//    }
+    @Bean
+    public OperationCustomizer customize() {
+        return (operation, handlerMethod) -> operation
+                // .addParametersItem(new Parameter().in("header").required(false).description("Alert header").name("X-app-alert"))
+                .addParametersItem(new Parameter().in("header").required(false).description("Access token mandatory").name("X-Access-Token"))
+                .addParametersItem(new Parameter().in("header").required(true).description("ar / fr / en").name(SrfGroupConstants.LANG_KEY))
+                .addParametersItem(new Parameter().in("header").required(true).description("WebBrowser / MobileBrowser").name(SrfGroupConstants.SOURCE_CONNECTED_DEVICE));
+                // .addParametersItem(new Parameter().in("cookie").required(false).description("Caller indentifier").name("X-Caller-Name"));
+    }
 
 //    @Bean
-//    public AlternateTypeRuleConvention pageableConvention(
-//            final TypeResolver resolver) {
-//        return new AlternateTypeRuleConvention() {
-//
-//            @Override
-//            public int getOrder() {
-//                return Ordered.HIGHEST_PRECEDENCE;
-//            }
-//
-//            @Override
-//            public List<AlternateTypeRule> rules() {
-//                return singletonList(
-//                        newRule(resolver.resolve(Pageable.class), resolver.resolve(pageableMixin()))
-//                );
-//            }
-//        };
+//    public OpenAPI customOpenAPI() {
+//        return new OpenAPI().addServersItem(new Server().url("https://myserver.com"))
+//                .addServersItem(new Server().url("https://google.com"))
+//                .components(new Components().addSecuritySchemes("basicScheme",
+//                        new SecurityScheme().type(SecurityScheme.Type.HTTP).scheme("basic")))
+//                .info(new Info().title("SpringShop API").version("0.0.1")
+//                        .license(new License().name("Apache 2.0").url("http://springdoc.org")));
 //    }
-//
-//    private Type pageableMixin() {
-//        return new AlternateTypeBuilder()
-//                .fullyQualifiedClassName(
-//                        String.format("%s.generated.%s",
-//                                Pageable.class.getPackage().getName(),
-//                                Pageable.class.getSimpleName()))
-//                .withProperties(Stream.of(
-//                        property(Integer.class, "page"),
-//                        property(Integer.class, "size"),
-//                        property(String.class, "sort")
-//                ).collect(toList()))
-//                .build();
-//    }
-//
-//    private AlternateTypePropertyBuilder property(Class<?> type, String name) {
-//        return new AlternateTypePropertyBuilder()
-//                .withName(name)
-//                .withType(type)
-//                .withCanRead(true)
-//                .withCanWrite(true);
-//    }
-
 }

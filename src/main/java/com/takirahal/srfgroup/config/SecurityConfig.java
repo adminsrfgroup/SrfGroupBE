@@ -121,7 +121,7 @@ public class SecurityConfig {
                 .antMatchers("/api/news-letter/public/**").permitAll()
                 .antMatchers("/api/description-add-offers/public/**").permitAll()
                 .antMatchers("/api/post/public/**").permitAll()
-                .antMatchers("/api/suggest-search/public/**").permitAll()
+                .antMatchers("/api/suggest-search/**").permitAll()
                 .antMatchers("/api/monitoring/**").permitAll()
                 .antMatchers("/api/faq/admin/**").hasAnyAuthority(AuthoritiesConstants.SUPER_ADMIN, AuthoritiesConstants.ADMIN)
                 .antMatchers("/api/aboutus/admin/**").hasAnyAuthority(AuthoritiesConstants.SUPER_ADMIN, AuthoritiesConstants.ADMIN)

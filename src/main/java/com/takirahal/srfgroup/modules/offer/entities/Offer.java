@@ -48,6 +48,9 @@ public class Offer implements Serializable {
     @Column(name = "blocked_by_reported")
     private Boolean blockedByReported = false;
 
+    @Column(name = "available")
+    private Boolean available = true;
+
     @ManyToOne
     private User user;
 

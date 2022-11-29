@@ -3,9 +3,9 @@ package com.takirahal.srfgroup.config;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.data.redis.RedisAutoConfiguration;
 import org.springframework.cache.CacheManager;
-import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.cache.RedisCacheConfiguration;
@@ -21,8 +21,12 @@ import redis.clients.jedis.Jedis;
 import javax.annotation.PostConstruct;
 import java.io.Serializable;
 
-// @Configuration
-// @AutoConfigureAfter(RedisAutoConfiguration.class)
+@Configuration
+@AutoConfigureAfter(RedisAutoConfiguration.class)
+@ConditionalOnProperty(
+        value="redis.available",
+        havingValue = "true",
+        matchIfMissing = false)
 public class RedisConfig {
 
     @Autowired

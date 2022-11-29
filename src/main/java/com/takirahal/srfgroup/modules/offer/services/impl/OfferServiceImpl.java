@@ -127,6 +127,9 @@ public class OfferServiceImpl implements OfferService {
             throw new UnauthorizedException("Unauthorized action");
         }
 
+        offer.setAvailable(false);
+        offerRepository.save(offer);
+        /*
         // Delete folder for images
         String pathAddProduct = storageService.getBaseStorageProductImages() + id;
         if (storageService.existPath(pathAddProduct)) {
@@ -142,6 +145,7 @@ public class OfferServiceImpl implements OfferService {
 
         // Delete entity
         offerRepository.deleteById(id);
+        */
     }
 
     @Override

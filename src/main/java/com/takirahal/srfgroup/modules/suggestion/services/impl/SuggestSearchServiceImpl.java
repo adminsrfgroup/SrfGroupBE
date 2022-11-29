@@ -9,6 +9,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @ConditionalOnProperty(
         value="elasticsearch.available",
@@ -24,8 +26,15 @@ public class SuggestSearchServiceImpl implements SuggestSearchService {
         return suggestSearchRepository.save(suggestSearch);
     }
 
+
+    @Override
+    public Iterable<SuggestSearch> createBulk(List<SuggestSearch> suggestSearches) {
+        return suggestSearchRepository.saveAll(suggestSearches);
+    }
+
     @Override
     public Page<SuggestSearch> getAllPosts(Pageable pageable) {
         return suggestSearchRepository.findAll(pageable);
     }
+
 }

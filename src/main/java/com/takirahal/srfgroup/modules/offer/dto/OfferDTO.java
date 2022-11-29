@@ -35,6 +35,8 @@ public class OfferDTO  implements Serializable {
 
     private String typeOffer;
 
+    private Boolean available = true;
+
     private Set<OfferImagesDTO> offerImages = new HashSet<>();
 
     private UserDTO user;
