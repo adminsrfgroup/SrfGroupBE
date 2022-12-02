@@ -16,6 +16,9 @@ import com.takirahal.srfgroup.modules.offer.repositories.OfferImagesRepository;
 import com.takirahal.srfgroup.modules.offer.repositories.SellOfferRepository;
 import com.takirahal.srfgroup.modules.offer.services.OfferImagesService;
 import com.takirahal.srfgroup.modules.offer.services.SellOfferService;
+import com.takirahal.srfgroup.modules.suggestion.entities.SuggestSearch;
+import com.takirahal.srfgroup.modules.suggestion.enums.ModuleSuggestion;
+import com.takirahal.srfgroup.modules.suggestion.services.SuggestSearchService;
 import com.takirahal.srfgroup.modules.user.entities.UserOneSignal;
 import com.takirahal.srfgroup.modules.user.exceptioins.AccountResourceException;
 import com.takirahal.srfgroup.modules.user.mapper.UserMapper;
@@ -29,6 +32,7 @@ import com.takirahal.srfgroup.utils.SecurityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.MessageSource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -50,6 +54,9 @@ import java.util.stream.Collectors;
 public class SellOfferServiceImpl implements SellOfferService {
 
     private final Logger log = LoggerFactory.getLogger(SellOfferServiceImpl.class);
+
+    @Value("${elasticsearch.available}")
+    String elasticSearchAvailable;
 
     @Autowired
     SellOfferMapper sellOfferMapper;
@@ -84,9 +91,12 @@ public class SellOfferServiceImpl implements SellOfferService {
     @Autowired
     MessageSource messageSource;
 
+    @Autowired(required=false)
+    SuggestSearchService suggestSearchService;
+
     @Override
     public SellOfferDTO save(SellOfferDTO sellOfferDTO) {
-        log.info("Request to save SellOffer : {}", sellOfferDTO);
+        log.debug("Request to save SellOffer : {}", sellOfferDTO);
 
         if (sellOfferDTO.getId() != null) {
             throw new BadRequestAlertException(RequestUtil.messageTranslate("common.entity_already_exist"));
@@ -117,9 +127,15 @@ public class SellOfferServiceImpl implements SellOfferService {
         // Create Notification and send push notification for favorite users
         createNotificationsForFavoriteUsers();
 
-        // Save Els
-        // Post post = new Post(result.getId().toString(), result.getTitle(), result.getDescription(), ModulePost.offer.toString());
-        // postService.save(post);
+        // Save ElasticSearch
+        if( elasticSearchAvailable.equals("true") ){
+            SuggestSearch suggestSearch = new SuggestSearch();
+            suggestSearch.setId(sellOffer.getId().toString());
+            suggestSearch.setName(sellOffer.getTitle());
+            suggestSearch.setDescription(sellOffer.getDescription());
+            suggestSearch.setModule(ModuleSuggestion.offer.toString());
+            suggestSearchService.save(suggestSearch);
+        }
 
         return result;
     }

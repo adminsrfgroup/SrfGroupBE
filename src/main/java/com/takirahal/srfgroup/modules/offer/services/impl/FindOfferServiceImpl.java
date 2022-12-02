@@ -16,6 +16,9 @@ import com.takirahal.srfgroup.modules.offer.repositories.FindOfferRepository;
 import com.takirahal.srfgroup.modules.offer.repositories.OfferImagesRepository;
 import com.takirahal.srfgroup.modules.offer.services.FindOfferService;
 import com.takirahal.srfgroup.modules.offer.services.OfferImagesService;
+import com.takirahal.srfgroup.modules.suggestion.entities.SuggestSearch;
+import com.takirahal.srfgroup.modules.suggestion.enums.ModuleSuggestion;
+import com.takirahal.srfgroup.modules.suggestion.services.SuggestSearchService;
 import com.takirahal.srfgroup.modules.user.entities.UserOneSignal;
 import com.takirahal.srfgroup.modules.user.exceptioins.AccountResourceException;
 import com.takirahal.srfgroup.modules.user.mapper.UserMapper;
@@ -29,6 +32,7 @@ import com.takirahal.srfgroup.utils.SecurityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.MessageSource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -50,6 +54,9 @@ import java.util.stream.Collectors;
 public class FindOfferServiceImpl implements FindOfferService {
 
     private final Logger log = LoggerFactory.getLogger(FindOfferServiceImpl.class);
+
+    @Value("${elasticsearch.available}")
+    String elasticSearchAvailable;
 
     @Autowired
     FindOfferMapper findOfferMapper;
@@ -84,6 +91,9 @@ public class FindOfferServiceImpl implements FindOfferService {
     @Autowired
     MessageSource messageSource;
 
+    @Autowired(required=false)
+    SuggestSearchService suggestSearchService;
+
     @Override
     public FindOfferDTO save(FindOfferDTO findOfferDTO) {
         log.debug("Request to save FindOffer : {}", findOfferDTO);
@@ -109,9 +119,15 @@ public class FindOfferServiceImpl implements FindOfferService {
         // Create Notification and send push notification for favorite users
         createNotificationsForFavoriteUsers();
 
-        // Save Els
-        // Post post = new Post(result.getId().toString(), result.getTitle(), result.getDescription(), ModulePost.offer.toString());
-        // postService.save(post);
+        // Save ElasticSearch
+        if( elasticSearchAvailable.equals("true") ){
+            SuggestSearch suggestSearch = new SuggestSearch();
+            suggestSearch.setId(findOffer.getId().toString());
+            suggestSearch.setName(findOffer.getTitle());
+            suggestSearch.setDescription(findOffer.getDescription());
+            suggestSearch.setModule(ModuleSuggestion.offer.toString());
+            suggestSearchService.save(suggestSearch);
+        }
 
         return result;
     }

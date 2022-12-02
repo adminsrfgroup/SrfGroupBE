@@ -1,9 +1,9 @@
 package com.takirahal.srfgroup.modules.suggestion.enums;
 
-public enum ModulePost {
+public enum ModuleSuggestion {
     offer("OFFER"),
     user("USER");
 
-    ModulePost(String offer) {
+    ModuleSuggestion(String offer) {
     }
 }

@@ -16,6 +16,9 @@ import com.takirahal.srfgroup.modules.offer.repositories.OfferImagesRepository;
 import com.takirahal.srfgroup.modules.offer.repositories.RentOfferRepository;
 import com.takirahal.srfgroup.modules.offer.services.OfferImagesService;
 import com.takirahal.srfgroup.modules.offer.services.RentOfferService;
+import com.takirahal.srfgroup.modules.suggestion.entities.SuggestSearch;
+import com.takirahal.srfgroup.modules.suggestion.enums.ModuleSuggestion;
+import com.takirahal.srfgroup.modules.suggestion.services.SuggestSearchService;
 import com.takirahal.srfgroup.modules.user.entities.UserOneSignal;
 import com.takirahal.srfgroup.modules.user.exceptioins.AccountResourceException;
 import com.takirahal.srfgroup.modules.user.mapper.UserMapper;
@@ -29,6 +32,7 @@ import com.takirahal.srfgroup.utils.SecurityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.MessageSource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -50,6 +54,9 @@ import java.util.stream.Collectors;
 public class RentOfferServiceImpl implements RentOfferService {
 
     private final Logger log = LoggerFactory.getLogger(RentOfferServiceImpl.class);
+
+    @Value("${elasticsearch.available}")
+    String elasticSearchAvailable;
 
     @Autowired
     RentOfferMapper rentOfferMapper;
@@ -84,6 +91,9 @@ public class RentOfferServiceImpl implements RentOfferService {
     @Autowired
     MessageSource messageSource;
 
+    @Autowired(required=false)
+    SuggestSearchService suggestSearchService;
+
     @Override
     public RentOfferDTO save(RentOfferDTO rentOfferDTO) {
         log.info("Request to save RentOffer : {}", rentOfferDTO);
@@ -108,9 +118,15 @@ public class RentOfferServiceImpl implements RentOfferService {
         // Create Notification and send push notification for favorite users
         createNotificationsForFavoriteUsers();
 
-        // Save Els
-        // Post post = new Post(result.getId().toString(), result.getTitle(), result.getDescription(), ModulePost.offer.toString());
-        // postService.save(post);
+        // Save ElasticSearch
+        if( elasticSearchAvailable.equals("true") ){
+            SuggestSearch suggestSearch = new SuggestSearch();
+            suggestSearch.setId(rentOffer.getId().toString());
+            suggestSearch.setName(rentOffer.getTitle());
+            suggestSearch.setDescription(rentOffer.getDescription());
+            suggestSearch.setModule(ModuleSuggestion.offer.toString());
+            suggestSearchService.save(suggestSearch);
+        }
 
         return result;
     }

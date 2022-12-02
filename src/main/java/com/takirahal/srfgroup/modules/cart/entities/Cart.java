@@ -1,6 +1,5 @@
 package com.takirahal.srfgroup.modules.cart.entities;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.takirahal.srfgroup.modules.offer.entities.SellOffer;
 import com.takirahal.srfgroup.modules.user.entities.User;
 import lombok.AllArgsConstructor;
@@ -10,7 +9,6 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.Instant;
-import java.util.Set;
 
 @Data
 @NoArgsConstructor

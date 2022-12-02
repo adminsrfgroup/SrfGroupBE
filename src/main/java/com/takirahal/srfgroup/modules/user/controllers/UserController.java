@@ -218,7 +218,7 @@ public class UserController {
         log.info("Activating user for activation key {}", key);
         Optional<User> user = userService.activateRegistration(key);
         if (!user.isPresent()) {
-            throw new AccountResourceException("No user was found for this activation key");
+            throw new AccountResourceException(RequestUtil.messageTranslate("signup.user_not_found_with_key_activation"));
         }
         else{
             return new ResponseEntity<>(Boolean.TRUE, HeaderUtil.createAlert("account.message_activation_account_succefully", ""), HttpStatus.OK);

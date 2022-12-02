@@ -36,7 +36,7 @@ public class SellOfferController {
      */
     @PostMapping("create")
     public ResponseEntity<SellOfferDTO> createSellOffer(@RequestBody SellOfferDTO sellOfferDTO){
-        log.debug("REST request to save SellOffer : {}", sellOfferDTO);
+        log.info("REST request to save SellOffer : {}", sellOfferDTO);
         SellOfferDTO result = sellOfferService.save(sellOfferDTO);
         return new ResponseEntity<>(result, HeaderUtil.createAlert("add_offer.message_create_offer_succefull", ""), HttpStatus.CREATED);
     }
@@ -49,7 +49,7 @@ public class SellOfferController {
      */
     @GetMapping("public")
     public ResponseEntity<Page<SellOfferDTO>> getAllOffersForSell(SellOfferFilter sellOfferFilter, Pageable pageable) {
-        log.debug("REST request to get SellOffers public by criteria: {}", sellOfferFilter);
+        log.info("REST request to get SellOffers public by criteria: {}", sellOfferFilter);
         Page<SellOfferDTO> page = sellOfferService.findByCriteria(sellOfferFilter, pageable);
         return new ResponseEntity<>(page, HttpStatus.OK);
     }

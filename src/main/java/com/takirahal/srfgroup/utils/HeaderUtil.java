@@ -1,12 +1,10 @@
 package com.takirahal.srfgroup.utils;
 
-import com.takirahal.srfgroup.constants.SrfGroupConstants;
 import org.springframework.http.HttpHeaders;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
-import java.util.Locale;
 
 public class HeaderUtil {
 

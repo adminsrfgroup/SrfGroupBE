@@ -65,7 +65,7 @@ public class CartServiceImpl implements CartService {
      */
     @Override
     public CartDTO saveAndUpdate(CartDTO cartDTO) {
-        log.debug("Request to save SellOffer : {}", cartDTO);
+        log.debug("Request to save Cart : {}", cartDTO);
 
         if (cartDTO.getId() != null) {
             throw new BadRequestAlertException(RequestUtil.messageTranslate("common.entity_already_exist"));
@@ -84,6 +84,10 @@ public class CartServiceImpl implements CartService {
 
         if( sellOfferOption.get().getAmount()==null ){
             throw new BadRequestAlertException(RequestUtil.messageTranslate("details_offer.missing_amount"));
+        }
+
+        if( sellOfferOption.get().getAvailable()==null || !sellOfferOption.get().getAvailable() ){
+            throw new BadRequestAlertException(RequestUtil.messageTranslate("details_offer.not_available_offer"));
         }
 
         // Update

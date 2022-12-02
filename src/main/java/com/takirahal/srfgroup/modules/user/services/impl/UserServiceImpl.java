@@ -185,7 +185,7 @@ public class UserServiceImpl implements UserService {
             RequestUtil.getHeaderAttribute(SrfGroupConstants.SOURCE_CONNECTED_DEVICE).equals(SourceConnectedDevice.MOBILE_BROWSER.toString())){
 
             // Send Activation Email with link activation
-            mailService.sendActivationEmail(user, false);
+            mailService.sendActivationEmail(user, true);
         }
         else{
             // Send Activation Email with only code activation

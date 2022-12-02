@@ -13,14 +13,17 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
-@RequestMapping("/api/suggest-search/")
+@RequestMapping("/api/suggest-search/repository/")
 @ConditionalOnProperty(
         value="elasticsearch.available",
         havingValue = "true",
         matchIfMissing = false)
-public class SuggestSearchController {
-    private final Logger log = LoggerFactory.getLogger(SuggestSearchController.class);
+public class SuggestSearchRepositoryController {
+
+    private final Logger log = LoggerFactory.getLogger(SuggestSearchRepositoryController.class);
 
     @Autowired
     SuggestSearchService suggestSearchService;
@@ -31,9 +34,17 @@ public class SuggestSearchController {
      * @return
      */
     @PostMapping("public/create")
-    public ResponseEntity<SuggestSearch> createPost(@RequestBody SuggestSearch suggestSearch){
+    public ResponseEntity<SuggestSearch> createSuggestSearch(@RequestBody SuggestSearch suggestSearch){
         log.debug("REST request to save SuggestSearch : {}", suggestSearch);
         SuggestSearch result = suggestSearchService.save(suggestSearch);
+        return new ResponseEntity<>(result, HeaderUtil.createAlert("add_offer.message_create_offer_succefull", ""), HttpStatus.CREATED);
+    }
+
+
+    @PostMapping("public/create-bulk")
+    public ResponseEntity<Iterable<SuggestSearch>> createBulkSuggestSearch(@RequestBody List<SuggestSearch> suggestSearches){
+        log.debug("REST request to save bulk SuggestSearch : {}", suggestSearches);
+        Iterable<SuggestSearch> result = suggestSearchService.createBulk(suggestSearches);
         return new ResponseEntity<>(result, HeaderUtil.createAlert("add_offer.message_create_offer_succefull", ""), HttpStatus.CREATED);
     }
 

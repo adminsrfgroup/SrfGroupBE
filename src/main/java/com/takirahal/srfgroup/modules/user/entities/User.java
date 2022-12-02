@@ -82,6 +82,7 @@ public class User implements Serializable {
     @Column(name = "source_connected_device", length = 20)
     private String sourceConnectedDevice;
 
+    @JsonIgnore
     @NotBlank
     @Size(max = 100)
     private String password;

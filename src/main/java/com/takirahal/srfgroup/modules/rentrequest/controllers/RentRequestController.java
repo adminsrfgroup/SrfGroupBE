@@ -28,7 +28,7 @@ public class RentRequestController {
     RentRequestService rentRequestService;
 
     @PostMapping("create")
-    public ResponseEntity<RentRequestDTO> createCart(@RequestBody RentRequestDTO rentRequestDTO) {
+    public ResponseEntity<RentRequestDTO> createRentRequest(@RequestBody RentRequestDTO rentRequestDTO) {
         log.info("REST request to save RentRequest : {}", rentRequestDTO);
         RentRequestDTO result = rentRequestService.save(rentRequestDTO);
         return new ResponseEntity<>(result, HttpStatus.CREATED);

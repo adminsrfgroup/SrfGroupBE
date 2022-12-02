@@ -25,6 +25,7 @@ import com.takirahal.srfgroup.modules.user.repositories.UserRepository;
 import com.takirahal.srfgroup.modules.user.services.UserOneSignalService;
 import com.takirahal.srfgroup.security.UserPrincipal;
 import com.takirahal.srfgroup.utils.CommonUtil;
+import com.takirahal.srfgroup.utils.RequestUtil;
 import com.takirahal.srfgroup.utils.SecurityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -75,7 +76,6 @@ public class RentRequestServicesImpl implements RentRequestService {
     public RentRequestDTO save(RentRequestDTO rentRequestDTO) {
         log.debug("Request to save RentRequest : {}", rentRequestDTO);
 
-        // Long curentUserId = SecurityUtils.getIdByCurrentUser();
         UserPrincipal currentUser = SecurityUtils.getCurrentUser().orElseThrow(() -> new AccountResourceException("Current user login not found"));
 
         if( rentRequestDTO.getReceiverUser().getId().equals(currentUser.getId())){
@@ -88,7 +88,13 @@ public class RentRequestServicesImpl implements RentRequestService {
         userDTO.setId(currentUser.getId());
 
         RentOffer rentOffer = rentOfferMapper.toEntity(rentRequestDTO.getRentOffer());
+
         Optional<RentRequest> rentRequest = rentRequestRepository.findByRentOfferAndSenderUser(rentOffer, user);
+
+        if( rentRequest.get().getRentOffer().getAvailable()==null || !rentRequest.get().getRentOffer().getAvailable() ){
+            throw new BadRequestAlertException(RequestUtil.messageTranslate("details_offer.not_available_offer"));
+        }
+
         if( !rentRequest.isPresent() ){
             rentRequestDTO.setSenderUser(userDTO);
             rentRequestDTO.setSendDate(Instant.now());
