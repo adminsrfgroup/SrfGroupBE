@@ -26,6 +26,21 @@
         <openapi-ui.version>1.6.11</openapi-ui.version>
         <io.springfox.version>2.8.0</io.springfox.version>
         <spring-cloud.version>2020.0.3</spring-cloud.version>
+
+        <!-- test result measurements -->
+        <project.test.result.directory>${project.build.directory}/test-results</project.test.result.directory>
+        <sonar.host.url>http://localhost:9000</sonar.host.url>
+        <sonar.login>admin</sonar.login>
+        <sonar.password>sonar</sonar.password>
+        <sonar.java.codeCoveragePlugin>jacoco</sonar.java.codeCoveragePlugin>
+        <sonar.coverage.jacoco.xmlReportPaths>${project.test.result.directory}/jacoco/jacoco.xml</sonar.coverage.jacoco.xmlReportPaths>
+        <sonar.exclusions>
+            **/*.xml
+        </sonar.exclusions>
+        <sonar.coverage.exclusions>
+            **/qualitymeasurementsample/*
+        </sonar.coverage.exclusions>
+
     </properties>
     <dependencies>
         <dependency>

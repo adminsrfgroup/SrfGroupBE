@@ -29,7 +29,8 @@ public class CorsCustomConfig {
 
         UrlBasedCorsConfigurationSource corsConfigurationSource =
                 new UrlBasedCorsConfigurationSource();
-        corsConfigurationSource.registerCorsConfiguration("/**", config);
+        corsConfigurationSource.registerCorsConfiguration("/api/**", config);
+        // corsConfigurationSource.registerCorsConfiguration("/**", config);
         return new CorsFilter(corsConfigurationSource);
     }
 }

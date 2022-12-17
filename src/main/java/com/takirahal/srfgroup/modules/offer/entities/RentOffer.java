@@ -15,7 +15,6 @@ import java.time.Instant;
 @Entity
 @DiscriminatorValue("RentOffer")
 public class RentOffer extends Offer {
-    private static final long serialVersionUID = 1L;
 
     @Column(name = "amount")
     private Double amount;

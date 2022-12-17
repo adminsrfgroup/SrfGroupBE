@@ -13,12 +13,6 @@ import javax.persistence.*;
 @Entity
 @DiscriminatorValue("FindOffer")
 public class FindOffer extends Offer {
-    private static final long serialVersionUID = 1L;
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
-    @SequenceGenerator(name = "sequenceGenerator")
-    private Long id;
 
     @Column(name = "amount")
     private Double amount;

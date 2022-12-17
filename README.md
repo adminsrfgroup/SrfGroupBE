@@ -65,7 +65,9 @@ change cmd: heroku config:set MAVEN_CUSTOM_GOALS="clean install -Pprod -DskipTes
     
 ## SonarQube
 
-mvn sonar:sonar -Dsonar.host.url=http://localhost:9000 -Dsonar.login=admin -Dsonar.password=sonar
+mvn clean install -DskipTests sonar:sonar
+
+    mvn sonar:sonar -Dsonar.host.url=http://localhost:9000 -Dsonar.login=admin -Dsonar.password=sonar
 
 
 
