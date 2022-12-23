@@ -21,8 +21,8 @@ import java.util.Set;
 @Table(name = "sg_order")
 public class Order implements Serializable {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
-    @SequenceGenerator(name = "sequenceGenerator", sequenceName = "sequence_name_order", allocationSize = 1, initialValue = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGeneratorOrder")
+    @SequenceGenerator(name = "sequenceGeneratorOrder", sequenceName = "sequence_name_order", allocationSize = 1, initialValue = 1)
     private Long id;
 
     @Column(name = "number_of_products")

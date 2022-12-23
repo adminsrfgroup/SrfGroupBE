@@ -1,27 +1,27 @@
 
--- Add all authorities
-INSERT INTO sg_authority (name)
-SELECT 'ROLE_SUPER_ADMIN'
+-- -- Add all authorities
+
+INSERT INTO sg_authority (id,name)
+SELECT '1','ROLE_MODERATOR'
 WHERE NOT EXISTS
-    (SELECT name
+    (SELECT *
      FROM sg_authority
-     WHERE name = 'ROLE_SUPER_ADMIN');
+     WHERE id = '1' AND name='ROLE_MODERATOR');
 
-INSERT INTO sg_authority (name)
-SELECT 'ROLE_ADMIN'
+INSERT INTO sg_authority (id,name)
+SELECT '2','ROLE_ADMIN'
 WHERE NOT EXISTS
-    (SELECT name
+    (SELECT *
      FROM sg_authority
-     WHERE name = 'ROLE_ADMIN');
+     WHERE id = '2' AND name='ROLE_ADMIN');
 
-INSERT INTO sg_authority (name)
-SELECT 'ROLE_USER'
+
+INSERT INTO sg_authority (id,name)
+SELECT '3','ROLE_USER'
 WHERE NOT EXISTS
-    (SELECT name
+    (SELECT *
      FROM sg_authority
-     WHERE name = 'ROLE_USER');
-
-
+     WHERE id = '3' AND name='ROLE_USER');
 
 
 -- Add super admin user
@@ -35,11 +35,11 @@ WHERE NOT EXISTS
 
 
 
--- Add user_authority
+-- -- Add user_authority
 
-INSERT INTO user_authority (user_id,authority_name)
-SELECT '1','ROLE_SUPER_ADMIN'
+INSERT INTO user_authorities (user_id,authority_id)
+SELECT '1','1'
 WHERE NOT EXISTS
     (SELECT *
-     FROM user_authority
-     WHERE user_id = '1' AND authority_name='ROLE_SUPER_ADMIN');
+     FROM user_authorities
+     WHERE user_id = '1' AND authority_id='1');

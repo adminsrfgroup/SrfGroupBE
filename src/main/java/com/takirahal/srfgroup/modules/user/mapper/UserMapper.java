@@ -9,7 +9,7 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Named;
 
-@Mapper(componentModel = "spring", uses = {})
+@Mapper(componentModel = "spring", uses = {AuthorityMapper.class})
 public interface UserMapper extends EntityMapper<UserDTO, User> {
 
     @Named("currentUserPrincipal")
@@ -51,7 +51,7 @@ public interface UserMapper extends EntityMapper<UserDTO, User> {
     @Mapping(target = "imageUrl", source = "imageUrl")
     @Mapping(target = "phone", source = "phone")
     @Mapping(target = "sourceConnectedDevice", source = "sourceConnectedDevice")
-    @Mapping(target = "authorities", source = "authorities")
+    @Mapping(target = "authorities", source = "authorities", qualifiedByName = "idName")
     @Mapping(target = "address", source = "address")
     @Mapping(target = "registerDate", source = "registerDate")
     @Mapping(target = "blocked", source = "blocked")

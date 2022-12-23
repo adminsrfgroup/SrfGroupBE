@@ -20,8 +20,8 @@ public class DescriptionAddOffer implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @SequenceGenerator(name = "sequenceGenerator", sequenceName = "sequence_name_description_offer", allocationSize = 1, initialValue = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
+    @SequenceGenerator(name = "sequenceGeneratorDescriptionAddOffer", sequenceName = "sequence_name_description_offer", allocationSize = 1, initialValue = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGeneratorDescriptionAddOffer")
     private Long id;
 
     @Lob

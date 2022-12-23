@@ -18,8 +18,8 @@ public class ReportCommentOffer implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
-    @SequenceGenerator(name = "sequenceGenerator")
+    @SequenceGenerator(name = "sequenceGeneratorReportCommentOffer", sequenceName = "sequence_name_report_comment_offer", allocationSize = 1, initialValue = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGeneratorReportCommentOffer")
     private Long id;
 
     @ManyToOne

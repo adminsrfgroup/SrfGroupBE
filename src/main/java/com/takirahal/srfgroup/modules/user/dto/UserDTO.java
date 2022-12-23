@@ -39,7 +39,7 @@ public class UserDTO  implements Serializable {
 
     private String sourceConnectedDevice;
 
-    private Set<Authority> authorities;
+    private Set<AuthorityDTO> authorities;
 
     private AddressDTO address;
 

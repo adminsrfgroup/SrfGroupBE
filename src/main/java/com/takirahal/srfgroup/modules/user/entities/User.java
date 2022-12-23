@@ -23,7 +23,10 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "sg_user")
+@Table(name = "sg_user",
+        uniqueConstraints = {
+                @UniqueConstraint(columnNames = "email")
+})
 public class User implements Serializable {
     @Id
     @SequenceGenerator(name = "sequenceGenerator", sequenceName = "sequence_name_user", allocationSize = 1, initialValue = 2)
@@ -97,9 +100,9 @@ public class User implements Serializable {
     @JsonIgnore
     @ManyToMany
     @JoinTable(
-            name = "user_authority",
+            name = "user_authorities",
             joinColumns = { @JoinColumn(name = "user_id", referencedColumnName = "id") },
-            inverseJoinColumns = { @JoinColumn(name = "authority_name", referencedColumnName = "name") }
+            inverseJoinColumns = { @JoinColumn(name = "authority_id", referencedColumnName = "id") }
     )
     @BatchSize(size = 20)
     private Set<Authority> authorities = new HashSet<>();

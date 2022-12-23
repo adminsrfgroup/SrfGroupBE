@@ -42,7 +42,7 @@ public class AboutUsController {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PostMapping("/admin")
-    public ResponseEntity<AboutUsDTO> createAboutUs(@RequestBody AboutUsDTO aboutUsDTO) throws URISyntaxException {
+    public ResponseEntity<AboutUsDTO> createAboutUs(@RequestBody AboutUsDTO aboutUsDTO){
         log.info("REST request to save AboutUs : {}", aboutUsDTO);
         AboutUsDTO result = aboutUsService.save(aboutUsDTO);
         return new ResponseEntity<>(result, HttpStatus.CREATED);

@@ -118,3 +118,6 @@ $ docker run build-srf-group
 
 # Prespective
 Search global on website (with elastic and index)
+
+# Just Run
+$ just run

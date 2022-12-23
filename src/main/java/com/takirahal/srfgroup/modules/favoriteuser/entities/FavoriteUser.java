@@ -19,8 +19,8 @@ public class FavoriteUser {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
-    @SequenceGenerator(name = "sequenceGenerator")
+    @SequenceGenerator(name = "sequenceGeneratorFavoriteUser", sequenceName = "sequence_name_favorite_user", allocationSize = 1, initialValue = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGeneratorFavoriteUser")
     private Long id;
 
     @Column(name = "favorite_date")

@@ -16,8 +16,8 @@ import java.io.Serializable;
 public class TopHomeSlidesImage implements Serializable {
 
     @Id
-    @SequenceGenerator(name = "sequenceGenerator", sequenceName = "sequence_name_top_home_slides_images", allocationSize = 1, initialValue = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
+    @SequenceGenerator(name = "sequenceGeneratorTopHomeSlidesImage", sequenceName = "sequence_name_top_home_slides_images", allocationSize = 1, initialValue = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGeneratorTopHomeSlidesImage")
     private Long id;
 
     @Lob

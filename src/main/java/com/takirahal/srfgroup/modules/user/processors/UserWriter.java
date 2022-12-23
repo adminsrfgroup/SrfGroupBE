@@ -2,6 +2,7 @@ package com.takirahal.srfgroup.modules.user.processors;
 
 import com.takirahal.srfgroup.constants.AuthoritiesConstants;
 import com.takirahal.srfgroup.modules.user.entities.Authority;
+import com.takirahal.srfgroup.modules.user.enums.EAuthority;
 import com.takirahal.srfgroup.modules.user.repositories.UserRepository;
 import com.takirahal.srfgroup.modules.user.entities.User;
 import org.springframework.batch.item.ItemWriter;
@@ -24,7 +25,7 @@ public class UserWriter implements ItemWriter<User> {
             User user = list.get(i);
             Set<Authority> authorities = new HashSet<>();
             Authority authority = new Authority();
-            authority.setName(AuthoritiesConstants.SUPER_ADMIN);
+            authority.setName(EAuthority.ROLE_MODERATOR);
             authorities.add(authority);
             user.setAuthorities(authorities);
             userRepository.save(user);

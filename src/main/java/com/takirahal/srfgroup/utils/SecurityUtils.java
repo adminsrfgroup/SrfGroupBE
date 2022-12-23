@@ -2,6 +2,7 @@ package com.takirahal.srfgroup.utils;
 
 import com.takirahal.srfgroup.constants.AuthoritiesConstants;
 import com.takirahal.srfgroup.exceptions.UnauthorizedException;
+import com.takirahal.srfgroup.modules.permission.enums.EPermission;
 import com.takirahal.srfgroup.modules.user.entities.User;
 import com.takirahal.srfgroup.modules.user.exceptioins.AccountResourceException;
 import com.takirahal.srfgroup.security.UserPrincipal;
@@ -98,7 +99,7 @@ public final class SecurityUtils {
      */
     public static boolean isAuthenticated() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        return authentication != null && getAuthorities(authentication).noneMatch(AuthoritiesConstants.ANONYMOUS::equals);
+        return authentication != null && getAuthorities().noneMatch(AuthoritiesConstants.ANONYMOUS::equals);
     }
 
     /**
@@ -109,10 +110,14 @@ public final class SecurityUtils {
      */
     public static boolean hasCurrentUserThisAuthority(String authority) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        return authentication != null && getAuthorities(authentication).anyMatch(authority::equals);
+        return authentication != null && getAuthorities().anyMatch(authority::equals);
     }
 
-    private static Stream<String> getAuthorities(Authentication authentication) {
+    public static Stream<String> getAuthorities() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if(authentication == null ){
+            return null;
+        }
         return authentication.getAuthorities().stream().map(GrantedAuthority::getAuthority);
     }
 
@@ -126,6 +131,7 @@ public final class SecurityUtils {
      * @param user
      */
     public static void protectedAdminAndSuperAdmin(User user){
+        /*
         user.getAuthorities().stream().forEach(authority -> {
             Authority authorityUserSA = new Authority();
             authorityUserSA.setName(AuthoritiesConstants.SUPER_ADMIN);
@@ -137,10 +143,12 @@ public final class SecurityUtils {
                 throw new UnauthorizedException("User Admin / Super admin");
             }
         });
+        */
     }
 
 
     public static void protectedSuperAdmin(User user){
+        /*
         user.getAuthorities().stream().forEach(authority -> {
             Authority authorityUserSA = new Authority();
             authorityUserSA.setName(AuthoritiesConstants.SUPER_ADMIN);
@@ -148,5 +156,6 @@ public final class SecurityUtils {
                 throw new UnauthorizedException("User super admin");
             }
         });
+        */
     }
 }

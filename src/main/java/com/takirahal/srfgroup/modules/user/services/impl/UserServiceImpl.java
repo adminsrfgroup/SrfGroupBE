@@ -15,13 +15,17 @@ import com.takirahal.srfgroup.modules.notification.entities.Notification;
 import com.takirahal.srfgroup.modules.notification.enums.ModuleNotification;
 import com.takirahal.srfgroup.modules.notification.repositories.NotificationRepository;
 import com.takirahal.srfgroup.modules.notification.services.NotificationService;
+import com.takirahal.srfgroup.modules.permission.enums.EPermission;
 import com.takirahal.srfgroup.modules.user.dto.*;
 import com.takirahal.srfgroup.exceptions.BadRequestAlertException;
 import com.takirahal.srfgroup.modules.user.dto.filter.UserFilter;
 import com.takirahal.srfgroup.modules.user.entities.UserOneSignal;
 import com.takirahal.srfgroup.modules.user.enums.BlockedUser;
+import com.takirahal.srfgroup.modules.user.enums.EAuthority;
 import com.takirahal.srfgroup.modules.user.exceptioins.InvalidPasswordException;
 import com.takirahal.srfgroup.modules.user.exceptioins.UserNotActivatedException;
+import com.takirahal.srfgroup.modules.user.mapper.AuthorityMapper;
+import com.takirahal.srfgroup.modules.user.services.AuthorityService;
 import com.takirahal.srfgroup.modules.user.services.UserOneSignalService;
 import com.takirahal.srfgroup.modules.websocket.models.ConnectedUser;
 import com.takirahal.srfgroup.security.CustomUserDetailsService;
@@ -138,6 +142,12 @@ public class UserServiceImpl implements UserService {
     @Autowired
     FavoriteUserService favoriteUserService;
 
+    @Autowired
+    AuthorityMapper authorityMapper;
+
+    @Autowired
+    AuthorityService authorityService;
+
     @Override
     public User registerUser(RegisterDTO registerDTO) {
         log.debug("Request to register new user : {}", registerDTO.getEmail());
@@ -165,7 +175,7 @@ public class UserServiceImpl implements UserService {
         newUser.setLangKey(RequestUtil.getHeaderAttribute(SrfGroupConstants.LANG_KEY));
 
         Set<Authority> authorities = new HashSet<>();
-        authorityRepository.findById(AuthoritiesConstants.USER).ifPresent(authorities::add);
+        authorityRepository.findByName(EAuthority.ROLE_USER).ifPresent(authorities::add);
         newUser.setAuthorities(authorities);
         User user = userRepository.save(newUser);
 
@@ -424,9 +434,10 @@ public class UserServiceImpl implements UserService {
         userDTO.setLastName(googlePlusVM.getProfileObj().getGivenName());
         userDTO.setImageUrl(googlePlusVM.getProfileObj().getImageUrl());
         userDTO.setSourceConnectedDevice(googlePlusVM.getSourceConnectedDevice());
-        Set<Authority> authorities = new HashSet<>();
-        Authority authority = new Authority();
-        authority.setName(AuthoritiesConstants.USER);
+        Set<AuthorityDTO> authorities = new HashSet<>();
+        AuthorityDTO authority = new AuthorityDTO();
+        authority.setId(3);
+        authority.setName(EAuthority.ROLE_USER);
         authorities.add(authority);
         userDTO.setAuthorities(authorities);
 
@@ -500,9 +511,10 @@ public class UserServiceImpl implements UserService {
         userDTO.setLastName("");
         userDTO.setImageUrl(facebookVM.getPicture().getData().getUrl());
         userDTO.setSourceConnectedDevice(facebookVM.getSourceConnectedDevice());
-        Set<Authority> authorities = new HashSet<>();
-        Authority authority = new Authority();
-        authority.setName(AuthoritiesConstants.USER);
+        Set<AuthorityDTO> authorities = new HashSet<>();
+        AuthorityDTO authority = new AuthorityDTO();
+        authority.setId(3);
+        authority.setName(EAuthority.ROLE_USER);
         authorities.add(authority);
         userDTO.setAuthorities(authorities);
 
@@ -609,14 +621,15 @@ public class UserServiceImpl implements UserService {
     @Override
     public void blockedUserByAdmin(Long id, String blockUnblock) {
         log.debug("Request to blocked user by admin : {} - {}", id, blockUnblock);
+
+        // Check Permission
+        authorityService.checkForPermissions(EPermission.BLOCKED_USER);
+
         Optional<User> user = userRepository.findById(id);
         if(!user.isPresent()){
             log.error("Exception to block user: {}");
             throw new ResouorceNotFoundException("User not found");
         }
-
-        // Protected Admin / Super Admin: User should not Admin / Super Admin
-        protectedAdminAndSuperAdmin(user.get());
 
         if(blockUnblock.equals("true")){
             user.get().setBlocked(BlockedUser.BlockedByAdmin.toString());
@@ -627,6 +640,7 @@ public class UserServiceImpl implements UserService {
         userRepository.save(user.get());
     }
 
+    /*
     @Override
     public void addRemoveAdmin(Long id, String addRemove) {
         log.debug("Request to add/remove admin : {} - {}", id, addRemove);
@@ -638,6 +652,7 @@ public class UserServiceImpl implements UserService {
         // Protected Super Admin
         protectedSuperAdmin(user.get());
 
+        /
         if(addRemove.equals("true")){
             Set<Authority> authorities = user.get().getAuthorities();
 
@@ -653,15 +668,17 @@ public class UserServiceImpl implements UserService {
 
             Set<Authority> authorities = new HashSet<>();
             Authority authority = new Authority();
-            authority.setName(AuthoritiesConstants.USER);
+            authority.setName(EAuthority.ROLE_USER);
             authorities.add(authority);
 
             user.get().setAuthorities(authorities);
 
             createAddRemoveAdminNotification(user.get(), false);
         }
+        /
         userRepository.save(user.get());
     }
+    */
 
     @Override
     public String signinGooglePlusOneTap(GooglePlusVM googlePlusVM) throws IOException{
@@ -684,9 +701,10 @@ public class UserServiceImpl implements UserService {
         userDTO.setLastName(googlePlusVM.getProfileObj().getGivenName());
         userDTO.setImageUrl(googlePlusVM.getProfileObj().getImageUrl());
         userDTO.setSourceConnectedDevice(googlePlusVM.getSourceConnectedDevice());
-        Set<Authority> authorities = new HashSet<>();
-        Authority authority = new Authority();
-        authority.setName(AuthoritiesConstants.USER);
+        Set<AuthorityDTO> authorities = new HashSet<>();
+        AuthorityDTO authority = new AuthorityDTO();
+        authority.setId(3);
+        authority.setName(EAuthority.ROLE_USER);
         authorities.add(authority);
         userDTO.setAuthorities(authorities);
 
@@ -758,11 +776,19 @@ public class UserServiceImpl implements UserService {
         return profileFavoriteUserDTO;
     }
 
+    @Override
+    public void updateUserAuthority(Long id, Set<Authority> authorities) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new ResouorceNotFoundException("Not found user with id "+id));
+        user.setAuthorities(authorities);
+        userRepository.save(user);
+    }
+
     private Optional<User> updateUserSocialMedia(UserDTO userDTO, String email){
         Optional<User> userExist = userRepository.findOneByEmailIgnoreCase(email);
         if (userExist.isPresent()) {
             // Update user
-            userDTO.setAuthorities(userExist.get().getAuthorities());
+            userDTO.setAuthorities(authorityMapper.toDtoIdSet(userExist.get().getAuthorities()));
             userDTO.setId(userExist.get().getId());
             userDTO.setBlocked(userExist.get().getBlocked());
             userDTO.setAddress(addressMapper.toDto(userExist.get().getAddress()));

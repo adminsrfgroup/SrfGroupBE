@@ -20,8 +20,8 @@ public class Cart implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
-    @SequenceGenerator(name = "sequenceGenerator", sequenceName = "sequence_name_cart", allocationSize = 1, initialValue = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGeneratorCart")
+    @SequenceGenerator(name = "sequenceGeneratorCart", sequenceName = "sequence_name_cart", allocationSize = 1, initialValue = 1)
     private Long id;
 
     @Column(name = "quantity")

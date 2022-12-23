@@ -25,7 +25,7 @@ public class CustomUserDetailsService implements UserDetailsService {
             throws UsernameNotFoundException {
 
         return userRepository
-                .findOneWithAuthoritiesByEmailIgnoreCase(usernameOrEmail)
+                .findOneByEmailIgnoreCase(usernameOrEmail)
                 .map(user -> createSpringSecurityUser(usernameOrEmail, user))
                 .orElseThrow(() -> new UsernameNotFoundException("User with email " + usernameOrEmail + " was not found in the database"));
     }

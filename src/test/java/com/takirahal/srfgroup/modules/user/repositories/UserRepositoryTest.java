@@ -3,6 +3,7 @@ package com.takirahal.srfgroup.modules.user.repositories;
 import com.takirahal.srfgroup.constants.AuthoritiesConstants;
 import com.takirahal.srfgroup.modules.user.entities.Authority;
 import com.takirahal.srfgroup.modules.user.entities.User;
+import com.takirahal.srfgroup.modules.user.enums.EAuthority;
 import com.takirahal.srfgroup.utils.RandomUtil;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -49,7 +50,7 @@ class UserRepositoryTest {
 
         Set<Authority> authorities = new HashSet<>();
         Authority authority = new Authority();
-        authority.setName(AuthoritiesConstants.USER);
+        authority.setName(EAuthority.ROLE_USER);
         authorities.add(authority);
         user.setAuthorities(authorities);
         userRepository.save(user);
@@ -81,7 +82,7 @@ class UserRepositoryTest {
 
         Set<Authority> authorities = new HashSet<>();
         Authority authority = new Authority();
-        authority.setName(AuthoritiesConstants.USER);
+        authority.setName(EAuthority.ROLE_USER);
         authorities.add(authority);
         user.setAuthorities(authorities);
         userRepository.save(user);

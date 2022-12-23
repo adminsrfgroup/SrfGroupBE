@@ -247,7 +247,8 @@ public class UserController {
     @GetMapping("admin/profile/{id}")
     public ResponseEntity<UserDTO> getProfileForAdmin(@PathVariable Long id) {
         log.info("REST request to get User : {}", id);
-        return new ResponseEntity<>(userService.findByIdForAdmin(id), HttpStatus.OK);
+        UserDTO userDTO = userService.findByIdForAdmin(id);
+        return new ResponseEntity<>(userDTO, HttpStatus.OK);
     }
 
     @GetMapping("public/profile-favorite-user/{id}")
@@ -386,7 +387,7 @@ public class UserController {
      * @param id
      * @return
      */
-    @PostMapping("admin/blocked-user/{id}")
+    @PostMapping("blocked-user/{id}")
     public ResponseEntity<String> blockedUserByAdmin(@PathVariable Long id, @RequestBody String blockUnblock) {
         log.info("REST request to blocked user by admin : {} - {}", id, blockUnblock);
         userService.blockedUserByAdmin(id, blockUnblock);
@@ -399,13 +400,13 @@ public class UserController {
      * @param id
      * @return
      */
-    @PostMapping("super-admin/add-remove-admin/{id}")
-    @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.SUPER_ADMIN + "\")")
-    public ResponseEntity<String> addRemoveAdmin(@PathVariable Long id, @RequestBody String addRemove) {
-        log.info("REST request to add/remove admin : {} - {}", id, addRemove);
-        userService.addRemoveAdmin(id, addRemove);
-        return new ResponseEntity<>("true", HttpStatus.CREATED);
-    }
+//    @PostMapping("super-admin/add-remove-admin/{id}")
+//    @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.SUPER_ADMIN + "\")")
+//    public ResponseEntity<String> addRemoveAdmin(@PathVariable Long id, @RequestBody String addRemove) {
+//        log.info("REST request to add/remove admin : {} - {}", id, addRemove);
+//        userService.addRemoveAdmin(id, addRemove);
+//        return new ResponseEntity<>("true", HttpStatus.CREATED);
+//    }
 
     /**
      *
