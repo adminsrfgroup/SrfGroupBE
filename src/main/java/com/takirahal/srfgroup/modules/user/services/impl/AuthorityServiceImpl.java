@@ -83,7 +83,7 @@ public class AuthorityServiceImpl implements AuthorityService {
             auth.getPermissions().stream()
                     .filter(perm -> perm.getName().equals(permission))
                     .findFirst()
-                    .orElseThrow(() -> new UnauthorizedException("Aunauthorized action"));
+                    .orElseThrow(() -> new UnauthorizedException("Unauthorized action"));
         });
     }
 }

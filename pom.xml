@@ -26,6 +26,8 @@
         <openapi-ui.version>1.6.11</openapi-ui.version>
         <io.springfox.version>2.8.0</io.springfox.version>
         <spring-cloud.version>2020.0.3</spring-cloud.version>
+        <liquibase.version>4.15.0</liquibase.version>
+        <liquibase-hibernate5.version>4.15.0</liquibase-hibernate5.version>
 
         <!-- test result measurements -->
         <project.test.result.directory>${project.build.directory}/test-results</project.test.result.directory>
@@ -117,6 +119,11 @@
             <groupId>org.mapstruct</groupId>
             <artifactId>mapstruct</artifactId>
             <version>${org.mapstruct.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-devtools</artifactId>
         </dependency>
 
         <!-- springdoc-openapi -->
@@ -249,6 +256,18 @@
             <version>2.14.1</version>
         </dependency>
 
+        <!-- liquibase -->
+        <dependency>
+            <groupId>org.liquibase</groupId>
+            <artifactId>liquibase-core</artifactId>
+            <version>${liquibase.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.liquibase.ext</groupId>
+            <artifactId>liquibase-hibernate5</artifactId>
+            <version>${liquibase-hibernate5.version}</version>
+        </dependency>
+
         <!-- Exif image -->
         <dependency>
             <groupId>com.drewnoakes</groupId>
@@ -319,6 +338,38 @@
                 <groupId>org.sonarsource.scanner.maven</groupId>
                 <artifactId>sonar-maven-plugin</artifactId>
                 <version>3.7.0.1746</version>
+            </plugin>
+
+            <plugin>
+                <groupId>org.liquibase</groupId>
+                <artifactId>liquibase-maven-plugin</artifactId>
+                <version>${liquibase.version}</version>
+                <configuration>
+                    <propertyFile>liquibase.properties</propertyFile>
+                    <propertyFileWillOverride>true</propertyFileWillOverride>
+
+<!--                    <changeLogFile>${project.basedir}/src/main/resources/liquibase/master.xml</changeLogFile>-->
+<!--                    <diffChangeLogFile>${project.basedir}/src/main/resources/liquibase/changelog/${maven.build.timestamp}_changelog.xml</diffChangeLogFile>-->
+                    <logging>debug</logging>
+                    <contexts>!test</contexts>
+                </configuration>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.liquibase.ext</groupId>
+                        <artifactId>liquibase-hibernate5</artifactId>
+                        <version>${liquibase-hibernate5.version}</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>org.springframework</groupId>
+                        <artifactId>spring-beans</artifactId>
+                        <version>6.0.2</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>org.springframework.data</groupId>
+                        <artifactId>spring-data-jpa</artifactId>
+                        <version>2.7.6</version>
+                    </dependency>
+                </dependencies>
             </plugin>
 
             <!-- Pour contourner un bug à la génération par Spring-boot 2.4.x :

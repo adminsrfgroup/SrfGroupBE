@@ -16,7 +16,6 @@ import org.springframework.security.config.annotation.authentication.configurati
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -106,7 +105,8 @@ public class SecurityConfig {
                         "/swagger-ui/**",
                         "/v3/**",
                         "/webjars/**",
-                        "/actuator/**").permitAll()
+                        "/actuator/**",
+                        "/api/management/**").permitAll()
                 .antMatchers("/api/auth/**").permitAll()
                 .antMatchers("/api/customer/**").permitAll()
                 .antMatchers("/api/user/public/**").permitAll()
@@ -123,19 +123,19 @@ public class SecurityConfig {
                 .antMatchers("/api/post/public/**").permitAll()
                 .antMatchers("/api/suggest-search/**").permitAll()
                 .antMatchers("/api/monitoring/**").permitAll()
-                .antMatchers("/api/faq/admin/**").hasAnyAuthority(AuthoritiesConstants.SUPER_ADMIN, AuthoritiesConstants.ADMIN)
-                .antMatchers("/api/aboutus/admin/**").hasAnyAuthority(AuthoritiesConstants.SUPER_ADMIN, AuthoritiesConstants.ADMIN)
-                .antMatchers("/api/addres/admin/**").hasAnyAuthority(AuthoritiesConstants.SUPER_ADMIN, AuthoritiesConstants.ADMIN)
+                // .antMatchers("/api/faq/admin/**").hasAnyAuthority(AuthoritiesConstants.SUPER_ADMIN, AuthoritiesConstants.ADMIN)
+                // .antMatchers("/api/aboutus/admin/**").hasAnyAuthority(AuthoritiesConstants.SUPER_ADMIN, AuthoritiesConstants.ADMIN)
+                // .antMatchers("/api/addres/admin/**").hasAnyAuthority(AuthoritiesConstants.SUPER_ADMIN, AuthoritiesConstants.ADMIN)
                 // .antMatchers("/api/category/admin/**").hasAnyAuthority(AuthoritiesConstants.SUPER_ADMIN, AuthoritiesConstants.ADMIN)
-                .antMatchers("/api/advertising-per-period/admin/**").hasAnyAuthority(AuthoritiesConstants.SUPER_ADMIN, AuthoritiesConstants.ADMIN)
+                // .antMatchers("/api/advertising-per-period/admin/**").hasAnyAuthority(AuthoritiesConstants.SUPER_ADMIN, AuthoritiesConstants.ADMIN)
                 .antMatchers("/api/aboutus/public/**").permitAll()
                 .antMatchers("/api/contactus/public/**").permitAll()
                 .antMatchers("/api/post-home-feature/public/**").permitAll()
                 .antMatchers("/api/top-home-slides-images/public/**").permitAll()
-                .antMatchers("/api/contactus/admin/**").hasAnyAuthority(AuthoritiesConstants.SUPER_ADMIN, AuthoritiesConstants.ADMIN)
-                .antMatchers("/api/post-home-feature/admin/**").hasAnyAuthority(AuthoritiesConstants.SUPER_ADMIN, AuthoritiesConstants.ADMIN)
-                .antMatchers("/api/news-letter/admin/**").hasAnyAuthority(AuthoritiesConstants.SUPER_ADMIN, AuthoritiesConstants.ADMIN)
-                .antMatchers("/api/top-home-slides-images/admin/**").hasAnyAuthority(AuthoritiesConstants.SUPER_ADMIN, AuthoritiesConstants.ADMIN)
+                // .antMatchers("/api/contactus/admin/**").hasAnyAuthority(AuthoritiesConstants.SUPER_ADMIN, AuthoritiesConstants.ADMIN)
+                // .antMatchers("/api/post-home-feature/admin/**").hasAnyAuthority(AuthoritiesConstants.SUPER_ADMIN, AuthoritiesConstants.ADMIN)
+                // .antMatchers("/api/news-letter/admin/**").hasAnyAuthority(AuthoritiesConstants.SUPER_ADMIN, AuthoritiesConstants.ADMIN)
+                // .antMatchers("/api/top-home-slides-images/admin/**").hasAnyAuthority(AuthoritiesConstants.SUPER_ADMIN, AuthoritiesConstants.ADMIN)
                 .antMatchers("/api/offer-images/public/**").permitAll()
                 .antMatchers("/api/user/checkUsernameAvailability", "/api/user/checkEmailAvailability")
                 .permitAll()

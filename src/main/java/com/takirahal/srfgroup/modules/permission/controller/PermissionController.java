@@ -13,6 +13,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.websocket.server.PathParam;
@@ -26,6 +27,7 @@ public class PermissionController {
     PermissionService permissionService;
 
     @PostMapping("admin/create")
+    // @PreAuthorize("@authorityServiceImpl.checkForPermissions()")
     public ResponseEntity<PermissionDTO> create(@RequestBody PermissionDTO permissionDTO){
         log.info("REST request to save Permission : {}", permissionDTO);
         PermissionDTO result = permissionService.save(permissionDTO);
