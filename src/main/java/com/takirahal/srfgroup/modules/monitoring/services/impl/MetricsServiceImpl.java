@@ -30,8 +30,8 @@ public class MetricsServiceImpl implements MetricsService {
     @Autowired
     MetricsMapper metricsMapper;
 
-    final String[] listUrlMetrics = {"actuator/metrics/jvm.memory.used",
-    "actuator/metrics/process.cpu.usage", "actuator/metrics/system.cpu.usage"};
+    final String[] listUrlMetrics = {"api/management/metrics/jvm.memory.used",
+    "api/management/metrics/process.cpu.usage", "api/management/metrics/system.cpu.usage"};
 
     @Override
     public List<MetricsDto> getAllMetrics() {

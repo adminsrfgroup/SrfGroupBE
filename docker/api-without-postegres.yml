@@ -1,23 +1,6 @@
 version: '3.3'
 services:
 
-  # PostgreSql
-  SERVICE_NAME_DB:
-    image: postgres:13.2
-    environment:
-      - POSTGRES_PASSWORD=azerty
-      - POSTGRES_USER=postgres
-      - POSTGRES_DB=d56mlvem6o8lh7
-    # If you want to expose these ports outside your dev PC,
-    # remove the "127.0.0.1:" prefix
-    ports:
-      - 127.0.0.1:5432:5432
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-
   # Elasticsearch
   elasticsearch:
     image: docker.elastic.co/elasticsearch/elasticsearch:7.17.7
@@ -65,6 +48,27 @@ services:
     depends_on:
       - elasticsearch
 
+
+  # Logstash
+  logstash:
+    image: logstash:7.17.7
+    container_name: logstash
+    environment:
+      - ENV_TAG_PATH=SERVICE_NAME_API:/logs/SrfGroupElk.log
+    links:
+      - elasticsearch:elasticsearch
+    volumes:
+      - ./logstash/:/etc/logstash/conf.d/
+      # - ./logs/SrfGroupElk.log:/tmp/logs/SrfGroupElk.log
+      - shared_volume:/tmp/logs
+    command: logstash -f /etc/logstash/conf.d/logstash.conf
+    ports:
+      - "5000:5000"
+    networks:
+      - elk
+    depends_on:
+      - elasticsearch
+
   # APM Server
   apm-server:
     image: docker.elastic.co/apm/apm-server:7.17.7
@@ -106,3 +110,7 @@ services:
 networks:
   elk:
     driver: bridge
+
+volumes:
+  shared_volume:
+    name: shared_volume
