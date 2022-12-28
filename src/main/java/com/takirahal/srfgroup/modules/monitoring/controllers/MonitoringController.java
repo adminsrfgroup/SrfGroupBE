@@ -24,7 +24,9 @@ public class MonitoringController {
 
     @GetMapping("metrics")
     public ResponseEntity<List<MetricsDto>> getAllMetricsData() {
-        log.debug("REST request to get list of Metrics : {}", "");
+        log.info("REST request to get list of Metrics : ", "");
+
+
         List<MetricsDto> result = metricsService.getAllMetrics();
         return new ResponseEntity<>(result, HttpStatus.OK);
     }

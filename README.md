@@ -121,3 +121,9 @@ Search global on website (with elastic and index)
 
 # Just Run
 $ just run
+
+
+# Zipkin Server
+    run server Zipkin
+    enable zipkin from application.properties
+    get url with Rest template (metrics)

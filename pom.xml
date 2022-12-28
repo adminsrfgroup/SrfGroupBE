@@ -17,6 +17,7 @@
         <java.version>11</java.version>
         <maven.compiler.target>${java.version}</maven.compiler.target>
         <maven.compiler.source>${java.version}</maven.compiler.source>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <jjwt.version>0.11.2</jjwt.version>
         <google-api-client.version>1.30.9</google-api-client.version>
         <social-facebook.version>1.5.22.RELEASE</social-facebook.version>
@@ -28,6 +29,7 @@
         <spring-cloud.version>2020.0.3</spring-cloud.version>
         <liquibase.version>4.15.0</liquibase.version>
         <liquibase-hibernate5.version>4.15.0</liquibase-hibernate5.version>
+        <spring-cloud.version>2021.0.3</spring-cloud.version>
 
         <!-- test result measurements -->
         <project.test.result.directory>${project.build.directory}/test-results</project.test.result.directory>
@@ -259,6 +261,19 @@
             <version>2.15.0</version>
         </dependency>
 
+        <!-- Zipkin Server -->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-sleuth</artifactId>
+            <version>3.1.5</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-sleuth-zipkin</artifactId>
+            <version>3.1.5</version>
+        </dependency>
+
+
     </dependencies>
 
     <dependencyManagement>
@@ -355,45 +370,8 @@
                         <artifactId>liquibase-hibernate5</artifactId>
                         <version>${liquibase-hibernate5.version}</version>
                     </dependency>
-<!--                    <dependency>-->
-<!--                        <groupId>org.springframework.boot</groupId>-->
-<!--                        <artifactId>spring-boot-starter-data-jpa</artifactId>-->
-<!--                    </dependency>-->
-<!--                    <dependency>-->
-<!--                        <groupId>javax.validation</groupId>-->
-<!--                        <artifactId>validation-api</artifactId>-->
-<!--                    </dependency>-->
                 </dependencies>
             </plugin>
-<!--            <plugin>-->
-<!--                <groupId>org.liquibase</groupId>-->
-<!--                <artifactId>liquibase-maven-plugin</artifactId>-->
-<!--                <version>4.15.0</version>-->
-<!--                <configuration>-->
-<!--                    <propertyFileWillOverride>true</propertyFileWillOverride>-->
-<!--                    <propertyFile>src/main/resources/liquibase.properties</propertyFile>-->
-<!--                </configuration>-->
-<!--                <dependencies>-->
-<!--                    <dependency>-->
-<!--                        <groupId>org.liquibase</groupId>-->
-<!--                        <artifactId>liquibase-core</artifactId>-->
-<!--                        <version>${liquibase.version}</version>-->
-<!--                    </dependency>-->
-<!--                    <dependency>-->
-<!--                        <groupId>org.liquibase.ext</groupId>-->
-<!--                        <artifactId>liquibase-hibernate5</artifactId>-->
-<!--                        <version>${liquibase-hibernate5.version}</version>-->
-<!--                    </dependency>-->
-<!--                </dependencies>-->
-<!--                <executions>-->
-<!--                    <execution>-->
-<!--                        <phase>process-resources</phase>-->
-<!--                        <goals>-->
-<!--                            <goal>update</goal>-->
-<!--                        </goals>-->
-<!--                    </execution>-->
-<!--                </executions>-->
-<!--            </plugin>-->
         </plugins>
     </build>
 
