@@ -10,4 +10,5 @@
 
     <include file="changelog/01_initial_schema.xml" relativeToChangelogFile="true"/>
     <include file="changelog/02_delete_test_table.xml" relativeToChangelogFile="true"/>
+    <include file="changelog/03_create_cgu_table.xml" relativeToChangelogFile="true"/>
 </databaseChangeLog>

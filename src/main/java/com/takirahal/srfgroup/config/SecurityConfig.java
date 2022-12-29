@@ -104,10 +104,11 @@ public class SecurityConfig {
                         "/swagger-resources/**",
                         "/configuration/security",
                         "/swagger-ui/**",
-                        "/v3/**",
+                        // "/v3/**",
                         "/webjars/**",
                         "/api/management/**").permitAll()
                 .antMatchers("/api/auth/**").permitAll()
+                .antMatchers("/api/cgu/public/**").permitAll()
                 .antMatchers("/api/customer/**").permitAll()
                 .antMatchers("/api/user/public/**").permitAll()
                 .antMatchers("/api/offer/public/**").permitAll()

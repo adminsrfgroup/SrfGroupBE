@@ -91,7 +91,8 @@ public class RentRequestServicesImpl implements RentRequestService {
 
         Optional<RentRequest> rentRequest = rentRequestRepository.findByRentOfferAndSenderUser(rentOffer, user);
 
-        if( rentRequest.get().getRentOffer().getAvailable()==null || !rentRequest.get().getRentOffer().getAvailable() ){
+        if( rentRequest.isPresent() &&
+                (rentRequest.get().getRentOffer().getAvailable()==null || !rentRequest.get().getRentOffer().getAvailable()) ){
             throw new BadRequestAlertException(RequestUtil.messageTranslate("details_offer.not_available_offer"));
         }
 
