@@ -16,7 +16,6 @@ import java.time.format.DateTimeFormatter;
 public class JacksonConfiguration {
 
     public static final String DATETIME_FORMAT = "dd-MM-yyyy";
-    public static final LocalDateTime FIXED_DATE = LocalDateTime.now();
     public static final LocalDateTimeSerializer LOCAL_DATETIME_SERIALIZER = new LocalDateTimeSerializer(DateTimeFormatter.ofPattern(DATETIME_FORMAT));
 
     /**
@@ -28,7 +27,6 @@ public class JacksonConfiguration {
         JavaTimeModule module = new JavaTimeModule();
         module.addSerializer(LOCAL_DATETIME_SERIALIZER);
         return module;
-        // return new JavaTimeModule();
     }
 
     @Bean
@@ -51,69 +49,4 @@ public class JacksonConfiguration {
     public ConstraintViolationProblemModule constraintViolationProblemModule() {
         return new ConstraintViolationProblemModule();
     }
-
-
-    /*
-    @Bean
-    public MappingJackson2HttpMessageConverter mappingJackson2HttpMessageConverter() {
-        MappingJackson2HttpMessageConverter jsonConverter = new MappingJackson2HttpMessageConverter();
-        ObjectMapper objectMapper = new ObjectMapper();
-
-
-        // fields set to be ignore in serialization
-        String[] ignorableFieldNames = {"d_createdDate", "d_lastModifiedDate", "d_dateCreated", "date_created", "dateCreated", "date_created", "d_date_created"};
-        SimpleBeanPropertyFilter ignoreFieldFilter = SimpleBeanPropertyFilter.serializeAllExcept(
-                ignorableFieldNames);
-        FilterProvider filters = new SimpleFilterProvider()
-                .addFilter("ignoredFields", ignoreFieldFilter);
-        objectMapper.setFilterProvider(filters);
-
-
-        // objectMapper.addMixIn(Object.class, UserDetailsResource.class);
-
-
-        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        jsonConverter.setObjectMapper(objectMapper);
-        jsonConverter.getObjectMapper().setSerializationInclusion(JsonInclude.Include.NON_NULL);
-        jsonConverter.getObjectMapper().enable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
-
-
-        JavaTimeModule javaTimeModule = new JavaTimeModule();
-        javaTimeModule.addSerializer(LocalDate.class, new LocalDateSerializer(DateTimeFormatter.ofPattern("yyyy")));
-        javaTimeModule.addDeserializer(LocalDate.class, new LocalDateDeserializer(DateTimeFormatter.ofPattern("yyyy")));
-
-
-        javaTimeModule.addDeserializer(Instant.class, new InstantCustomDeserializer());
-        jsonConverter.getObjectMapper().enable(DeserializationFeature.READ_ENUMS_USING_TO_STRING);
-        jsonConverter.getObjectMapper().enable(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY);
-        jsonConverter.getObjectMapper().registerModule(javaTimeModule);
-
-
-        return jsonConverter;
-    }
-
-
-
-    static class InstantCustomDeserializer extends JsonDeserializer<Instant> {
-
-        @Override
-        public Instant deserialize(JsonParser p, DeserializationContext ctxt)
-                throws IOException, JsonProcessingException {
-            String dateString = p.getText().trim();
-            if (StringUtils.isNotBlank(dateString)) {
-                Date pareDate;
-                try {
-                    pareDate = new Date(dateString); // DateFormatUtil.pareDate(dateString);
-                    if (null != pareDate) {
-                        return pareDate.toInstant();
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-            return null;
-        }
-
-    }
-    */
 }

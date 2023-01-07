@@ -93,7 +93,7 @@ public class OfferServiceImpl implements OfferService {
     }
 
     @Override
-    // @Cacheable(value="Offer", key="#id")
+    @Cacheable(value="Offer", key="#id")
     public Optional<OfferDTO> findOne(Long id) {
         log.debug("Request to get Offer : {}", id);
         return offerRepository.findById(id).map(customOfferMapper::toDtoDetailsOffer);
