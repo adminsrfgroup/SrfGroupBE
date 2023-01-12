@@ -11,7 +11,7 @@
             <column name="content_fr" type="TEXT"/>
         </createTable>
     </changeSet>
-    <changeSet author="Taki-eddine.RAHAL (generated)" id="1672235714999-17">
+    <changeSet author="Taki-eddine.RAHAL (generated)" id="1672235714999-117">
         <createSequence cacheSize="1" cycle="false" dataType="bigint" incrementBy="1" maxValue="9223372036854775807" minValue="1" sequenceName="sequence_name_cgu" startValue="1"/>
     </changeSet>
 </databaseChangeLog>

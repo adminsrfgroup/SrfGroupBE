@@ -6,7 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Type;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
@@ -34,7 +34,7 @@ public class Category implements Serializable {
     private String titleEn;
 
     @Lob
-    @Type(type = "org.hibernate.type.TextType")
+    // // @Type(type = "org.hibernate.type.TextType")
     @Column(name = "image_content")
     private String imageContent;
 

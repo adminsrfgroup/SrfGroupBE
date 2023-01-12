@@ -5,7 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Type;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.io.Serializable;
 
 @Data
@@ -21,22 +21,22 @@ public class PostHomeFeature  implements Serializable {
     private Long id;
 
     @Lob
-    @Type(type = "org.hibernate.type.TextType")
+    // @Type(type = "org.hibernate.type.TextType")
     @Column(name = "descriptionAr")
     private String descriptionAr;
 
     @Lob
-    @Type(type = "org.hibernate.type.TextType")
+    // @Type(type = "org.hibernate.type.TextType")
     @Column(name = "descriptionFr")
     private String descriptionFr;
 
     @Lob
-    @Type(type = "org.hibernate.type.TextType")
+    // @Type(type = "org.hibernate.type.TextType")
     @Column(name = "descriptionEn")
     private String descriptionEn;
 
     @Lob
-    @Type(type = "org.hibernate.type.TextType")
+    // @Type(type = "org.hibernate.type.TextType")
     @Column(name = "image")
     private String image;
 }

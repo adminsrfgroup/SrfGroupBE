@@ -4,8 +4,11 @@ import com.takirahal.srfgroup.security.JwtAuthenticationFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
+
+import java.util.Arrays;
 
 @Configuration
 public class CorsCustomConfig {
@@ -20,6 +23,7 @@ public class CorsCustomConfig {
         config.addAllowedMethod("PATCH");   //patch
         config.addAllowedMethod("DELETE");  //delete
 
+        // Authorize origin
         config.addAllowedOrigin("*");
         config.addAllowedHeader("*");
 

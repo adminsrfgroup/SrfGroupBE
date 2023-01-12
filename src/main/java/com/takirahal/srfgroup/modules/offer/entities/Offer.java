@@ -9,7 +9,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Type;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.io.Serializable;
 import java.time.Instant;
 import java.util.HashSet;
@@ -35,7 +35,7 @@ public class Offer implements Serializable {
     private String title;
 
     @Lob
-    @Type(type = "org.hibernate.type.TextType")
+    // // @Type(type = "org.hibernate.type.TextType")
     @Column(name = "description")
     private String description;
 

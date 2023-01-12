@@ -6,7 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Type;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.io.Serializable;
 
 @Data
@@ -34,18 +34,18 @@ public class Faq implements Serializable {
     private String questionEn;
 
     @Lob
-    @Type(type = "org.hibernate.type.TextType")
-    @Column(name = "response_ar")
+    // @Type(type = "org.hibernate.type.TextType")
+    @Column(name = "response_ar", columnDefinition="TEXT")
     private String responseAr;
 
     @Lob
-    @Type(type = "org.hibernate.type.TextType")
-    @Column(name = "response_fr")
+    // @Type(type = "org.hibernate.type.TextType")
+    @Column(name = "response_fr", columnDefinition="TEXT")
     private String responseFr;
 
     @Lob
-    @Type(type = "org.hibernate.type.TextType")
-    @Column(name = "response_en")
+    // @Type(type = "org.hibernate.type.TextType")
+    @Column(name = "response_en", columnDefinition="TEXT")
     private String responseEn;
 
 }

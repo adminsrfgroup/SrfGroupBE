@@ -1,6 +1,5 @@
 package com.takirahal.srfgroup.modules.notification.entities;
 
-import com.takirahal.srfgroup.modules.notification.enums.ModuleNotification;
 import com.takirahal.srfgroup.modules.offer.entities.Offer;
 import com.takirahal.srfgroup.modules.user.entities.User;
 import lombok.AllArgsConstructor;
@@ -8,7 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Type;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.io.Serializable;
 import java.time.Instant;
 
@@ -29,7 +28,7 @@ public class Notification implements Serializable {
     private Instant dateCreated;
 
     @Lob
-    @Type(type = "org.hibernate.type.TextType")
+    // // @Type(type = "org.hibernate.type.TextType")
     @Column(name = "content")
     private String content;
 

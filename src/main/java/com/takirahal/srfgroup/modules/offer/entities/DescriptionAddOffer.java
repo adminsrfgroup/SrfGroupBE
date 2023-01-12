@@ -5,7 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Type;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.io.Serializable;
 
 /**
@@ -25,17 +25,17 @@ public class DescriptionAddOffer implements Serializable {
     private Long id;
 
     @Lob
-    @Type(type = "org.hibernate.type.TextType")
+    // @Type(type = "org.hibernate.type.TextType")
     @Column(name = "description_ar")
     private String descriptionAr;
 
     @Lob
-    @Type(type = "org.hibernate.type.TextType")
+    // @Type(type = "org.hibernate.type.TextType")
     @Column(name = "description_fr")
     private String descriptionFr;
 
     @Lob
-    @Type(type = "org.hibernate.type.TextType")
+    // @Type(type = "org.hibernate.type.TextType")
     @Column(name = "description_en")
     private String descriptionEn;
 }

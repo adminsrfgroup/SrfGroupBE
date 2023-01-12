@@ -5,7 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Type;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.io.Serializable;
 
 
@@ -36,7 +36,7 @@ public class ContactUs implements Serializable {
     private String subject;
 
     @Lob
-    @Type(type = "org.hibernate.type.TextType")
+    // @Type(type = "org.hibernate.type.TextType")
     @Column(name = "message")
     private String message;
 }

@@ -6,7 +6,7 @@ volumes:
 
 services:
   zipkin:
-    image: openzipkin/zipkin
+    image: openzipkin/zipkin:latest
     container_name: zipkin
     # volumes:
     # If you want to expose these ports outside your dev PC,

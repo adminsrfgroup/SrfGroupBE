@@ -4,11 +4,11 @@ import com.takirahal.srfgroup.modules.faq.dto.FaqDTO;
 import com.takirahal.srfgroup.modules.faq.dto.filter.FaqFilter;
 import com.takirahal.srfgroup.modules.faq.entities.Faq;
 import com.takirahal.srfgroup.modules.faq.mapper.FaqMapper;
-import com.takirahal.srfgroup.modules.faq.repositories.FaqRepository;
 import com.takirahal.srfgroup.modules.faq.services.FaqService;
 import com.takirahal.srfgroup.modules.faq.services.impl.FaqServiceImpl;
 import com.takirahal.srfgroup.modules.utils.TestUtil;
-import org.junit.Before;
+import org.aspectj.lang.annotation.Before;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -33,6 +33,7 @@ import java.util.List;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.hamcrest.Matchers.hasSize;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.mockito.ArgumentMatchers.any;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -56,16 +57,16 @@ class FaqControllerTest {
     @InjectMocks
     private FaqServiceImpl faqServiceImpl;
 
-    @Before
+    @Before(value = "")
     public void init() {
         ReflectionTestUtils.setField(faqMapper , "faqServiceImpl", faqServiceImpl);
     }
 
     final String token = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJzcmZncm91cC5jb250YWN0QGdtYWlsLmNvbSIsImlhdCI6MTY1NDI4OTI0NCwiZXhwIjoxNjU0ODk0MDQ0fQ.OSDB0jr22qCoFFvuqywHKsQDmmFifACwLd06ZH84w7eWDIwJutiU5_c3_W2qg-eBlxsCM_bBLaEYxlOzYEYCVw";
 
-    FaqDTO faqDTO0 = FaqDTO.builder().id(0L).questionAr("Qar0").responseAr("Rar0").questionFr("Qfr0").responseFr("Rfr0").questionEn("Qen0").responseEn("Ren0").build();
-    FaqDTO faqDTO1 = FaqDTO.builder().id(1L).questionAr("Qar1").responseAr("Rar1").questionFr("Qfr1").responseFr("Rfr1").questionEn("Qen1").responseEn("Ren1").build();
-    FaqDTO faqDTO2 = FaqDTO.builder().id(2L).questionAr("Qar2").responseAr("Rar2").questionFr("Qfr2").responseFr("Rfr2").questionEn("Qen2").responseEn("Ren2").build();
+    final FaqDTO faqDTO0 = FaqDTO.builder().id(0L).questionAr("Qar0").responseAr("Rar0").questionFr("Qfr0").responseFr("Rfr0").questionEn("Qen0").responseEn("Ren0").build();
+    final FaqDTO faqDTO1 = FaqDTO.builder().id(1L).questionAr("Qar1").responseAr("Rar1").questionFr("Qfr1").responseFr("Rfr1").questionEn("Qen1").responseEn("Ren1").build();
+    final FaqDTO faqDTO2 = FaqDTO.builder().id(2L).questionAr("Qar2").responseAr("Rar2").questionFr("Qfr2").responseFr("Rfr2").questionEn("Qen2").responseEn("Ren2").build();
 
 
     @BeforeEach
@@ -91,6 +92,8 @@ class FaqControllerTest {
 
         // Then
         mvcResult.andExpect(status().isCreated());
+        Assertions.assertTrue(faqService.findAll().size()>0); // Verify save in DB
+
     }
 
     @Test
@@ -98,7 +101,7 @@ class FaqControllerTest {
     void getAllPublicFaqs() throws Exception {
 
         // Given
-        Pageable pageable = PageRequest.of(0, 1);
+        Pageable pageable = PageRequest.of(0, 2);
         List<FaqDTO> faqDtoList = new ArrayList<>();
         faqDtoList.add(faqDTO0);
         faqDtoList.add(faqDTO1);
@@ -116,7 +119,9 @@ class FaqControllerTest {
                 .andExpect(status().isOk())
                 .andReturn();
 
+        // Then
         String content = mvcResult.getResponse().getContentAsString();
+        assertFalse(content.isEmpty());
 //                .andExpect(MockMvcResultMatchers.jsonPath("$.employees").exists())
 //                .andExpect(MockMvcResultMatchers.jsonPath("$.employees[*].employeeId").isNotEmpty());
 

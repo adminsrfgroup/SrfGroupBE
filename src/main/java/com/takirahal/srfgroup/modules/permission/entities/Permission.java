@@ -6,7 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Type;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.io.Serializable;
 
 @Data
@@ -30,7 +30,7 @@ public class Permission implements Serializable {
     private String pathApi;
 
     @Lob
-    @Type(type = "org.hibernate.type.TextType")
+    // // @Type(type = "org.hibernate.type.TextType")
     @Column(name = "description")
     private String description;
 }

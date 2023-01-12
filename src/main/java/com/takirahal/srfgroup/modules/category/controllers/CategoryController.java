@@ -32,13 +32,13 @@ public class CategoryController {
     @Autowired
     CategoryService categoryService;
 
-    @Autowired
-    private JobLauncher jobLauncher;
-
-
-    @Autowired
-    @Qualifier("categoryBeanJob")
-    private Job jobCategory;
+//    @Autowired
+//    private JobLauncher jobLauncher;
+//
+//
+//    @Autowired
+//    @Qualifier("categoryBeanJob")
+//    private Job jobCategory;
 
     /**
      * {@code GET  /categories} : get all the categories.
@@ -111,21 +111,23 @@ public class CategoryController {
      *
      * @return
      */
-    @GetMapping("admin/import")
-    public ResponseEntity<BatchStatus> importCategories() {
-        try{
-            log.info("REST request to import Categories by data.sql");
-            Map<String, JobParameter> parms = new HashMap<>();
-            parms.put("time", new JobParameter(System.currentTimeMillis()));
-            JobParameters jobParameter = new JobParameters(parms);
-            JobExecution jobExecution = jobLauncher.run(jobCategory, jobParameter);
-            while (jobExecution.isRunning()){
-                System.out.println("...");
-            }
-            return new ResponseEntity<>(jobExecution.getStatus(), HttpStatus.OK);
-        }catch (Exception e){
-            log.error("Error to import Categories by data.sql : {}", e.getStackTrace());
-            return new ResponseEntity<>(BatchStatus.FAILED, HttpStatus.OK);
-        }
-    }
+//    @GetMapping("admin/import")
+//    public ResponseEntity<BatchStatus> importCategories() {
+//        try{
+//            log.info("REST request to import Categories by data.sql");
+//            Map<String, JobParameter<?>> parameters = new HashMap<>();
+//
+////            Map<String, JobParameter> parms = new HashMap<>();
+////            parms.put("time", new JobParameter(System.currentTimeMillis()));
+//            JobParameters jobParameter = new JobParameters(parameters);
+//            JobExecution jobExecution = jobLauncher.run(jobCategory, jobParameter);
+//            while (jobExecution.isRunning()){
+//                System.out.println("...");
+//            }
+//            return new ResponseEntity<>(jobExecution.getStatus(), HttpStatus.OK);
+//        }catch (Exception e){
+//            log.error("Error to import Categories by data.sql : {}", e.getStackTrace());
+//            return new ResponseEntity<>(BatchStatus.FAILED, HttpStatus.OK);
+//        }
+//    }
 }

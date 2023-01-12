@@ -21,8 +21,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.Resource;
 
-@Configuration
-@EnableBatchProcessing
+// @Configuration
+// @EnableBatchProcessing
 public class SpringBatchConfigUser {
 
     @Autowired

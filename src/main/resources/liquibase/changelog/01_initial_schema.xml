@@ -587,22 +587,6 @@
             <column name="image_mobile" type="TEXT"/>
         </createTable>
     </changeSet>
-    <changeSet author="Taki-eddine.RAHAL (generated)" id="1672235714999-70">
-        <createTable tableName="test_table">
-            <column name="test_id" type="INTEGER">
-                <constraints nullable="false" primaryKey="true" primaryKeyName="test_table_pkey"/>
-            </column>
-            <column name="test_column" type="VARCHAR"/>
-        </createTable>
-    </changeSet>
-    <changeSet author="Taki-eddine.RAHAL (generated)" id="1672235714999-71">
-        <createTable tableName="test_table0000">
-            <column name="test_id" type="INTEGER">
-                <constraints nullable="false" primaryKey="true" primaryKeyName="test_table0000_pkey"/>
-            </column>
-            <column name="test_column" type="VARCHAR"/>
-        </createTable>
-    </changeSet>
     <changeSet author="Taki-eddine.RAHAL (generated)" id="1672235714999-72">
         <createTable tableName="user_authorities">
             <column name="user_id" type="BIGINT">

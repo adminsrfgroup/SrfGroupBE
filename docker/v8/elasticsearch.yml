@@ -19,6 +19,7 @@ services:
       - node.name=cluster1-node1
       - xpack.license.self_generated.type=basic
       - xpack.security.enabled=false
+      - xpack.security.authc.api_key.enabled=false
     ulimits:
       memlock:
         soft: -1

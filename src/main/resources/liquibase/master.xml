@@ -9,6 +9,6 @@
     <property name="datetimeType" value="datetime" dbms="postgresql"/>
 
     <include file="changelog/01_initial_schema.xml" relativeToChangelogFile="true"/>
-    <include file="changelog/02_delete_test_table.xml" relativeToChangelogFile="true"/>
-    <include file="changelog/03_create_cgu_table.xml" relativeToChangelogFile="true"/>
+    <include file="changelog/02_create_cgu_table.xml" relativeToChangelogFile="true"/>
+    <include file="changelog/03_load_default_data.xml" relativeToChangelogFile="true"/>
 </databaseChangeLog>

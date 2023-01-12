@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Column;
+import jakarta.persistence.Column;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.time.Instant;

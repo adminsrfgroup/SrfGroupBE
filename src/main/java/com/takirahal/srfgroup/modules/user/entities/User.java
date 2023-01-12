@@ -6,15 +6,16 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.BatchSize;
+import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.annotations.NaturalId;
-import org.hibernate.annotations.Type;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
+import java.sql.Types;
 import java.time.Instant;
 import java.util.HashSet;
 import java.util.Set;
@@ -59,8 +60,8 @@ public class User implements Serializable {
     private String blocked = "";
 
     @Lob
-    @Type(type = "org.hibernate.type.TextType")
-    @Column(name = "image_url")
+    @JdbcTypeCode(Types.LONGVARCHAR)
+    @Column(name = "image_url", columnDefinition="TEXT")
     private String imageUrl;
 
     @Size(max = 50)

@@ -5,7 +5,7 @@ import com.takirahal.srfgroup.modules.faq.dto.filter.FaqFilter;
 import com.takirahal.srfgroup.modules.faq.entities.Faq;
 import com.takirahal.srfgroup.modules.faq.mapper.FaqMapper;
 import com.takirahal.srfgroup.modules.faq.repositories.FaqRepository;
-import org.junit.Before;
+import org.aspectj.lang.annotation.Before;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mapstruct.factory.Mappers;
@@ -34,7 +34,7 @@ class FaqServiceImplTest {
     @Spy
     private FaqMapper faqMapper = Mappers.getMapper(FaqMapper.class);
 
-    @Before
+    @Before(value = "")
     public void init() {
         ReflectionTestUtils.setField(faqMapper , "faqServiceImpl", faqServiceImpl);
     }

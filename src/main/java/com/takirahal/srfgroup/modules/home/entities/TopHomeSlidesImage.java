@@ -5,7 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Type;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.io.Serializable;
 
 @Data
@@ -21,27 +21,27 @@ public class TopHomeSlidesImage implements Serializable {
     private Long id;
 
     @Lob
-    @Type(type = "org.hibernate.type.TextType")
+    // @Type(type = "org.hibernate.type.TextType")
     @Column(name = "descriptionAr")
     private String descriptionAr;
 
     @Lob
-    @Type(type = "org.hibernate.type.TextType")
+    // @Type(type = "org.hibernate.type.TextType")
     @Column(name = "descriptionFr")
     private String descriptionFr;
 
     @Lob
-    @Type(type = "org.hibernate.type.TextType")
+    // @Type(type = "org.hibernate.type.TextType")
     @Column(name = "descriptionEn")
     private String descriptionEn;
 
     @Lob
-    @Type(type = "org.hibernate.type.TextType")
+    // @Type(type = "org.hibernate.type.TextType")
     @Column(name = "image_desktop")
     private String imageDesktop;
 
     @Lob
-    @Type(type = "org.hibernate.type.TextType")
+    // @Type(type = "org.hibernate.type.TextType")
     @Column(name = "image_mobile")
     private String imageMobile;
 

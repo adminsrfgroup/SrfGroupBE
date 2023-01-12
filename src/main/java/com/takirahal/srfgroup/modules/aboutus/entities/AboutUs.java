@@ -5,7 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Type;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.io.Serializable;
 
 @Data
@@ -23,17 +23,17 @@ public class AboutUs implements Serializable {
     private Long id;
 
     @Lob
-    @Type(type = "org.hibernate.type.TextType")
+    // // @Type(type = "org.hibernate.type.TextType")
     @Column(name = "content_ar")
     private String contentAr;
 
     @Lob
-    @Type(type = "org.hibernate.type.TextType")
+    // // @Type(type = "org.hibernate.type.TextType")
     @Column(name = "content_en")
     private String contentEn;
 
     @Lob
-    @Type(type = "org.hibernate.type.TextType")
+    // // @Type(type = "org.hibernate.type.TextType")
     @Column(name = "content_fr")
     private String contentFr;
 }

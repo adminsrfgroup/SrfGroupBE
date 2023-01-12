@@ -3,11 +3,13 @@ package com.takirahal.srfgroup.modules.cgu.entities;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.annotations.Type;
 import org.hibernate.annotations.UpdateTimestamp;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.io.Serializable;
+import java.sql.Types;
 import java.time.Instant;
 
 @Data
@@ -27,17 +29,20 @@ public class Cgu implements Serializable {
     private Instant modifyDate;
 
     @Lob
-    @Type(type = "org.hibernate.type.TextType")
-    @Column(name = "content_ar")
+    // @Type(type = "org.hibernate.type.TextType")
+    @JdbcTypeCode(Types.LONGVARCHAR)
+    @Column(name = "content_ar", columnDefinition="TEXT")
     private String contentAr;
 
     @Lob
-    @Type(type = "org.hibernate.type.TextType")
-    @Column(name = "content_fr")
+    // @Type(type = "org.hibernate.type.TextType")
+    @JdbcTypeCode(Types.LONGVARCHAR)
+    @Column(name = "content_fr", columnDefinition="TEXT")
     private String contentFr;
 
     @Lob
-    @Type(type = "org.hibernate.type.TextType")
-    @Column(name = "content_en")
+    // @Type(type = "org.hibernate.type.TextType")
+    @JdbcTypeCode(Types.LONGVARCHAR)
+    @Column(name = "content_en", columnDefinition="TEXT")
     private String contentEn;
 }
