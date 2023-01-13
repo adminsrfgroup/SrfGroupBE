@@ -20,6 +20,10 @@ services:
       - xpack.license.self_generated.type=basic
       - xpack.security.enabled=false
       - xpack.security.authc.api_key.enabled=false
+      - http.cors.allow-origin="*"
+      - http.cors.enabled=true
+      - http.cors.allow-methods=OPTIONS, HEAD, GET, POST, PUT, DELETE
+      - http.cors.allow-headers=X-Requested-With,X-Auth-Token,Content-Type,Content-Length,Authorization,langKey,sourceConnectedDevice
     ulimits:
       memlock:
         soft: -1

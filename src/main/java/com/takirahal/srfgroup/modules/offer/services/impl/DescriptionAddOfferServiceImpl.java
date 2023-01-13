@@ -6,6 +6,8 @@ import com.takirahal.srfgroup.modules.offer.entities.DescriptionAddOffer;
 import com.takirahal.srfgroup.modules.offer.mapper.DescriptionAddOfferMapper;
 import com.takirahal.srfgroup.modules.offer.repositories.DescriptionAddOfferRepository;
 import com.takirahal.srfgroup.modules.offer.services.DescriptionAddOfferService;
+import com.takirahal.srfgroup.modules.permission.enums.EPermission;
+import com.takirahal.srfgroup.modules.user.services.AuthorityService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,10 +34,16 @@ public class DescriptionAddOfferServiceImpl implements DescriptionAddOfferServic
     @Autowired
     DescriptionAddOfferMapper descriptionAddOfferMapper;
 
+    @Autowired
+    AuthorityService authorityService;
 
     @Override
     public DescriptionAddOfferDTO save(DescriptionAddOfferDTO descriptionAddOfferDTO) {
         log.debug("Request to save DescriptionAddOffer : {}", descriptionAddOfferDTO);
+
+        // Check Permission
+        authorityService.checkForPermissions(EPermission.CRUD_DESCRIPTION_NEW_OFFER);
+
         if (descriptionAddOfferDTO.getId() != null) {
             throw new BadRequestAlertException("A new descriptionAddOffer cannot already have an ID idexists");
         }
@@ -47,6 +55,9 @@ public class DescriptionAddOfferServiceImpl implements DescriptionAddOfferServic
     @Override
     public Optional<DescriptionAddOfferDTO> partialUpdate(DescriptionAddOfferDTO descriptionAddOfferDTO) {
         log.debug("Request to partially update DescriptionAddOffer : {}", descriptionAddOfferDTO);
+
+        // Check Permission
+        authorityService.checkForPermissions(EPermission.CRUD_DESCRIPTION_NEW_OFFER);
 
         return descriptionAddOfferRepository
             .findById(descriptionAddOfferDTO.getId())

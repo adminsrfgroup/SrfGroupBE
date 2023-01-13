@@ -7,10 +7,12 @@ import com.takirahal.srfgroup.modules.user.entities.User;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.annotations.Type;
 
 import jakarta.persistence.*;
 import java.io.Serializable;
+import java.sql.Types;
 import java.time.Instant;
 import java.util.HashSet;
 import java.util.Set;
@@ -35,8 +37,8 @@ public class Offer implements Serializable {
     private String title;
 
     @Lob
-    // // @Type(type = "org.hibernate.type.TextType")
-    @Column(name = "description")
+    @JdbcTypeCode(Types.LONGVARCHAR)
+    @Column(name = "description", columnDefinition="TEXT")
     private String description;
 
     @Column(name = "date_created", updatable = false)

@@ -1,6 +1,5 @@
 package com.takirahal.srfgroup.modules.monitoring.services.impl;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import com.takirahal.srfgroup.modules.monitoring.dto.MetricsDto;
 import com.takirahal.srfgroup.modules.monitoring.mapper.MetricsMapper;
 import com.takirahal.srfgroup.modules.monitoring.models.Metrics;
@@ -11,10 +10,7 @@ import io.micrometer.tracing.Tracer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -43,25 +39,25 @@ public class MetricsServiceImpl implements MetricsService {
 
         // Create a span. If there was a span present in this thread it will become
         // the `newSpan`'s parent.
-        Span newSpan = this.tracer.nextSpan().name("calculateTax");
-        // Start a span and put it in scope. Putting in scope means putting the span
-        // in thread local
-        // and, if configured, adjust the MDC to contain tracing information
-        try (Tracer.SpanInScope ws = this.tracer.withSpan(newSpan.start())) {
-            log.info("Start span");
-            // ...
-            // You can tag a span - put a key value pair on it for better debugging
-            newSpan.tag("taxValue1", "taxValue2");
-            // ...
-            // You can log an event on a span - an event is an annotated timestamp
-            newSpan.event("taxCalculated");
-        }
-        finally {
-            log.info("End span");
-            // Once done remember to end the span. This will allow collecting
-            // the span to send it to a distributed tracing system e.g. Zipkin
-            newSpan.end();
-        }
+//        Span newSpan = this.tracer.nextSpan().name("calculateTax");
+//        // Start a span and put it in scope. Putting in scope means putting the span
+//        // in thread local
+//        // and, if configured, adjust the MDC to contain tracing information
+//        try (Tracer.SpanInScope ws = this.tracer.withSpan(newSpan.start())) {
+//            log.info("Start span");
+//            // ...
+//            // You can tag a span - put a key value pair on it for better debugging
+//            newSpan.tag("taxValue1", "taxValue2");
+//            // ...
+//            // You can log an event on a span - an event is an annotated timestamp
+//            newSpan.event("taxCalculated");
+//        }
+//        finally {
+//            log.info("End span");
+//            // Once done remember to end the span. This will allow collecting
+//            // the span to send it to a distributed tracing system e.g. Zipkin
+//            newSpan.end();
+//        }
 
         List<MetricsDto> metricsDtos = new ArrayList<>();
 

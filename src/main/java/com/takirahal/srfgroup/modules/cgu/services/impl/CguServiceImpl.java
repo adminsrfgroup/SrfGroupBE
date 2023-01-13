@@ -34,7 +34,7 @@ public class CguServiceImpl implements CguService {
         log.debug("Request to save Cgu : {}", cguDTO);
 
         // Check Permission
-        authorityService.checkForPermissions(EPermission.UPDATE_CGU);
+        authorityService.checkForPermissions(EPermission.CRUD_CGU);
 
         Cgu cgu = cguMapper.toEntity(cguDTO);
         cgu = cguRepository.save(cgu);

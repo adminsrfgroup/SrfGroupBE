@@ -3,10 +3,12 @@ package com.takirahal.srfgroup.modules.home.entities;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.annotations.Type;
 
 import jakarta.persistence.*;
 import java.io.Serializable;
+import java.sql.Types;
 
 @Data
 @NoArgsConstructor
@@ -21,22 +23,22 @@ public class PostHomeFeature  implements Serializable {
     private Long id;
 
     @Lob
-    // @Type(type = "org.hibernate.type.TextType")
-    @Column(name = "descriptionAr")
+    @JdbcTypeCode(Types.LONGVARCHAR)
+    @Column(name = "descriptionAr", columnDefinition="TEXT")
     private String descriptionAr;
 
     @Lob
-    // @Type(type = "org.hibernate.type.TextType")
-    @Column(name = "descriptionFr")
+    @JdbcTypeCode(Types.LONGVARCHAR)
+    @Column(name = "descriptionFr", columnDefinition="TEXT")
     private String descriptionFr;
 
     @Lob
-    // @Type(type = "org.hibernate.type.TextType")
-    @Column(name = "descriptionEn")
+    @JdbcTypeCode(Types.LONGVARCHAR)
+    @Column(name = "descriptionEn", columnDefinition="TEXT")
     private String descriptionEn;
 
     @Lob
-    // @Type(type = "org.hibernate.type.TextType")
-    @Column(name = "image")
+    @JdbcTypeCode(Types.LONGVARCHAR)
+    @Column(name = "image", columnDefinition="TEXT")
     private String image;
 }
