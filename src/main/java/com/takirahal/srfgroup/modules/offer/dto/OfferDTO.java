@@ -1,12 +1,15 @@
 package com.takirahal.srfgroup.modules.offer.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.fasterxml.jackson.datatype.jsr310.deser.InstantDeserializer;
-import com.fasterxml.jackson.datatype.jsr310.ser.InstantSerializer;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import com.takirahal.srfgroup.modules.address.dto.AddressDTO;
 import com.takirahal.srfgroup.modules.category.dto.CategoryDTO;
 import com.takirahal.srfgroup.modules.user.dto.UserDTO;
+import com.takirahal.srfgroup.utils.LocalDateDeserializer;
+import com.takirahal.srfgroup.utils.LocalDateSerializer;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -29,8 +32,6 @@ public class OfferDTO  implements Serializable {
     @Lob
     private String description;
 
-    // @JsonDeserialize(using = InstantDeserializer.class)
-    // @JsonSerialize(using = InstantSerializer.class)
     private Instant dateCreated;
 
     private String typeOffer;

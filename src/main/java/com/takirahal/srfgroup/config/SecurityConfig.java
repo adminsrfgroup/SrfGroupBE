@@ -81,7 +81,7 @@ public class SecurityConfig {
                             "/api/cgu/public/**",
                             "/api/customer/**",
                             "/api/user/public/**",
-                            "/api/offer/public/**", "/api/find-offer/public/**", "/api/sell-offer/public/**",
+                            "/api/offer/public/**", "/api/find-offer/public/**", "/api/sell-offer/public/**","/api/advertising-per-period/public/**",
                             "/api/rent-offer/public/**", "/api/address/public/**", "/api/category/public/**",
                             "/api/faq/public/**", "/api/article/public/**", "/api/news-letter/public/**", "/api/description-add-offers/public/**",
                             "/api/post/public/**", "/api/suggest-search/**", "/api/monitoring/**", "/api/aboutus/public/**",
