@@ -19,13 +19,14 @@ import com.takirahal.srfgroup.modules.permission.enums.EPermission;
 import com.takirahal.srfgroup.modules.user.dto.*;
 import com.takirahal.srfgroup.exceptions.BadRequestAlertException;
 import com.takirahal.srfgroup.modules.user.dto.filter.UserFilter;
+import com.takirahal.srfgroup.modules.user.entities.RefreshToken;
 import com.takirahal.srfgroup.modules.user.entities.UserOneSignal;
 import com.takirahal.srfgroup.modules.user.enums.BlockedUser;
 import com.takirahal.srfgroup.modules.user.enums.EAuthority;
-import com.takirahal.srfgroup.modules.user.exceptioins.InvalidPasswordException;
-import com.takirahal.srfgroup.modules.user.exceptioins.UserNotActivatedException;
+import com.takirahal.srfgroup.modules.user.exceptioins.*;
 import com.takirahal.srfgroup.modules.user.mapper.AuthorityMapper;
 import com.takirahal.srfgroup.modules.user.services.AuthorityService;
+import com.takirahal.srfgroup.modules.user.services.RefreshTokenService;
 import com.takirahal.srfgroup.modules.user.services.UserOneSignalService;
 import com.takirahal.srfgroup.modules.websocket.models.ConnectedUser;
 import com.takirahal.srfgroup.security.CustomUserDetailsService;
@@ -36,8 +37,6 @@ import com.takirahal.srfgroup.services.impl.ResizeImage;
 import com.takirahal.srfgroup.services.impl.StorageService;
 import com.takirahal.srfgroup.modules.user.entities.Authority;
 import com.takirahal.srfgroup.modules.user.entities.User;
-import com.takirahal.srfgroup.modules.user.exceptioins.AccountResourceException;
-import com.takirahal.srfgroup.modules.user.exceptioins.EmailAlreadyUsedException;
 import com.takirahal.srfgroup.exceptions.ResouorceNotFoundException;
 import com.takirahal.srfgroup.modules.user.mapper.UserMapper;
 import com.takirahal.srfgroup.modules.user.repositories.AuthorityRepository;
@@ -56,6 +55,7 @@ import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.simp.user.SimpUser;
 import org.springframework.messaging.simp.user.SimpUserRegistry;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -147,6 +147,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     AuthorityService authorityService;
+
+    @Autowired
+    RefreshTokenService refreshTokenService;
 
     @Override
     public User registerUser(RegisterDTO registerDTO) {
@@ -248,7 +251,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public String signinClient(LoginDTO loginDTO) {
+    public JwtResponseVM signinClient(LoginDTO loginDTO) {
         try {
 
             log.debug("Request to signin as client with email: {}", loginDTO.getEmail());
@@ -260,6 +263,14 @@ public class UserServiceImpl implements UserService {
             );
             SecurityContextHolder.getContext().setAuthentication(authentication);
             String jwt = tokenProvider.generateToken(authentication);
+
+            Long currentUserId = SecurityUtils.getIdByCurrentUser();
+            RefreshTokenDTO refreshToken = refreshTokenService.createRefreshToken(currentUserId);
+
+            JwtResponseVM jwtResponseVM = JwtResponseVM.builder()
+                    .token(jwt)
+                    .refreshToken(refreshToken.getToken())
+                    .build();
 
             if(!loginDTO.getIdOneSignal().equals("")){
 
@@ -275,7 +286,7 @@ public class UserServiceImpl implements UserService {
 //
 //                creatNotificationByAdmin(userMapper.currentUserToEntity(currentUser), messageSubscPush);
 //            }
-            return jwt;
+            return jwtResponseVM;
         }
         catch(BadCredentialsException e){
             log.error("Exception for request to signin client: {}", e.getMessage());
@@ -414,7 +425,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public String signinGooglePlus(GooglePlusVM googlePlusVM) throws IOException{
+    public JwtResponseVM signinGooglePlus(GooglePlusVM googlePlusVM) throws IOException{
         log.debug("Request to Signin GooglePlus: {}", googlePlusVM);
         final NetHttpTransport transport = new NetHttpTransport();
         final JacksonFactory jacksonFactory = JacksonFactory.getDefaultInstance();
@@ -462,6 +473,13 @@ public class UserServiceImpl implements UserService {
         SecurityContextHolder.getContext().setAuthentication(authenticationToken);
         String jwt = tokenProvider.createToken(authenticationToken, true);
 
+        Long currentUserId = SecurityUtils.getIdByCurrentUser();
+        RefreshTokenDTO refreshToken = refreshTokenService.createRefreshToken(currentUserId);
+
+        JwtResponseVM jwtResponseVM = JwtResponseVM.builder()
+                .token(jwt)
+                .refreshToken(refreshToken.getToken())
+                .build();
 
         if(!googlePlusVM.getIdOneSignal().equals("")){
 
@@ -485,11 +503,11 @@ public class UserServiceImpl implements UserService {
             addAllNotification(user);
         }
 
-        return jwt;
+        return jwtResponseVM;
     }
 
     @Override
-    public String signinFacebook(FacebookVM facebookVM) {
+    public JwtResponseVM signinFacebook(FacebookVM facebookVM) {
         log.debug("Request to Signin Facebook: {}", facebookVM);
 
         if(facebookVM.getEmail()==null){
@@ -539,6 +557,13 @@ public class UserServiceImpl implements UserService {
         SecurityContextHolder.getContext().setAuthentication(authenticationToken);
         String jwt = tokenProvider.createToken(authenticationToken, true);
 
+        Long currentUserId = SecurityUtils.getIdByCurrentUser();
+        RefreshTokenDTO refreshToken = refreshTokenService.createRefreshToken(currentUserId);
+
+        JwtResponseVM jwtResponseVM = JwtResponseVM.builder()
+                .token(jwt)
+                .refreshToken(refreshToken.getToken())
+                .build();
 
         if(!facebookVM.getIdOneSignal().equals("")){
 
@@ -562,7 +587,7 @@ public class UserServiceImpl implements UserService {
             addAllNotification(user);
         }
 
-        return jwt;
+        return jwtResponseVM;
     }
 
     @Override
@@ -681,7 +706,7 @@ public class UserServiceImpl implements UserService {
     */
 
     @Override
-    public String signinGooglePlusOneTap(GooglePlusVM googlePlusVM) throws IOException{
+    public JwtResponseVM signinGooglePlusOneTap(GooglePlusVM googlePlusVM) throws IOException{
         log.debug("Request to Signin GooglePlus OneTap: {}", googlePlusVM);
         final NetHttpTransport transport = new NetHttpTransport();
         final JacksonFactory jacksonFactory = JacksonFactory.getDefaultInstance();
@@ -729,6 +754,13 @@ public class UserServiceImpl implements UserService {
         SecurityContextHolder.getContext().setAuthentication(authenticationToken);
         String jwt = tokenProvider.createToken(authenticationToken, true);
 
+        Long currentUserId = SecurityUtils.getIdByCurrentUser();
+        RefreshTokenDTO refreshToken = refreshTokenService.createRefreshToken(currentUserId);
+
+        JwtResponseVM jwtResponseVM = JwtResponseVM.builder()
+                .token(jwt)
+                .refreshToken(refreshToken.getToken())
+                .build();
 
         if(!googlePlusVM.getIdOneSignal().equals("")){
 
@@ -753,7 +785,7 @@ public class UserServiceImpl implements UserService {
             addAllNotification(user);
         }
 
-        return jwt;
+        return jwtResponseVM;
     }
 
     @Override
@@ -782,6 +814,22 @@ public class UserServiceImpl implements UserService {
                 .orElseThrow(() -> new ResouorceNotFoundException("Not found user with id "+id));
         user.setAuthorities(authorities);
         userRepository.save(user);
+    }
+
+    @Override
+    public JwtResponseVM refreshToken(TokenRefreshRequestDTO request) {
+        String requestRefreshToken = request.getRefreshToken();
+        return refreshTokenService.findByToken(requestRefreshToken)
+                .map(refreshTokenService::verifyExpiration)
+                .map(RefreshToken::getUser)
+                .map(user -> {
+                    String token = tokenProvider.generateTokenFromUsername(user.getUsername());
+                    return JwtResponseVM.builder()
+                            .token(token)
+                            .refreshToken(requestRefreshToken)
+                            .build();
+                })
+                .orElseThrow(() -> new TokenRefreshException(requestRefreshToken+" : Invalid RefreshToken"));
     }
 
     private Optional<User> updateUserSocialMedia(UserDTO userDTO, String email){

@@ -78,4 +78,16 @@ public class UserControllerExceptionHandler {
 
         return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
     }
+
+    @ExceptionHandler(TokenRefreshException.class)
+    public ResponseEntity<ErrorMessage> handeleTokenRefreshException(TokenRefreshException ex, WebRequest request) {
+        log.error("TokenRefreshException = An exception have been occurred please see logging error:  {}", ex.getMessage());
+        ErrorMessage message = new ErrorMessage(
+                HttpStatus.BAD_REQUEST.value(),
+                new Date(),
+                ex.getMessage(),
+                request.getDescription(false));
+
+        return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
+    }
 }

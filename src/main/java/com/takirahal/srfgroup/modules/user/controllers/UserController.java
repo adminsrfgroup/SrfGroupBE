@@ -26,10 +26,13 @@ import com.takirahal.srfgroup.utils.CommonUtil;
 import com.takirahal.srfgroup.utils.HeaderUtil;
 import com.takirahal.srfgroup.utils.RequestUtil;
 import com.takirahal.srfgroup.utils.SecurityUtils;
+import jakarta.annotation.PostConstruct;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
+import org.springframework.boot.context.event.ApplicationReadyEvent;
+import org.springframework.context.event.EventListener;
 import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -80,15 +83,21 @@ public class UserController {
      * @return
      */
     @PostMapping("public/signin")
-    public ResponseEntity<JWTToken> signinClient(@RequestBody LoginDTO loginDTO, HttpServletRequest httpServletRequest) {
+    public ResponseEntity<JwtResponseVM> signinClient(@RequestBody LoginDTO loginDTO, HttpServletRequest httpServletRequest) {
         log.info("REST request to signin with email: {} ", loginDTO.getEmail());
-        String jwt = userService.signinClient(loginDTO);
+        JwtResponseVM jwtResponseVM = userService.signinClient(loginDTO);
         HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.add(JwtAuthenticationFilter.AUTHORIZATION_HEADER, "Bearer " + jwt);
+        // httpHeaders.add(JwtAuthenticationFilter.AUTHORIZATION_HEADER, "Bearer " + jwtResponseVM.getToken());
         httpHeaders.add("X-app-alert", RequestUtil.messageTranslate("signin.message_welcome"));
-        return new ResponseEntity<>(new JWTToken(jwt), httpHeaders, HttpStatus.OK);
+        return new ResponseEntity<>(jwtResponseVM, httpHeaders, HttpStatus.OK);
     }
 
+
+    @PostMapping("public/refreshtoken")
+    public ResponseEntity<JwtResponseVM> refreshtoken(@Valid @RequestBody TokenRefreshRequestDTO request) {
+        JwtResponseVM jwtResponseVM = userService.refreshToken(request);
+        return new ResponseEntity<>(jwtResponseVM, HttpStatus.OK);
+    }
 
     /**
      *
@@ -96,14 +105,14 @@ public class UserController {
      * @return
      */
     @PostMapping("public/signin-google-plus")
-    public ResponseEntity<JWTToken> signinGooglePlus(@Valid @RequestBody GooglePlusVM googlePlusVM) {
+    public ResponseEntity<JwtResponseVM> signinGooglePlus(@Valid @RequestBody GooglePlusVM googlePlusVM) {
         try {
             log.info("REST request to signin Google Plus: {} ", googlePlusVM);
-            String jwt = userService.signinGooglePlus(googlePlusVM);
+            JwtResponseVM jwtResponseVM = userService.signinGooglePlus(googlePlusVM);
             HttpHeaders httpHeaders = new HttpHeaders();
-            httpHeaders.add(JwtAuthenticationFilter.AUTHORIZATION_HEADER, "Bearer " + jwt);
+            // httpHeaders.add(JwtAuthenticationFilter.AUTHORIZATION_HEADER, "Bearer " + jwt);
             httpHeaders.add("X-app-alert", RequestUtil.messageTranslate("signin.message_welcome"));
-            return new ResponseEntity<>(new JWTToken(jwt), httpHeaders, HttpStatus.OK);
+            return new ResponseEntity<>(jwtResponseVM, httpHeaders, HttpStatus.OK);
         }
         catch(Exception e){
             log.error("Exception REST request to signin Google Plus: {} ", e.getStackTrace());
@@ -124,14 +133,14 @@ public class UserController {
      * @return
      */
     @PostMapping("public/signin-google-plus-one-tap")
-    public ResponseEntity<JWTToken> signinGooglePlusOneTap(@Valid @RequestBody GooglePlusVM googlePlusVM) {
+    public ResponseEntity<JwtResponseVM> signinGooglePlusOneTap(@Valid @RequestBody GooglePlusVM googlePlusVM) {
         try {
             log.info("REST request to signin Google Plus OneTap: {} ", googlePlusVM);
-            String jwt = userService.signinGooglePlusOneTap(googlePlusVM);
+            JwtResponseVM jwtResponseVM = userService.signinGooglePlusOneTap(googlePlusVM);
             HttpHeaders httpHeaders = new HttpHeaders();
-            httpHeaders.add(JwtAuthenticationFilter.AUTHORIZATION_HEADER, "Bearer " + jwt);
+            // httpHeaders.add(JwtAuthenticationFilter.AUTHORIZATION_HEADER, "Bearer " + jwt);
             httpHeaders.add("X-app-alert", RequestUtil.messageTranslate("signin.message_welcome"));
-            return new ResponseEntity<>(new JWTToken(jwt), httpHeaders, HttpStatus.OK);
+            return new ResponseEntity<>(jwtResponseVM, httpHeaders, HttpStatus.OK);
         }
         catch(Exception e){
             log.error("Exception REST request to signin Google Plus OneTap: {} ", e.getStackTrace());
@@ -151,14 +160,14 @@ public class UserController {
      * @return
      */
     @PostMapping("public/signin-facebook")
-    public ResponseEntity<JWTToken> signinFacebook(@Valid @RequestBody FacebookVM facebookVM, HttpServletRequest httpServletRequest) {
+    public ResponseEntity<JwtResponseVM> signinFacebook(@Valid @RequestBody FacebookVM facebookVM, HttpServletRequest httpServletRequest) {
         try {
             log.info("REST request to signin Facebook: {} ", facebookVM);
-            String jwt = userService.signinFacebook(facebookVM);
+            JwtResponseVM jwtResponseVM = userService.signinFacebook(facebookVM);
             HttpHeaders httpHeaders = new HttpHeaders();
-            httpHeaders.add(JwtAuthenticationFilter.AUTHORIZATION_HEADER, "Bearer " + jwt);
+            // httpHeaders.add(JwtAuthenticationFilter.AUTHORIZATION_HEADER, "Bearer " + jwt);
             httpHeaders.add("X-app-alert", RequestUtil.messageTranslate("signin.message_welcome"));
-            return new ResponseEntity<>(new JWTToken(jwt), httpHeaders, HttpStatus.OK);
+            return new ResponseEntity<>(jwtResponseVM, httpHeaders, HttpStatus.OK);
         }
         catch(Exception e){
             log.error("Exception REST request to signin Facebook: {} ", e.getStackTrace());

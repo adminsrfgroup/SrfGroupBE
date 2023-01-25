@@ -28,7 +28,7 @@ public interface UserService {
 
     UserDTO getCurrentUser();
 
-    String signinClient(LoginDTO loginDTO);
+    JwtResponseVM signinClient(LoginDTO loginDTO);
 
     String signInAdmin(LoginDTO loginDTO);
 
@@ -40,11 +40,11 @@ public interface UserService {
 
     Boolean updatePasswordCurrentUser(UpdatePasswordDTO updatePasswordDTO);
 
-    String signinGooglePlus(GooglePlusVM googlePlusVM) throws IOException;
+    JwtResponseVM signinGooglePlus(GooglePlusVM googlePlusVM) throws IOException;
 
-    String signinFacebook(FacebookVM facebookVM);
+    JwtResponseVM signinFacebook(FacebookVM facebookVM);
 
-    String signinGooglePlusOneTap(GooglePlusVM googlePlusVM) throws IOException;
+    JwtResponseVM signinGooglePlusOneTap(GooglePlusVM googlePlusVM) throws IOException;
 
     Boolean requestPasswordReset(String mail);
 
@@ -59,4 +59,6 @@ public interface UserService {
     ProfileFavoriteUserDTO findWithFavoriteUserById(Long id);
 
     void updateUserAuthority(Long id, Set<Authority> authorities);
+
+    JwtResponseVM refreshToken(TokenRefreshRequestDTO request);
 }

@@ -26,7 +26,7 @@ import java.util.Optional;
  */
 @RestController
 @RequestMapping("/api/aboutus/")
-public class AboutUsController {
+public class    AboutUsController {
 
     private final Logger log = LoggerFactory.getLogger(AboutUsController.class);
 
@@ -79,12 +79,8 @@ public class AboutUsController {
             @ApiResponse(responseCode = "404", description = "Book not found",
                     content = @Content) })
     @GetMapping("/public/last")
-    public ResponseEntity<AboutUsDTO> getLastAboutUs() {
+    public ResponseEntity<String> getLastAboutUs() {
         log.info("REST request to get AboutUs : {}");
-        Optional<AboutUsDTO> aboutUsDTO = aboutUsService.findLastOne();
-        if(!aboutUsDTO.isPresent()){
-            throw new ResouorceNotFoundException("Not inseret yet from BO");
-        }
-        return new ResponseEntity<>(aboutUsDTO.get(), HttpStatus.OK);
+        return new ResponseEntity<>(aboutUsService.findLastOne(), HttpStatus.OK);
     }
 }

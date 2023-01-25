@@ -4,10 +4,12 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.annotations.Type;
 
 import jakarta.persistence.*;
 import java.io.Serializable;
+import java.sql.Types;
 
 @Data
 @Builder
@@ -34,17 +36,17 @@ public class Faq implements Serializable {
     private String questionEn;
 
     @Lob
-    // @Type(type = "org.hibernate.type.TextType")
+    @JdbcTypeCode(Types.LONGVARCHAR)
     @Column(name = "response_ar", columnDefinition="TEXT")
     private String responseAr;
 
     @Lob
-    // @Type(type = "org.hibernate.type.TextType")
+    @JdbcTypeCode(Types.LONGVARCHAR)
     @Column(name = "response_fr", columnDefinition="TEXT")
     private String responseFr;
 
     @Lob
-    // @Type(type = "org.hibernate.type.TextType")
+    @JdbcTypeCode(Types.LONGVARCHAR)
     @Column(name = "response_en", columnDefinition="TEXT")
     private String responseEn;
 

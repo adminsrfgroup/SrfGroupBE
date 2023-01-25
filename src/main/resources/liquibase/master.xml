@@ -11,4 +11,5 @@
     <include file="changelog/01_initial_schema.xml" relativeToChangelogFile="true"/>
     <include file="changelog/02_create_cgu_table.xml" relativeToChangelogFile="true"/>
     <include file="changelog/03_load_default_data.xml" relativeToChangelogFile="true"/>
+    <include file="changelog/04_create_refresh_token_table.xml" relativeToChangelogFile="true"/>
 </databaseChangeLog>

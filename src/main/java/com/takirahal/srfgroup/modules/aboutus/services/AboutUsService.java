@@ -30,5 +30,5 @@ public interface AboutUsService {
      *
      * @return
      */
-    Optional<AboutUsDTO> findLastOne();
+    String findLastOne();
 }

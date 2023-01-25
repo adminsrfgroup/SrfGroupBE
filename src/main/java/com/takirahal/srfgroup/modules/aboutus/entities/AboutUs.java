@@ -3,10 +3,12 @@ package com.takirahal.srfgroup.modules.aboutus.entities;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.annotations.Type;
 
 import jakarta.persistence.*;
 import java.io.Serializable;
+import java.sql.Types;
 
 @Data
 @NoArgsConstructor
@@ -23,17 +25,17 @@ public class AboutUs implements Serializable {
     private Long id;
 
     @Lob
-    // // @Type(type = "org.hibernate.type.TextType")
-    @Column(name = "content_ar")
+    @JdbcTypeCode(Types.LONGVARCHAR)
+    @Column(name = "content_ar", columnDefinition="TEXT")
     private String contentAr;
 
     @Lob
-    // // @Type(type = "org.hibernate.type.TextType")
-    @Column(name = "content_en")
+    @JdbcTypeCode(Types.LONGVARCHAR)
+    @Column(name = "content_en", columnDefinition="TEXT")
     private String contentEn;
 
     @Lob
-    // // @Type(type = "org.hibernate.type.TextType")
-    @Column(name = "content_fr")
+    @JdbcTypeCode(Types.LONGVARCHAR)
+    @Column(name = "content_fr", columnDefinition="TEXT")
     private String contentFr;
 }

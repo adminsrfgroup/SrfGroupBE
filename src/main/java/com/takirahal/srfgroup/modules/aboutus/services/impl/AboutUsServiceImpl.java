@@ -1,6 +1,8 @@
 package com.takirahal.srfgroup.modules.aboutus.services.impl;
 
+import com.takirahal.srfgroup.constants.SrfGroupConstants;
 import com.takirahal.srfgroup.exceptions.BadRequestAlertException;
+import com.takirahal.srfgroup.exceptions.ResouorceNotFoundException;
 import com.takirahal.srfgroup.modules.aboutus.dto.AboutUsDTO;
 import com.takirahal.srfgroup.modules.aboutus.dto.filter.AboutUsFilter;
 import com.takirahal.srfgroup.modules.aboutus.entities.AboutUs;
@@ -54,9 +56,19 @@ public class AboutUsServiceImpl implements AboutUsService {
 
     @Override
     // @Cacheable(value="aboutus")
-    public Optional<AboutUsDTO> findLastOne() {
+    public String findLastOne() {
         log.debug("Request to findLastOne : {}");
-        return aboutUsRepository.findTopByOrderByIdDesc().map(aboutUsMapper::toDto);
+        AboutUsDTO aboutUsDTO = aboutUsRepository.findTopByOrderByIdDesc().map(aboutUsMapper::toDto)
+                .orElseThrow(() ->  new ResouorceNotFoundException("Not inseret yet from BO"));
+        if( RequestUtil.getHeaderAttribute(SrfGroupConstants.LANG_KEY).equals("fr")){
+            return aboutUsDTO.getContentFr();
+        }
+        else if( RequestUtil.getHeaderAttribute(SrfGroupConstants.LANG_KEY).equals("en")){
+            return aboutUsDTO.getContentEn();
+        }
+        else{
+            return aboutUsDTO.getContentAr();
+        }
     }
 
     protected Specification<AboutUs> createSpecification(AboutUsFilter aboutUsFilter) {

@@ -180,4 +180,14 @@ public class JwtTokenProvider {
                 .setExpiration(expiryDate)
                 .compact();
     }
+
+    public String generateTokenFromUsername(String username) {
+        return Jwts.builder()
+                .setSubject(username)
+                .setIssuedAt(new Date())
+                .signWith(this.secretKey, SignatureAlgorithm.HS256)
+                // .signWith(SignatureAlgorithm.HS512, jwtSecret)
+                .setExpiration(new Date((new Date()).getTime() + jwtExpirationInMs))
+                .compact();
+    }
 }
