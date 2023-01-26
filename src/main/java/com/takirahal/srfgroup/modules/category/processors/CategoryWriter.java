@@ -13,19 +13,12 @@ import java.util.List;
 @Component
 public class CategoryWriter implements ItemWriter<Category> {
 
-//    @Autowired
-//    CategoryRepository categoryRepository;
-//
-//    @Override
-//    public void write(List<? extends Category> list){
-//
-//        list.stream().forEach(category -> {
-//            categoryRepository.save(category);
-//        });
-//    }
+    @Autowired
+    CategoryRepository categoryRepository;
 
     @Override
     public void write(Chunk<? extends Category> chunk) throws Exception {
-
+        System.out.printf("write Category list ");
+        categoryRepository.saveAll(chunk);
     }
 }

@@ -15,13 +15,9 @@ public class AddressTransactionItemWriter  implements ItemWriter<Address> {
     @Autowired
     AddressRepository addressRepository;
 
-//    @Override
-//    public void write(List<? extends Address> list){
-//        addressRepository.saveAll(list);
-//    }
-
     @Override
-    public void write(Chunk<? extends Address> chunk) throws Exception {
-        addressRepository.saveAll(chunk);
+    public void write(Chunk<? extends Address> list) throws Exception {
+        System.out.printf("write Address list ");
+        addressRepository.saveAll(list);
     }
 }

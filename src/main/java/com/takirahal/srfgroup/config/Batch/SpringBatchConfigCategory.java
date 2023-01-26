@@ -1,12 +1,14 @@
 package com.takirahal.srfgroup.config.Batch;
 
 
+import com.takirahal.srfgroup.modules.address.entities.Address;
 import com.takirahal.srfgroup.modules.category.entities.Category;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.EnableBatchProcessing;
-import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
-import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
+import org.springframework.batch.core.job.builder.JobBuilder;
+import org.springframework.batch.core.repository.JobRepository;
+import org.springframework.batch.core.step.builder.StepBuilder;
 import org.springframework.batch.item.ItemProcessor;
 import org.springframework.batch.item.ItemReader;
 import org.springframework.batch.item.ItemWriter;
@@ -21,16 +23,17 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.Resource;
+import org.springframework.transaction.PlatformTransactionManager;
 
-// @Configuration
-// @EnableBatchProcessing
+//@Configuration
+//@EnableBatchProcessing
 public class SpringBatchConfigCategory {
 
-    @Autowired
-    private JobBuilderFactory jobBuilderFactory;
-
-    @Autowired
-    private StepBuilderFactory stepBuilderFactory;
+//    @Autowired
+//    private JobBuilderFactory jobBuilderFactory;
+//
+//    @Autowired
+//    private StepBuilderFactory stepBuilderFactory;
 
     @Autowired
     private ItemReader<Category> categoryItemReader;
@@ -41,20 +44,39 @@ public class SpringBatchConfigCategory {
     @Autowired
     private ItemProcessor<Category, Category> categoryItemProcess;
 
-
     @Bean
-    @Qualifier("categoryBeanJob")
-    public Job categoryJob(){
-        Step step0 = stepBuilderFactory.get("category-step-load-data")
-                .<Category, Category>chunk(100)
+    @Qualifier("step0Category")
+    public Step step0Category(JobRepository jobRepository,
+                      PlatformTransactionManager transactionManager) {
+        return new StepBuilder("step0Category", jobRepository)
+                .<Category, Category> chunk(100, transactionManager)
                 .reader(categoryItemReader)
                 .processor(categoryItemProcess)
                 .writer(categoryItemWriter)
                 .build();
-        return jobBuilderFactory.get("category-data-loader-job")
-                .start(step0)
+    }
+
+    @Bean
+    @Qualifier("categoryBeanJob")
+    public Job importCategoryJob(JobRepository jobRepository, Step step0Category) {
+        return new JobBuilder("category-step-load-data", jobRepository)
+                .start(step0Category)
                 .build();
     }
+
+//    @Bean
+//    @Qualifier("categoryBeanJob")
+//    public Job categoryJob(){
+//        Step step0 = stepBuilderFactory.get("category-step-load-data")
+//                .<Category, Category>chunk(100)
+//                .reader(categoryItemReader)
+//                .processor(categoryItemProcess)
+//                .writer(categoryItemWriter)
+//                .build();
+//        return jobBuilderFactory.get("category-data-loader-job")
+//                .start(step0)
+//                .build();
+//    }
 
     @Bean
     public FlatFileItemReader<Category> categoryBeanFlatFileItemReader(@Value("${inputFileCategory}") Resource inputFile){
@@ -78,15 +100,5 @@ public class SpringBatchConfigCategory {
         fieldSetMapper.setTargetType(Category.class);
         bankTransactionLineMapper.setFieldSetMapper(fieldSetMapper);
         return bankTransactionLineMapper;
-    }
-
-    @Bean
-    public ItemProcessor<Category, Category> categoryBeanItemProcessor(){
-        return new ItemProcessor<Category, Category>() {
-            @Override
-            public Category process(Category category) throws Exception {
-                return category;
-            }
-        };
     }
 }
