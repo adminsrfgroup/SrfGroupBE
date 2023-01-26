@@ -28,12 +28,12 @@ public class AddressController {
     @Autowired
     AddressService addressService;
 
-//    @Autowired
-//    private JobLauncher jobLauncher;
-//
-//    @Autowired
-//    @Qualifier("addressBeanJob")
-//    private Job jobAddress;
+    @Autowired
+    private JobLauncher jobLauncher;
+
+    @Autowired
+    @Qualifier("addressBeanJob")
+    private Job jobAddress;
 
     /**
      *
@@ -53,22 +53,22 @@ public class AddressController {
      *
      * @return
      */
-//    @GetMapping("admin/import")
-//    public ResponseEntity<BatchStatus> importAddresses() {
-//        try{
-//            log.info("REST request to import Addresses by data.sql");
-//            Map<String, JobParameter<?>> parameters = new HashMap<>();
-//
-//            // Map<String, JobParameter> parms = new HashMap<>();
-//            // parms.put("time", new JobParameter(System.currentTimeMillis()));
-//            JobParameters jobParameter = new JobParameters(parameters);
-//            JobExecution jobExecution = jobLauncher.run(jobAddress, jobParameter);
-//            while (jobExecution.isRunning()){
-//                System.out.println("...");
-//            }
-//            return new ResponseEntity<>(jobExecution.getStatus(), HttpStatus.OK);
-//        }catch (Exception e){
-//            return new ResponseEntity<>(BatchStatus.FAILED, HttpStatus.OK);
-//        }
-//    }
+    @GetMapping("admin/import")
+    public ResponseEntity<BatchStatus> importAddresses() {
+        try{
+            log.info("REST request to import Addresses");
+            Map<String, JobParameter<?>> parameters = new HashMap<>();
+
+            // Map<String, JobParameter> parms = new HashMap<>();
+            // parms.put("time", new JobParameter(System.currentTimeMillis()));
+            JobParameters jobParameter = new JobParameters(parameters);
+            JobExecution jobExecution = jobLauncher.run(jobAddress, jobParameter);
+            while (jobExecution.isRunning()){
+                System.out.println("...");
+            }
+            return new ResponseEntity<>(jobExecution.getStatus(), HttpStatus.OK);
+        }catch (Exception e){
+            return new ResponseEntity<>(BatchStatus.FAILED, HttpStatus.OK);
+        }
+    }
 }

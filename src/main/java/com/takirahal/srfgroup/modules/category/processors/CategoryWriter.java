@@ -13,9 +13,9 @@ import java.util.List;
 @Component
 public class CategoryWriter implements ItemWriter<Category> {
 
-//    @Autowired
-//    CategoryRepository categoryRepository;
-//
+    @Autowired
+    CategoryRepository categoryRepository;
+
 //    @Override
 //    public void write(List<? extends Category> list){
 //
@@ -26,6 +26,6 @@ public class CategoryWriter implements ItemWriter<Category> {
 
     @Override
     public void write(Chunk<? extends Category> chunk) throws Exception {
-
+        categoryRepository.saveAll(chunk);
     }
 }

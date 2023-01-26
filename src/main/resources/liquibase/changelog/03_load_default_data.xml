@@ -5,7 +5,7 @@
                    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-latest.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
 
-    <changeSet author="Taki-eddine.RAHAL (generated)" id="1672235714999-118">
+    <changeSet author="Taki-eddine.RAHAL (generated)" id="1672235714999-99">
         <loadData
                 file="liquibase/data/user.csv"
                 separator=";"
@@ -17,7 +17,7 @@
         </loadData>
     </changeSet>
 
-    <changeSet author="Taki-eddine.RAHAL (generated)" id="1672235714999-119">
+    <changeSet author="Taki-eddine.RAHAL (generated)" id="1672235714999-100">
         <loadData
                 file="liquibase/data/authority.csv"
                 separator=";"
@@ -27,7 +27,7 @@
         </loadData>
     </changeSet>
 
-    <changeSet author="Taki-eddine.RAHAL (generated)" id="1672235714999-120">
+    <changeSet author="Taki-eddine.RAHAL (generated)" id="1672235714999-101">
         <loadData
                 file="liquibase/data/user_authorities.csv"
                 separator=";"
