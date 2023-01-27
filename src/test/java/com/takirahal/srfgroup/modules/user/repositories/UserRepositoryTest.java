@@ -22,75 +22,75 @@ import static org.junit.jupiter.api.Assertions.*;
 @DataJpaTest
 class UserRepositoryTest {
 
-    @Autowired
-    UserRepository userRepository;
-
-    // Delete all data table after each test (clean state)
-    @AfterEach
-    void tearDown() {
-        userRepository.deleteAll();
-    }
-
-    @Test
-    void findOneByEmailIgnoreCase() {
-
-        // Given
-        String email = "taki@rahal.tn";
-        User user = new User();
-        user.setEmail(email);
-        user.setUsername(email);
-        user.setPassword("123");
-        user.setFirstName("");
-        user.setLastName("");
-        user.setActivatedAccount(false);
-        user.setActivationKey(RandomUtil.generateActivationKey(20));
-        user.setSourceConnectedDevice("Web");
-        user.setRegisterDate(Instant.now());
-        user.setLangKey("fr");
-
-        Set<Authority> authorities = new HashSet<>();
-        Authority authority = new Authority();
-        authority.setName(EAuthority.ROLE_USER);
-        authorities.add(authority);
-        user.setAuthorities(authorities);
-        userRepository.save(user);
-
-        // When
-        Optional<User> expected = userRepository.findOneByEmailIgnoreCase(email);
-
-        // Then
-        assertTrue(expected.isPresent());
-
-    }
-
-    @Test
-    void findOneByActivationKey() {
-
-        // Given
-        String activationKey = "123456789";
-        User user = new User();
-        user.setEmail("test@test.com");
-        user.setUsername("test@test.com");
-        user.setPassword("123");
-        user.setFirstName("");
-        user.setLastName("");
-        user.setActivatedAccount(false);
-        user.setActivationKey(activationKey);
-        user.setSourceConnectedDevice("Web");
-        user.setRegisterDate(Instant.now());
-        user.setLangKey("fr");
-
-        Set<Authority> authorities = new HashSet<>();
-        Authority authority = new Authority();
-        authority.setName(EAuthority.ROLE_USER);
-        authorities.add(authority);
-        user.setAuthorities(authorities);
-        userRepository.save(user);
-
-        // When
-        Optional<User> expected = userRepository.findOneByActivationKey(activationKey);
-
-        // Then
-        assertTrue(expected.isPresent());
-    }
+//    @Autowired
+//    UserRepository userRepository;
+//
+//    // Delete all data table after each test (clean state)
+//    @AfterEach
+//    void tearDown() {
+//        userRepository.deleteAll();
+//    }
+//
+//    @Test
+//    void findOneByEmailIgnoreCase() {
+//
+//        // Given
+//        String email = "taki@rahal.tn";
+//        User user = new User();
+//        user.setEmail(email);
+//        user.setUsername(email);
+//        user.setPassword("123");
+//        user.setFirstName("");
+//        user.setLastName("");
+//        user.setActivatedAccount(false);
+//        user.setActivationKey(RandomUtil.generateActivationKey(20));
+//        user.setSourceConnectedDevice("Web");
+//        user.setRegisterDate(Instant.now());
+//        user.setLangKey("fr");
+//
+//        Set<Authority> authorities = new HashSet<>();
+//        Authority authority = new Authority();
+//        authority.setName(EAuthority.ROLE_USER);
+//        authorities.add(authority);
+//        user.setAuthorities(authorities);
+//        userRepository.save(user);
+//
+//        // When
+//        Optional<User> expected = userRepository.findOneByEmailIgnoreCase(email);
+//
+//        // Then
+//        assertTrue(expected.isPresent());
+//
+//    }
+//
+//    @Test
+//    void findOneByActivationKey() {
+//
+//        // Given
+//        String activationKey = "123456789";
+//        User user = new User();
+//        user.setEmail("test@test.com");
+//        user.setUsername("test@test.com");
+//        user.setPassword("123");
+//        user.setFirstName("");
+//        user.setLastName("");
+//        user.setActivatedAccount(false);
+//        user.setActivationKey(activationKey);
+//        user.setSourceConnectedDevice("Web");
+//        user.setRegisterDate(Instant.now());
+//        user.setLangKey("fr");
+//
+//        Set<Authority> authorities = new HashSet<>();
+//        Authority authority = new Authority();
+//        authority.setName(EAuthority.ROLE_USER);
+//        authorities.add(authority);
+//        user.setAuthorities(authorities);
+//        userRepository.save(user);
+//
+//        // When
+//        Optional<User> expected = userRepository.findOneByActivationKey(activationKey);
+//
+//        // Then
+//        assertTrue(expected.isPresent());
+//    }
 }

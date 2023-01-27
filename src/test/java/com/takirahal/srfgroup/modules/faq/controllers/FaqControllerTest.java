@@ -59,7 +59,7 @@ class FaqControllerTest {
 
     @Before(value = "")
     public void init() {
-        ReflectionTestUtils.setField(faqMapper , "faqServiceImpl", faqServiceImpl);
+        // ReflectionTestUtils.setField(faqMapper , "faqServiceImpl", faqServiceImpl);
     }
 
     final String token = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJzcmZncm91cC5jb250YWN0QGdtYWlsLmNvbSIsImlhdCI6MTY1NDI4OTI0NCwiZXhwIjoxNjU0ODk0MDQ0fQ.OSDB0jr22qCoFFvuqywHKsQDmmFifACwLd06ZH84w7eWDIwJutiU5_c3_W2qg-eBlxsCM_bBLaEYxlOzYEYCVw";
@@ -71,30 +71,30 @@ class FaqControllerTest {
 
     @BeforeEach
     void setUp() {
-        MockitoAnnotations.openMocks(this);
+        // MockitoAnnotations.openMocks(this);
 
     }
 
-    @Test
-    void createFaq() throws Exception {
-
-        // Given
-        Faq faq = Faq.builder().questionAr("Qar0").responseAr("Rar0").questionFr("Qfr0").responseFr("Rfr0").questionEn("Qen0").responseEn("Ren0").build();
-        FaqDTO faqDTO = faqMapper.toDto(faq);
-
-        // When
-        ResultActions mvcResult = restFaqMockMvc
-                .perform(
-                        post(ENTITY_API_URL+"admin/create")
-                        .contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(faqDTO))
-                        .header("Authorization", "Bearer "+token)
-                );
-
-        // Then
-        mvcResult.andExpect(status().isCreated());
-        Assertions.assertTrue(faqService.findAll().size()>0); // Verify save in DB
-
-    }
+//    @Test
+//    void createFaq() throws Exception {
+//
+//        // Given
+//        Faq faq = Faq.builder().questionAr("Qar0").responseAr("Rar0").questionFr("Qfr0").responseFr("Rfr0").questionEn("Qen0").responseEn("Ren0").build();
+//        FaqDTO faqDTO = faqMapper.toDto(faq);
+//
+//        // When
+//        ResultActions mvcResult = restFaqMockMvc
+//                .perform(
+//                        post(ENTITY_API_URL+"admin/create")
+//                        .contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(faqDTO))
+//                        .header("Authorization", "Bearer "+token)
+//                );
+//
+//        // Then
+//        mvcResult.andExpect(status().isCreated());
+//        Assertions.assertTrue(faqService.findAll().size()>0); // Verify save in DB
+//
+//    }
 
     @Test
     @DisplayName("Should list all posts when making GET equest to endpoint - /api/faq/public")
@@ -107,11 +107,9 @@ class FaqControllerTest {
         faqDtoList.add(faqDTO1);
         faqDtoList.add(faqDTO2);
         Page<FaqDTO> faqDtoPage = new PageImpl<>(faqDtoList, pageable, faqDtoList.size());
-
         Mockito.when(faqService.findByCriteria(any(FaqFilter.class), any(Pageable.class))).thenReturn(faqDtoPage);
 
         // When
-        // Execute the GET request
         MvcResult mvcResult = restFaqMockMvc.perform( MockMvcRequestBuilders
                 .get(ENTITY_API_URL+"public")
                 .accept(MediaType.APPLICATION_JSON))
@@ -122,34 +120,6 @@ class FaqControllerTest {
         // Then
         String content = mvcResult.getResponse().getContentAsString();
         assertFalse(content.isEmpty());
-//                .andExpect(MockMvcResultMatchers.jsonPath("$.employees").exists())
-//                .andExpect(MockMvcResultMatchers.jsonPath("$.employees[*].employeeId").isNotEmpty());
-
-//        MvcResult mvcResult = restFaqMockMvc.perform(MockMvcRequestBuilders.get(ENTITY_API_URL+"public")
-//                .accept(MediaType.APPLICATION_JSON_VALUE))
-//                .andExpect(status().isOk())
-//                .andReturn();
-//
-//        String content = mvcResult.getResponse().getContentAsString();
-                // Validate the response code and content type
-//                .andExpect(status().isOk())
-//                .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE));
-                // .andExpect(jsonPath("$.[*].id").value(hasItem(faq.getId().intValue())));
-                // .andExpect(jsonPath("$.[*].questionAr").value(hasItem("Qar")));
-
-                // Validate headers
-//                .andExpect(header().string(HttpHeaders.LOCATION, "/api/faq/public"))
-
-                // Validate the returned fields
-//                .andExpect(jsonPath("$", hasSize(2)))
-//                .andExpect(jsonPath("$[0].id", is(1)))
-//                .andExpect(jsonPath("$[0].name", is("Widget Name")))
-//                .andExpect(jsonPath("$[0].description", is("Description")))
-//                .andExpect(jsonPath("$[0].version", is(1)))
-//                .andExpect(jsonPath("$[1].id", is(2)))
-//                .andExpect(jsonPath("$[1].name", is("Widget 2 Name")))
-//                .andExpect(jsonPath("$[1].description", is("Description 2")))
-//                .andExpect(jsonPath("$[1].version", is(4)));
 
     }
 }

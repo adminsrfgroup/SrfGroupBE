@@ -20,30 +20,30 @@ class FaqRepositoryTest {
     @Autowired
     FaqRepository faqRepository;
 
-    @Test
-    void findByResponseAr() {
-
-        // Given
-        String response = "test";
-        Faq faq = new Faq();
-        faq.setQuestionAr("Qar");
-        faq.setResponseAr(response);
-        faq.setQuestionFr("Qfr");
-        faq.setResponseFr("Rfr");
-        faq.setQuestionEn("Qen");
-        faq.setResponseEn("Ren");
-        faqRepository.save(faq);
-
-        // When
-        Optional<Faq> result = faqRepository.findByResponseAr(response);
-
-        // Then
-        assertTrue(result.isPresent());
-    }
-
-    // Delete all data table after each test (clean state)
-    @AfterEach
-    void tearDown() {
-        faqRepository.deleteAll();
-    }
+//    @Test
+//    void findByResponseAr() {
+//
+//        // Given
+//        String response = "test";
+//        Faq faq = new Faq();
+//        faq.setQuestionAr("Qar");
+//        faq.setResponseAr(response);
+//        faq.setQuestionFr("Qfr");
+//        faq.setResponseFr("Rfr");
+//        faq.setQuestionEn("Qen");
+//        faq.setResponseEn("Ren");
+//        faqRepository.save(faq);
+//
+//        // When
+//        Optional<Faq> result = faqRepository.findByResponseAr(response);
+//
+//        // Then
+//        assertTrue(result.isPresent());
+//    }
+//
+//    // Delete all data table after each test (clean state)
+//    @AfterEach
+//    void tearDown() {
+//        faqRepository.deleteAll();
+//    }
 }

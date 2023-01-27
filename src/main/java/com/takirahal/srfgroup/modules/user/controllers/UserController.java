@@ -1,8 +1,6 @@
 package com.takirahal.srfgroup.modules.user.controllers;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.takirahal.srfgroup.SrfgroupApplication;
-import com.takirahal.srfgroup.constants.AuthoritiesConstants;
 import com.takirahal.srfgroup.exceptions.ResouorceNotFoundException;
 import com.takirahal.srfgroup.exceptions.UnauthorizedException;
 import com.takirahal.srfgroup.modules.cart.repositories.CartRepository;
@@ -17,22 +15,15 @@ import com.takirahal.srfgroup.modules.user.exceptioins.InvalidPasswordException;
 import com.takirahal.srfgroup.modules.user.exceptioins.UserBlockedException;
 import com.takirahal.srfgroup.modules.user.mapper.UserMapper;
 import com.takirahal.srfgroup.modules.user.repositories.UserRepository;
-import com.takirahal.srfgroup.modules.websocket.models.ConnectedUser;
 import com.takirahal.srfgroup.security.JwtAuthenticationFilter;
 import com.takirahal.srfgroup.security.JwtTokenProvider;
 import com.takirahal.srfgroup.modules.user.services.UserService;
 import com.takirahal.srfgroup.security.UserPrincipal;
-import com.takirahal.srfgroup.utils.CommonUtil;
 import com.takirahal.srfgroup.utils.HeaderUtil;
 import com.takirahal.srfgroup.utils.RequestUtil;
-import com.takirahal.srfgroup.utils.SecurityUtils;
-import jakarta.annotation.PostConstruct;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.context.event.ApplicationReadyEvent;
-import org.springframework.context.event.EventListener;
 import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -87,7 +78,6 @@ public class UserController {
         log.info("REST request to signin with email: {} ", loginDTO.getEmail());
         JwtResponseVM jwtResponseVM = userService.signinClient(loginDTO);
         HttpHeaders httpHeaders = new HttpHeaders();
-        // httpHeaders.add(JwtAuthenticationFilter.AUTHORIZATION_HEADER, "Bearer " + jwtResponseVM.getToken());
         httpHeaders.add("X-app-alert", RequestUtil.messageTranslate("signin.message_welcome"));
         return new ResponseEntity<>(jwtResponseVM, httpHeaders, HttpStatus.OK);
     }
@@ -189,7 +179,7 @@ public class UserController {
      * @param registerDTO
      */
     @PostMapping("public/signup")
-    public ResponseEntity<String> signup(@RequestBody RegisterDTO registerDTO, HttpServletRequest httpServletRequest) {
+    public ResponseEntity<String> signup(@RequestBody RegisterDTO registerDTO) {
         log.info("REST request to signup : {} ", registerDTO.getEmail());
         userService.registerUser(registerDTO);
         return new ResponseEntity<>("true", HttpStatus.CREATED);

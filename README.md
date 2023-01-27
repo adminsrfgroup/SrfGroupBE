@@ -65,11 +65,9 @@ change cmd: heroku config:set MAVEN_CUSTOM_GOALS="clean install -Pprod -DskipTes
     
 ## SonarQube
 
-mvn clean install -DskipTests sonar:sonar
-
-    mvn sonar:sonar -Dsonar.host.url=http://localhost:9000 -Dsonar.login=admin -Dsonar.password=sonar
-
-
+    - Open CMD on Root Project
+        $ mvn clean install
+        $ mvn sonar:sonar -Dsonar.host.url=http://localhost:9000 -Dsonar.login=admin -Dsonar.password=sonar
 
 
 ## Modify Dockerfile
