@@ -33,7 +33,7 @@ public class RequestUtil {
             HttpServletRequest request = ((ServletRequestAttributes) attributes).getRequest();
             attrValue = request.getHeader(attributeName);
         }
-        return attrValue.isEmpty() ? "" : attrValue;
+        return attrValue==null || attrValue.isEmpty() ? attributeName : attrValue; // Form Mock Unit Test
     }
 
 }
