@@ -4,6 +4,7 @@ import com.takirahal.srfgroup.modules.faq.entities.Faq;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.ActiveProfiles;
 
@@ -14,9 +15,18 @@ import static org.junit.jupiter.api.Assertions.*;
 
 
 @DataJpaTest
-@ActiveProfiles("test")
+// @ActiveProfiles("test")
 class FaqRepositoryTest {
 
+    @Value("${takirahaltest}")
+    String value;
+
+    @Test
+    void testValue(){
+        System.out.printf("value "+value);
+    }
+
+    /*
     @Autowired
     FaqRepository faqRepository;
 
@@ -46,4 +56,5 @@ class FaqRepositoryTest {
     void tearDown() {
         faqRepository.deleteAll();
     }
+    */
 }

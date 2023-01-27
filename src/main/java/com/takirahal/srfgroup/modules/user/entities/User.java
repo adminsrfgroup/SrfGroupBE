@@ -1,6 +1,7 @@
 package com.takirahal.srfgroup.modules.user.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.takirahal.srfgroup.modules.address.entities.Address;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -111,4 +112,18 @@ public class User implements Serializable {
     @ManyToOne
     private Address address;
 
+    // prettier-ignore
+    @Override
+    public String toString() {
+        return "User{" +
+                "username='" + username + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", email='" + email + '\'' +
+                ", imageUrl='" + imageUrl + '\'' +
+                ", activatedAccount='" + activatedAccount + '\'' +
+                ", langKey='" + langKey + '\'' +
+                ", activationKey='" + activationKey + '\'' +
+                "}";
+    }
 }

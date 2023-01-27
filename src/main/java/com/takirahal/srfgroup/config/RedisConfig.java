@@ -33,7 +33,7 @@ public class RedisConfig {
 //    private CacheManager cacheManager;
 //
 //    @Value("${spring.redis.host}")
-//    private String redisHost;
+//    private StringString redisHost;
 //
 //    @Value("${spring.redis.port}")
 //    private int redisPort;

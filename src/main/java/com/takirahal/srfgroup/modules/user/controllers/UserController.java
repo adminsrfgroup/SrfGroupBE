@@ -83,10 +83,12 @@ public class UserController {
      * @return
      */
     @PostMapping("public/signin")
-    public ResponseEntity<JwtResponseVM> signinClient(@RequestBody LoginDTO loginDTO, HttpServletRequest httpServletRequest) {
+    public ResponseEntity<JwtResponseVM> signinClient(@RequestBody LoginDTO loginDTO) {
         log.info("REST request to signin with email: {} ", loginDTO.getEmail());
         JwtResponseVM jwtResponseVM = userService.signinClient(loginDTO);
         HttpHeaders httpHeaders = new HttpHeaders();
+
+        // For Testing
         // httpHeaders.add(JwtAuthenticationFilter.AUTHORIZATION_HEADER, "Bearer " + jwtResponseVM.getToken());
         httpHeaders.add("X-app-alert", RequestUtil.messageTranslate("signin.message_welcome"));
         return new ResponseEntity<>(jwtResponseVM, httpHeaders, HttpStatus.OK);
