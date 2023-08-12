@@ -3,10 +3,12 @@ package com.takirahal.srfgroup.modules.offer.entities;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.annotations.Type;
 
 import jakarta.persistence.*;
 import java.io.Serializable;
+import java.sql.Types;
 
 /**
  * A DescriptionAddOffer.
@@ -25,17 +27,17 @@ public class DescriptionAddOffer implements Serializable {
     private Long id;
 
     @Lob
-    // @Type(type = "org.hibernate.type.TextType")
+    @JdbcTypeCode(Types.LONGVARCHAR)
     @Column(name = "description_ar")
     private String descriptionAr;
 
     @Lob
-    // @Type(type = "org.hibernate.type.TextType")
+    @JdbcTypeCode(Types.LONGVARCHAR)
     @Column(name = "description_fr")
     private String descriptionFr;
 
     @Lob
-    // @Type(type = "org.hibernate.type.TextType")
+    @JdbcTypeCode(Types.LONGVARCHAR)
     @Column(name = "description_en")
     private String descriptionEn;
 }

@@ -1,12 +1,7 @@
 package com.takirahal.srfgroup.modules.rentrequest.controllers;
 
-import com.takirahal.srfgroup.modules.cart.controllers.CartController;
-import com.takirahal.srfgroup.modules.cart.dto.CartDTO;
-import com.takirahal.srfgroup.modules.cart.dto.filter.CartFilter;
-import com.takirahal.srfgroup.modules.cart.models.DetailsCarts;
 import com.takirahal.srfgroup.modules.rentrequest.dto.RentRequestDTO;
 import com.takirahal.srfgroup.modules.rentrequest.dto.filter.RentRequestFilter;
-import com.takirahal.srfgroup.modules.rentrequest.entities.RentRequest;
 import com.takirahal.srfgroup.modules.rentrequest.services.RentRequestService;
 import com.takirahal.srfgroup.utils.HeaderUtil;
 import org.slf4j.Logger;

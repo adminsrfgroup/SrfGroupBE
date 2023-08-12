@@ -1,5 +1,6 @@
 package com.takirahal.srfgroup.modules.cart.entities;
 
+import com.takirahal.srfgroup.modules.cart.enums.StatusCart;
 import com.takirahal.srfgroup.modules.offer.entities.SellOffer;
 import com.takirahal.srfgroup.modules.user.entities.User;
 import lombok.AllArgsConstructor;
@@ -30,8 +31,9 @@ public class Cart implements Serializable {
     @Column(name = "total")
     private Double total;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "status")
-    private String status;
+    private StatusCart status;
 
     @Column(name = "passed_date")
     private Instant passedDate;

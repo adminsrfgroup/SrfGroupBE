@@ -36,7 +36,7 @@ public class TopHomeSlidesImageController {
     public ResponseEntity<TopHomeSlidesImageDTO> createTopHomeSlidesImages(@RequestBody TopHomeSlidesImageDTO topHomeSlidesImage) {
         log.info("REST request to save TopHomeSlidesImage : {}", topHomeSlidesImage);
         TopHomeSlidesImageDTO result = topHomeSlidesImageService.save(topHomeSlidesImage);
-        return new ResponseEntity<>(result, HttpStatus.CREATED);
+        return new ResponseEntity<>(result, HeaderUtil.createAlert("Add top slide", ""), HttpStatus.CREATED);
     }
 
     /**
@@ -48,7 +48,7 @@ public class TopHomeSlidesImageController {
     public ResponseEntity<TopHomeSlidesImageDTO> updateTopHomeSlidesImages(@PathVariable Long id, @RequestBody TopHomeSlidesImageDTO topHomeSlidesImage) {
         log.info("REST request to update TopHomeSlidesImage : {}", topHomeSlidesImage);
         TopHomeSlidesImageDTO result = topHomeSlidesImageService.update(id, topHomeSlidesImage);
-        return new ResponseEntity<>(result, HttpStatus.CREATED);
+        return new ResponseEntity<>(result, HeaderUtil.createAlert("Update top slide", ""), HttpStatus.OK);
     }
 
     /**

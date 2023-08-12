@@ -29,13 +29,13 @@ public class CustomOfferMapper {
             return null;
         }
 
-        if (offer.getTypeOffer().equalsIgnoreCase(TypeOffer.SellOffer.toString())) {
+        if (offer.getTypeOffer().equals(TypeOffer.SellOffer)) {
             SellOffer sellOffer = (SellOffer) offer;
             return sellOfferMapper.toDto(sellOffer);
-        } else if (offer.getTypeOffer().equalsIgnoreCase(TypeOffer.RentOffer.toString())) {
+        } else if (offer.getTypeOffer().equals(TypeOffer.RentOffer)) {
             RentOffer rentOffer = (RentOffer) offer;
             return rentOfferMapper.toDto(rentOffer);
-        } else if (offer.getTypeOffer().equalsIgnoreCase(TypeOffer.FindOffer.toString())) {
+        } else if (offer.getTypeOffer().equals(TypeOffer.FindOffer)) {
             FindOffer findOffer = (FindOffer) offer;
             return findOfferMapper.toDto(findOffer);
         }
@@ -49,13 +49,13 @@ public class CustomOfferMapper {
             return null;
         }
 
-        if (offer.getTypeOffer().equalsIgnoreCase(TypeOffer.SellOffer.toString())) {
+        if (offer.getTypeOffer().equals(TypeOffer.SellOffer)) {
             SellOffer sellOffer = (SellOffer) offer;
             return sellOfferMapper.toDtoSearchOffers(sellOffer);
-        } else if (offer.getTypeOffer().equalsIgnoreCase(TypeOffer.RentOffer.toString())) {
+        } else if (offer.getTypeOffer().equals(TypeOffer.RentOffer)) {
             RentOffer rentOffer = (RentOffer) offer;
             return rentOfferMapper.toDtoSearchOffers(rentOffer);
-        } else if (offer.getTypeOffer().equalsIgnoreCase(TypeOffer.FindOffer.toString())) {
+        } else if (offer.getTypeOffer().equals(TypeOffer.FindOffer)) {
             FindOffer findOffer = (FindOffer) offer;
             return findOfferMapper.toDtoSearchOffers(findOffer);
         }
@@ -69,13 +69,13 @@ public class CustomOfferMapper {
             return null;
         }
 
-        if (offer.getTypeOffer().equalsIgnoreCase(TypeOffer.SellOffer.toString())) {
+        if (offer.getTypeOffer().equals(TypeOffer.SellOffer)) {
             SellOffer sellOffer = (SellOffer) offer;
             return sellOfferMapper.toDtoDetailsOffer(sellOffer);
-        } else if (offer.getTypeOffer().equalsIgnoreCase(TypeOffer.RentOffer.toString())) {
+        } else if (offer.getTypeOffer().equals(TypeOffer.RentOffer)) {
             RentOffer rentOffer = (RentOffer) offer;
             return rentOfferMapper.toDtoDetailsOffer(rentOffer);
-        } else if (offer.getTypeOffer().equalsIgnoreCase(TypeOffer.FindOffer.toString())) {
+        } else if (offer.getTypeOffer().equals(TypeOffer.FindOffer)) {
             FindOffer findOffer = (FindOffer) offer;
             return findOfferMapper.toDtoDetailsOffer(findOffer);
         }

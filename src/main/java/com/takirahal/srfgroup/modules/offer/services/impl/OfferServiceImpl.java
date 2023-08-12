@@ -153,9 +153,9 @@ public class OfferServiceImpl implements OfferService {
         User user = new User();
         user.setId(userId);
         CountOffersByUser countOffersByUser = new CountOffersByUser();
-        countOffersByUser.setCountSellOffers(offerRepository.countByTypeOfferAndUser(TypeOffer.SellOffer.toString(), user));
-        countOffersByUser.setCountRentOffers(offerRepository.countByTypeOfferAndUser(TypeOffer.RentOffer.toString(), user));
-        countOffersByUser.setCountFindOffers(offerRepository.countByTypeOfferAndUser(TypeOffer.FindOffer.toString(), user));
+        countOffersByUser.setCountSellOffers(offerRepository.countByTypeOfferAndUser(TypeOffer.SellOffer, user));
+        countOffersByUser.setCountRentOffers(offerRepository.countByTypeOfferAndUser(TypeOffer.RentOffer, user));
+        countOffersByUser.setCountFindOffers(offerRepository.countByTypeOfferAndUser(TypeOffer.FindOffer, user));
         return countOffersByUser;
     }
 
@@ -208,7 +208,7 @@ public class OfferServiceImpl implements OfferService {
                 predicates.add(criteriaBuilder.like(root.get("title"), "%" + offerFilter.getTitle() + "%"));
             }
 
-            if (offerFilter.getTypeOffer() != null && !offerFilter.getTypeOffer().isEmpty()) {
+            if (offerFilter.getTypeOffer() != null) {
                 predicates.add(criteriaBuilder.equal(root.get("typeOffer"), offerFilter.getTypeOffer()));
             }
 

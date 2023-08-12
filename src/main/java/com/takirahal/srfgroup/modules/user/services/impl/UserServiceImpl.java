@@ -42,6 +42,7 @@ import com.takirahal.srfgroup.modules.user.mapper.UserMapper;
 import com.takirahal.srfgroup.modules.user.repositories.AuthorityRepository;
 import com.takirahal.srfgroup.modules.user.repositories.UserRepository;
 import com.takirahal.srfgroup.modules.user.services.UserService;
+import com.takirahal.srfgroup.utils.CommonUtil;
 import com.takirahal.srfgroup.utils.RandomUtil;
 import com.takirahal.srfgroup.utils.RequestUtil;
 import com.takirahal.srfgroup.utils.SecurityUtils;
@@ -173,7 +174,9 @@ public class UserServiceImpl implements UserService {
         newUser.setUsername(registerDTO.getEmail());
         newUser.setActivatedAccount(false);
         newUser.setActivationKey(RandomUtil.generateActivationKey(20));
-        newUser.setSourceConnectedDevice(RequestUtil.getHeaderAttribute(SrfGroupConstants.SOURCE_CONNECTED_DEVICE));
+
+        SourceConnectedDevice sourceConnectedDevice = SourceConnectedDevice.valueOf(RequestUtil.getHeaderAttribute(SrfGroupConstants.SOURCE_CONNECTED_DEVICE));
+        newUser.setSourceConnectedDevice(sourceConnectedDevice);
         newUser.setRegisterDate(Instant.now());
         newUser.setLangKey(RequestUtil.getHeaderAttribute(SrfGroupConstants.LANG_KEY));
 
@@ -183,7 +186,7 @@ public class UserServiceImpl implements UserService {
         User user = userRepository.save(newUser);
 
         // Register one signal id
-        if(registerDTO.getIdOneSignal()!=null){
+        if(CommonUtil.isStringEmpty(registerDTO.getIdOneSignal())){
             UserOneSignalDTO userOneSignalDTO = new UserOneSignalDTO();
             userOneSignalDTO.setIdOneSignal(registerDTO.getIdOneSignal());
             userOneSignalDTO.setUser(userMapper.toDtoIdEmail(user));

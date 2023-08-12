@@ -1,12 +1,15 @@
 package com.takirahal.srfgroup.modules.home.entities;
 
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.annotations.Type;
 
 import jakarta.persistence.*;
 import java.io.Serializable;
+import java.sql.Types;
 
 @Data
 @NoArgsConstructor
@@ -20,28 +23,33 @@ public class TopHomeSlidesImage implements Serializable {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGeneratorTopHomeSlidesImage")
     private Long id;
 
+    @NotBlank
     @Lob
-    // @Type(type = "org.hibernate.type.TextType")
+    @JdbcTypeCode(Types.LONGVARCHAR)
     @Column(name = "descriptionAr")
     private String descriptionAr;
 
+    @NotBlank
     @Lob
-    // @Type(type = "org.hibernate.type.TextType")
+    @JdbcTypeCode(Types.LONGVARCHAR)
     @Column(name = "descriptionFr")
     private String descriptionFr;
 
+    @NotBlank
     @Lob
-    // @Type(type = "org.hibernate.type.TextType")
+    @JdbcTypeCode(Types.LONGVARCHAR)
     @Column(name = "descriptionEn")
     private String descriptionEn;
 
+    @NotBlank
     @Lob
-    // @Type(type = "org.hibernate.type.TextType")
+    @JdbcTypeCode(Types.LONGVARCHAR)
     @Column(name = "image_desktop")
     private String imageDesktop;
 
+    @NotBlank
     @Lob
-    // @Type(type = "org.hibernate.type.TextType")
+    @JdbcTypeCode(Types.LONGVARCHAR)
     @Column(name = "image_mobile")
     private String imageMobile;
 

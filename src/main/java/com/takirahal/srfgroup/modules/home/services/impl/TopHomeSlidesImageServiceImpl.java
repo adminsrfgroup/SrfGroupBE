@@ -5,7 +5,6 @@ import com.takirahal.srfgroup.enums.SourceConnectedDevice;
 import com.takirahal.srfgroup.exceptions.BadRequestAlertException;
 import com.takirahal.srfgroup.exceptions.ResouorceNotFoundException;
 import com.takirahal.srfgroup.exceptions.UnauthorizedException;
-import com.takirahal.srfgroup.modules.cart.services.impl.CartServiceImpl;
 import com.takirahal.srfgroup.modules.home.dto.TopHomeSlidesImageDTO;
 import com.takirahal.srfgroup.modules.home.entities.TopHomeSlidesImage;
 import com.takirahal.srfgroup.modules.home.mapper.TopHomeSlidesImageMapper;

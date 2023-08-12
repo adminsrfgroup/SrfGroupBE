@@ -34,6 +34,19 @@ public class Authority implements Serializable {
     @Column(length = 100)
     private EAuthority name;
 
+    @Lob
+    @Column(name = "description_ar")
+    private String descriptionAr;
+
+    @Lob
+    @Column(name = "description_fr")
+    private String descriptionFr;
+
+    @Lob
+    @Column(name = "description_en")
+    private String descriptionEn;
+
+
     @ManyToMany
     @JoinTable(
             name = "sg_authority_permissions",

@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
+import com.takirahal.srfgroup.enums.TypeOffer;
 import com.takirahal.srfgroup.modules.address.dto.AddressDTO;
 import com.takirahal.srfgroup.modules.category.dto.CategoryDTO;
 import com.takirahal.srfgroup.modules.user.dto.UserDTO;
@@ -34,7 +35,7 @@ public class OfferDTO  implements Serializable {
 
     private Instant dateCreated;
 
-    private String typeOffer;
+    private TypeOffer typeOffer;
 
     private Boolean available = true;
 

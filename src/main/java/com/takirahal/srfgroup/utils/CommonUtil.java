@@ -56,4 +56,8 @@ public class CommonUtil {
         byte[] decodedBytes = Base64.getDecoder().decode(newStr.substring(0, newStr.length()-8));
         return new String(decodedBytes);
     }
+
+    public static boolean isStringEmpty(String str){
+        return str!=null && str.length()>0;
+    }
 }

@@ -1,10 +1,13 @@
 package com.takirahal.srfgroup.modules.user.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.takirahal.srfgroup.enums.SourceConnectedDevice;
 import com.takirahal.srfgroup.modules.address.entities.Address;
-import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import lombok.NoArgsConstructor;
+import lombok.Builder;
+import lombok.AllArgsConstructor;
 import org.hibernate.annotations.BatchSize;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.annotations.NaturalId;
@@ -20,7 +23,9 @@ import java.time.Instant;
 import java.util.HashSet;
 import java.util.Set;
 
-@Data
+@Getter
+@Setter
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
@@ -82,9 +87,9 @@ public class User implements Serializable {
     @Column(name = "phone", length = 20)
     private String phone;
 
-    @Size(max = 30)
-    @Column(name = "source_connected_device", length = 20)
-    private String sourceConnectedDevice;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "source_connected_device")
+    private SourceConnectedDevice sourceConnectedDevice;
 
     @JsonIgnore
     @NotBlank
@@ -111,4 +116,39 @@ public class User implements Serializable {
     @ManyToOne
     private Address address;
 
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", username='" + username + '\'' +
+                ", email='" + email + '\'' +
+                ", activatedAccount=" + activatedAccount +
+                ", blocked='" + blocked + '\'' +
+                ", imageUrl='" + imageUrl + '\'' +
+                ", activationKey='" + activationKey + '\'' +
+                ", resetKey='" + resetKey + '\'' +
+                ", langKey='" + langKey + '\'' +
+                ", phone='" + phone + '\'' +
+                ", sourceConnectedDevice='" + sourceConnectedDevice + '\'' +
+                ", password='" + password + '\'' +
+                ", registerDate=" + registerDate +
+                ", linkProfileFacebook='" + linkProfileFacebook + '\'' +
+                ", authorities=" + authorities +
+                ", address=" + address +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if( obj==null ){
+            return false;
+        }
+        if( obj instanceof User ){
+            User user = (User)obj;
+            return id.equals(user.id) && email.equals(user.email);
+        }
+        return false;
+    }
 }

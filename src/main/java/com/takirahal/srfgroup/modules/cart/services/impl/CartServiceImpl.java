@@ -78,7 +78,7 @@ public class CartServiceImpl implements CartService {
         cartDTO.setUser(userMapper.toCurrentUserPrincipal(currentUser));
 
         Cart cart = cartMapper.toEntity(cartDTO);
-        cart.setStatus(StatusCart.STANDBY.toString());
+        cart.setStatus(StatusCart.STANDBY);
 
         Optional<SellOffer> sellOfferOption = sellOfferRepository.findById(cartDTO.getSellOffer().getId());
 
@@ -125,7 +125,7 @@ public class CartServiceImpl implements CartService {
         Long useId = SecurityUtils.getIdByCurrentUser();
         UserOfferFilter userOfferFilter = new UserOfferFilter();
         userOfferFilter.setId(useId);
-        cartFilter.setStatus(StatusCart.STANDBY.toString());
+        cartFilter.setStatus(StatusCart.STANDBY);
         cartFilter.setUser(userOfferFilter);
         return findByCriteria(cartFilter, pageable);
     }
@@ -199,7 +199,7 @@ public class CartServiceImpl implements CartService {
                     .map(
                             cart -> {
                                 // Update Status
-                                cart.setStatus(StatusCart.PASSED.toString());
+                                cart.setStatus(StatusCart.PASSED);
                                 cartRepository.save(cart);
                                 log.debug("Cart update: {}", cart);
                                 return cart;

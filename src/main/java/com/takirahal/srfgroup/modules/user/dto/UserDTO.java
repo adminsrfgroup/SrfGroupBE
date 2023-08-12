@@ -1,16 +1,17 @@
 package com.takirahal.srfgroup.modules.user.dto;
 
+import com.takirahal.srfgroup.enums.SourceConnectedDevice;
 import com.takirahal.srfgroup.modules.address.dto.AddressDTO;
 import com.takirahal.srfgroup.modules.user.entities.Authority;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.io.Serializable;
 import java.time.Instant;
 import java.util.Set;
 
-@Data
+@Setter
+@Getter
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserDTO  implements Serializable {
@@ -37,7 +38,7 @@ public class UserDTO  implements Serializable {
 
     private String phone;
 
-    private String sourceConnectedDevice;
+    private SourceConnectedDevice sourceConnectedDevice;
 
     private Set<AuthorityDTO> authorities;
 

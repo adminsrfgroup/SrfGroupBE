@@ -1,6 +1,7 @@
 package com.takirahal.srfgroup.security;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.takirahal.srfgroup.enums.SourceConnectedDevice;
 import com.takirahal.srfgroup.modules.user.entities.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -20,7 +21,7 @@ public class UserPrincipal implements Serializable, UserDetails {
     private String email;
     private String imageUrl;
     private String phone;
-    private String sourceConnectedDevice;
+    private SourceConnectedDevice sourceConnectedDevice;
     private String langKey;
     private String linkProfileFacebook;
 
@@ -36,7 +37,7 @@ public class UserPrincipal implements Serializable, UserDetails {
                          String email,
                          String imageUrl,
                          String phone,
-                         String sourceConnectedDevice,
+                         SourceConnectedDevice sourceConnectedDevice,
                          String langKey,
                          String linkProfileFacebook,
                          String password,
@@ -105,7 +106,7 @@ public class UserPrincipal implements Serializable, UserDetails {
         return phone;
     }
 
-    public String getsourceConnectedDevice() {
+    public SourceConnectedDevice getsourceConnectedDevice() {
         return sourceConnectedDevice;
     }
 

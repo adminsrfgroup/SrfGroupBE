@@ -1,5 +1,6 @@
 package com.takirahal.srfgroup.modules.offer.dto.filter;
 
+import com.takirahal.srfgroup.enums.TypeOffer;
 import com.takirahal.srfgroup.modules.address.dto.AddressDTO;
 import com.takirahal.srfgroup.modules.category.dto.CategoryDTO;
 import com.takirahal.srfgroup.modules.user.dto.filter.UserOfferFilter;
@@ -23,7 +24,7 @@ public class OfferFilter {
 
     private Instant dateCreated;
 
-    private String typeOffer;
+    private TypeOffer typeOffer;
 
     private UserOfferFilter user;
 

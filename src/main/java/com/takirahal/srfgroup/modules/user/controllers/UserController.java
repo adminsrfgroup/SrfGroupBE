@@ -150,7 +150,7 @@ public class UserController {
      * @return
      */
     @PostMapping("public/signin-facebook")
-    public ResponseEntity<JwtResponseVM> signinFacebook(@Valid @RequestBody FacebookVM facebookVM, HttpServletRequest httpServletRequest) {
+    public ResponseEntity<JwtResponseVM> signinFacebook(@Valid @RequestBody FacebookVM facebookVM) {
         try {
             log.info("REST request to signin Facebook: {} ", facebookVM);
             JwtResponseVM jwtResponseVM = userService.signinFacebook(facebookVM);

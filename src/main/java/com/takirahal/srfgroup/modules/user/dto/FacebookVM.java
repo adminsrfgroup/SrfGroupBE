@@ -1,12 +1,13 @@
 package com.takirahal.srfgroup.modules.user.dto;
 
 
+import com.takirahal.srfgroup.enums.SourceConnectedDevice;
 import com.takirahal.srfgroup.modules.user.models.PictureFacebook;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
-@Data
+@Setter
+@Getter
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class FacebookVM {
@@ -21,6 +22,6 @@ public class FacebookVM {
     private PictureFacebook picture;
     private String signedRequest;
     private String userID;
-    private String sourceConnectedDevice;
+    private SourceConnectedDevice sourceConnectedDevice;
     private String idOneSignal;
 }

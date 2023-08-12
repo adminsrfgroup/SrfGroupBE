@@ -1,6 +1,7 @@
 package com.takirahal.srfgroup.modules.offer.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.takirahal.srfgroup.enums.TypeOffer;
 import com.takirahal.srfgroup.modules.address.entities.Address;
 import com.takirahal.srfgroup.modules.category.entities.Category;
 import com.takirahal.srfgroup.modules.user.entities.User;
@@ -44,8 +45,9 @@ public class Offer implements Serializable {
     @Column(name = "date_created", updatable = false)
     private Instant dateCreated;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "type_offer", insertable = false, updatable = false)
-    private String typeOffer;
+    private TypeOffer typeOffer;
 
     @Column(name = "blocked_by_reported")
     private Boolean blockedByReported = false;

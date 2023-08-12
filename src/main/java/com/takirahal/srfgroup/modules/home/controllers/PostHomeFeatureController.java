@@ -86,7 +86,7 @@ public class PostHomeFeatureController {
     public ResponseEntity<PostHomeFeatureDTO> updatePostHomeFeature(@PathVariable Long id, @RequestBody PostHomeFeatureDTO postHomeFeatureDTO) {
         log.info("REST request to update PostHomeFeature : {}", postHomeFeatureDTO);
         PostHomeFeatureDTO result = postHomeFeatureService.update(id, postHomeFeatureDTO);
-        return new ResponseEntity<>(result, HttpStatus.CREATED);
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
 
