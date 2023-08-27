@@ -71,6 +71,14 @@ public class AboutUsServiceImpl implements AboutUsService {
         }
     }
 
+    @Override
+    public AboutUsDTO findById(Long id) {
+        log.debug("Request to find about us by id : {}", id);
+        return aboutUsRepository.findById(id)
+                .map(item -> aboutUsMapper.toDto(item))
+                .orElseThrow(() -> new ResouorceNotFoundException("Not found entity with id "+id));
+    }
+
     protected Specification<AboutUs> createSpecification(AboutUsFilter aboutUsFilter) {
         return (root, query, criteriaBuilder) -> {
             List<Predicate> predicates = new ArrayList<>();

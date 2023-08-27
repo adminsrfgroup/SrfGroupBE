@@ -43,22 +43,20 @@ public class AuthorityController {
     }
 
     @GetMapping("admin/{id}")
-    public ResponseEntity<Authority> getDetailsAuthority(@PathVariable Integer id) {
+    public ResponseEntity<AuthorityDTO> getDetailsAuthority(@PathVariable Integer id) {
         log.info("REST request to get Authority: {}", id);
-        Authority result = authorityRepository.findById(id)
-                .orElseThrow(() -> new ResouorceNotFoundException(RequestUtil.messageTranslate("common.resource_not_found")));
+        AuthorityDTO result = authorityService.findById(id);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
     @PutMapping("admin/{id}")
-    public ResponseEntity<Authority> updateAuthority(@PathVariable Integer id, @RequestBody Authority authority) {
+    public ResponseEntity<AuthorityDTO> updateAuthority(@PathVariable Integer id, @RequestBody AuthorityDTO authority) {
         log.info("REST request to update new Authority: {}", authority);
-        Authority auth = authorityRepository.findById(id)
-                .orElseThrow(() -> new ResouorceNotFoundException(RequestUtil.messageTranslate("common.resource_not_found")));
+        AuthorityDTO auth = authorityService.findById(id);
         auth.setName(authority.getName());
         auth.setPermissions(authority.getPermissions());
 
-        Authority result = authorityRepository.save(auth);
+        AuthorityDTO result = authorityService.save(auth);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 

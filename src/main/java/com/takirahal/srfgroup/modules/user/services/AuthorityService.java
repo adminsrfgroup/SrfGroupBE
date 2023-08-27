@@ -16,6 +16,13 @@ public interface AuthorityService {
     /**
      *
      * @param id
+     * @return
+     */
+    AuthorityDTO findById(Integer id);
+
+    /**
+     *
+     * @param id
      * @param updateUserAuthorityDTO
      * @return
      */

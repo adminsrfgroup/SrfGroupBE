@@ -36,7 +36,7 @@ public class FaqController {
      * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new faqDTO, or with status {@code 400 (Bad Request)} if the faq has already an ID.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PostMapping("admin/create")
+    @PostMapping("admin")
     public ResponseEntity<FaqDTO> createFaq(@RequestBody FaqDTO faqDTO) throws URISyntaxException {
         log.info("REST request to save Faq : {}", faqDTO);
         if (faqDTO.getId() != null) {
@@ -45,6 +45,33 @@ public class FaqController {
         FaqDTO result = faqService.save(faqDTO);
 
         return new ResponseEntity<>(result, HttpStatus.CREATED);
+    }
+
+
+    /**
+     *
+     * @param id
+     * @return
+     */
+    @GetMapping("admin/{id}")
+    public ResponseEntity<FaqDTO> findByIdFaq(@PathVariable Long id){
+        log.info("REST request to save Faq : {}", id);
+        FaqDTO result = faqService.findById(id);
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
+
+    /**
+     *
+     * @param id
+     * @param faqDTO
+     * @return
+     */
+    @PutMapping("admin/{id}")
+    public ResponseEntity<FaqDTO> updateFaq(@PathVariable Long id, @RequestBody FaqDTO faqDTO){
+        log.info("REST request to save Faq : {}", id);
+        FaqDTO result = faqService.update(id, faqDTO);
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
     /**

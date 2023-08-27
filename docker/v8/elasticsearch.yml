@@ -4,7 +4,7 @@ services:
 
   # ElasticSearch Service
   elasticsearch:
-    image: docker.elastic.co/elasticsearch/elasticsearch:8.5.2
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.8.2
     container_name: elasticsearch
     # volumes:
     #   - ~/volumes/jhipster/jhipster/elasticsearch/:/usr/share/elasticsearch/data/
@@ -15,7 +15,7 @@ services:
     environment:
       - network.host=0.0.0.0
       - discovery.type=single-node
-      - cluster.name=docker-cluster
+      - cluster.name=srfgroup-cluster
       - node.name=cluster1-node1
       - xpack.license.self_generated.type=basic
       - xpack.security.enabled=false
@@ -38,11 +38,14 @@ services:
 
   # Kibana Service
   kibana:
-    image: docker.elastic.co/kibana/kibana:8.5.2
+    image: docker.elastic.co/kibana/kibana:8.8.2
     container_name: kibana
     environment:
-      ELASTICSEARCH_HOSTS: http://elasticsearch:9200
-      SERVER_HOSTS: 0.0.0.0
+      - xpack.reporting.kibanaServer.hostname= localhost
+      - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
+      - ELASTICSEARCH_USERNAME=kibana_system
+      - ELASTICSEARCH_PASSWORD=jzEWxnuDr-3HRvitBc0U
+      - SERVER_HOSTS=0.0.0.0
     ports:
       - 5601:5601
     networks:

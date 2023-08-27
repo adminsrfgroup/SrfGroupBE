@@ -39,6 +39,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
+@Transactional
 public class OrderServiceImpl implements OrderService {
 
     private final Logger log = LoggerFactory.getLogger(OrderServiceImpl.class);
@@ -65,7 +66,6 @@ public class OrderServiceImpl implements OrderService {
     UserOneSignalService userOneSignalService;
 
     @Override
-    @Transactional
     public OrderDTO save(UserPrincipal userPrincipal, OrderDTO newOrderDTO) {
         Pageable pageable = PageRequest.of(0, 100);
         CartFilter cartFilter = new CartFilter();

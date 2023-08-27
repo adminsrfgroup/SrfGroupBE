@@ -16,4 +16,8 @@ public interface FaqService {
     Page<Faq> findByCriteriaEntity(FaqFilter criteria, Pageable pageable);
 
     List<Faq> findAll();
+
+    FaqDTO findById(Long id);
+
+    FaqDTO update(Long id, FaqDTO faqDTO);
 }

@@ -44,8 +44,8 @@ public class NewsLetterController {
      * @param criteria the criteria which the requested entities should match.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of faqs in body.
      */
-    @GetMapping("admin")
-    public ResponseEntity<Page<NewsLetter>> getAllPublicFaqs(NewsLetterFilter criteria, Pageable pageable) {
+    @GetMapping("admin/list")
+    public ResponseEntity<Page<NewsLetter>> getAllNewsLetter(NewsLetterFilter criteria, Pageable pageable) {
         log.debug("REST request to get NewsLetter by criteria: {}", criteria);
         Page<NewsLetter> page = newsLetterService.findByCriteria(criteria, pageable);
         return new ResponseEntity<>(page, HttpStatus.OK);

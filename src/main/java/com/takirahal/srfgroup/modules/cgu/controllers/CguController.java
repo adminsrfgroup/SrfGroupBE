@@ -19,7 +19,7 @@ public class CguController {
     @Autowired
     CguService cguService;
 
-    @PostMapping("create")
+    @PostMapping("admin/create")
     public ResponseEntity<CguDTO> createCgu(@RequestBody CguDTO cguDTO) {
         log.info("REST request to update Cgu : {}", cguDTO);
         CguDTO result = cguService.save(cguDTO);
@@ -34,7 +34,7 @@ public class CguController {
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
-    @PutMapping("update/{id}")
+    @PutMapping("admin/update/{id}")
     public ResponseEntity<CguDTO> updateCgu(@PathVariable Long id, @RequestBody CguDTO cguDTO) {
         log.info("REST request to update Cgu : {}", cguDTO);
         CguDTO result = cguService.update(id, cguDTO);

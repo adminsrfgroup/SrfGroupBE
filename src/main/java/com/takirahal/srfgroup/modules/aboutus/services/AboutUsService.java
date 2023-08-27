@@ -31,4 +31,6 @@ public interface AboutUsService {
      * @return
      */
     String findLastOne();
+
+    AboutUsDTO findById(Long id);
 }

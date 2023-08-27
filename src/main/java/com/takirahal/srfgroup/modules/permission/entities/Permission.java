@@ -1,15 +1,13 @@
 package com.takirahal.srfgroup.modules.permission.entities;
 
 import com.takirahal.srfgroup.modules.permission.enums.EPermission;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import org.hibernate.annotations.Type;
+import lombok.*;
 
 import jakarta.persistence.*;
 import java.io.Serializable;
 
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
@@ -29,8 +27,6 @@ public class Permission implements Serializable {
     @Column(name = "pathApi")
     private String pathApi;
 
-    @Lob
-    // // @Type(type = "org.hibernate.type.TextType")
     @Column(name = "description")
     private String description;
 }

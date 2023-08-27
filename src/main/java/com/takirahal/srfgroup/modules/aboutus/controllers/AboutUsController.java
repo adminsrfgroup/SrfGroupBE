@@ -65,6 +65,19 @@ public class    AboutUsController {
 
 
     /**
+     *
+     * @param id
+     * @return
+     */
+    @GetMapping("/admin/{id}")
+    public ResponseEntity<AboutUsDTO> getOneAboutUs(@PathVariable Long id) {
+        log.info("REST request to get Aboutuses by id : {}", id);
+        AboutUsDTO result = aboutUsService.findById(id);
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
+
+    /**
      * {@code GET  /aboutuses/:id} : get the "id" aboutUs.
      *
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the aboutUsDTO, or with status {@code 404 (Not Found)}.

@@ -12,17 +12,20 @@ import com.takirahal.srfgroup.modules.user.mapper.AuthorityMapper;
 import com.takirahal.srfgroup.modules.user.repositories.AuthorityRepository;
 import com.takirahal.srfgroup.modules.user.services.AuthorityService;
 import com.takirahal.srfgroup.modules.user.services.UserService;
+import com.takirahal.srfgroup.utils.RequestUtil;
 import com.takirahal.srfgroup.utils.SecurityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 
 @Service
+@Transactional
 public class AuthorityServiceImpl implements AuthorityService {
 
     private final Logger log = LoggerFactory.getLogger(AuthorityServiceImpl.class);
@@ -46,6 +49,13 @@ public class AuthorityServiceImpl implements AuthorityService {
 
         Authority authority = authorityRepository.save(authorityMapper.toEntity(authorityDTO));
         return authorityMapper.toDto(authority);
+    }
+
+    @Override
+    public AuthorityDTO findById(Integer id) {
+        Authority result = authorityRepository.findById(id)
+                .orElseThrow(() -> new ResouorceNotFoundException(RequestUtil.messageTranslate("common.resource_not_found")));
+        return authorityMapper.toDto(result);
     }
 
     @Override

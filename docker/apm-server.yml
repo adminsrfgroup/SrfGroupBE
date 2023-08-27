@@ -3,7 +3,7 @@ services:
 
   # APM Server
   apm-server:
-    image: docker.elastic.co/apm/apm-server:8.5.2
+    image: docker.elastic.co/apm/apm-server:8.8.2
     container_name: apm-server
     cap_add: ["CHOWN", "DAC_OVERRIDE", "SETGID", "SETUID"]
     cap_drop: ["ALL"]
