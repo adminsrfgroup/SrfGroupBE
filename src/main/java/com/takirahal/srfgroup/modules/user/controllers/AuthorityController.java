@@ -1,12 +1,10 @@
 package com.takirahal.srfgroup.modules.user.controllers;
 
-import com.takirahal.srfgroup.exceptions.ResouorceNotFoundException;
 import com.takirahal.srfgroup.modules.permission.dto.UpdateUserAuthorityDTO;
 import com.takirahal.srfgroup.modules.user.dto.AuthorityDTO;
-import com.takirahal.srfgroup.modules.user.entities.Authority;
 import com.takirahal.srfgroup.modules.user.repositories.AuthorityRepository;
 import com.takirahal.srfgroup.modules.user.services.AuthorityService;
-import com.takirahal.srfgroup.utils.RequestUtil;
+import com.takirahal.srfgroup.utils.HeaderUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +13,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Set;
 
 @RestController
 @RequestMapping("/api/authority/")
@@ -29,9 +29,9 @@ public class AuthorityController {
     AuthorityRepository authorityRepository;
 
     @GetMapping("admin")
-    public ResponseEntity<Page<Authority>> getAllAuthorities(Pageable pageable) {
+    public ResponseEntity<Page<AuthorityDTO>> getAllAuthorities(Pageable pageable) {
         log.info("REST request to get Permission by criteria: {}", pageable);
-        Page<Authority> page = authorityRepository.findAll(pageable);
+        Page<AuthorityDTO> page = authorityService.findByCriteria(pageable);
         return new ResponseEntity<>(page, HttpStatus.OK);
     }
 
@@ -52,19 +52,15 @@ public class AuthorityController {
     @PutMapping("admin/{id}")
     public ResponseEntity<AuthorityDTO> updateAuthority(@PathVariable Integer id, @RequestBody AuthorityDTO authority) {
         log.info("REST request to update new Authority: {}", authority);
-        AuthorityDTO auth = authorityService.findById(id);
-        auth.setName(authority.getName());
-        auth.setPermissions(authority.getPermissions());
-
-        AuthorityDTO result = authorityService.save(auth);
+        AuthorityDTO result = authorityService.update(id, authority);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
 
     @PutMapping("user-authority/{id}")
-    public ResponseEntity<Boolean> updateUserAuthority(@PathVariable Long id, @RequestBody UpdateUserAuthorityDTO updateUserAuthorityDTO) {
+    public ResponseEntity<Set<AuthorityDTO>> updateUserAuthority(@PathVariable Long id, @RequestBody UpdateUserAuthorityDTO updateUserAuthorityDTO) {
         log.info("REST request to update User Authority : {}", id);
-        Boolean result = authorityService.updateUserAuthority(id, updateUserAuthorityDTO);
-        return new ResponseEntity<>(result, HttpStatus.OK);
+        Set<AuthorityDTO> result = authorityService.updateUserAuthority(id, updateUserAuthorityDTO);
+        return new ResponseEntity<>(result, HeaderUtil.createAlert("Update authority OK", ""), HttpStatus.OK);
     }
 }

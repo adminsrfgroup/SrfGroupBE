@@ -3,6 +3,10 @@ package com.takirahal.srfgroup.modules.user.services;
 import com.takirahal.srfgroup.modules.permission.dto.UpdateUserAuthorityDTO;
 import com.takirahal.srfgroup.modules.permission.enums.EPermission;
 import com.takirahal.srfgroup.modules.user.dto.AuthorityDTO;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
+import java.util.Set;
 
 public interface AuthorityService {
 
@@ -15,6 +19,13 @@ public interface AuthorityService {
 
     /**
      *
+     * @param authorityDTO
+     * @return
+     */
+    AuthorityDTO update(Integer id, AuthorityDTO authorityDTO);
+
+    /**
+     *
      * @param id
      * @return
      */
@@ -22,11 +33,11 @@ public interface AuthorityService {
 
     /**
      *
-     * @param id
+     * @param userId
      * @param updateUserAuthorityDTO
      * @return
      */
-    Boolean updateUserAuthority(Long id, UpdateUserAuthorityDTO updateUserAuthorityDTO);
+    Set<AuthorityDTO> updateUserAuthority(Long userId, UpdateUserAuthorityDTO updateUserAuthorityDTO);
 
 
     /**
@@ -34,4 +45,11 @@ public interface AuthorityService {
      * @param permission
      */
     void checkForPermissions(EPermission permission);
+
+    /**
+     *
+     * @param pageable
+     * @return
+     */
+    Page<AuthorityDTO> findByCriteria(Pageable pageable);
 }

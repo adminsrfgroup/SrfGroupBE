@@ -3,10 +3,12 @@ package com.takirahal.srfgroup.modules.user.entities;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.annotations.Type;
 
 import jakarta.persistence.*;
 import java.io.Serializable;
+import java.sql.Types;
 
 @Data
 @NoArgsConstructor
@@ -21,7 +23,7 @@ public class Organigramme  implements Serializable {
     private Long id;
 
     @Lob
-    // @Type(type = "org.hibernate.type.TextType")
-    @Column(name = "content")
+    @JdbcTypeCode(Types.LONGVARCHAR)
+    @Column(name = "content", columnDefinition="TEXT")
     private String content;
 }
